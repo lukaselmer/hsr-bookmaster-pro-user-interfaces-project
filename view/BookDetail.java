@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
 import java.awt.Color;
+import java.io.IOException;
+import java.util.Random;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -20,6 +22,15 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
+import application.LibraryApp;
+
+import domain.Book;
+import domain.IllegalLoanOperationException;
+import domain.Library;
 
 public class BookDetail {
 
@@ -27,6 +38,8 @@ public class BookDetail {
 	private JTextField txtTitle;
 	private JTextField txtAuthor;
 	private JTextField txtPublisher;
+	private Library library;
+	private Book book;
 
 	/**
 	 * Launch the application.
@@ -39,8 +52,25 @@ public class BookDetail {
 		UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+				Library l = new Library();
 				try {
-					BookDetail window = new BookDetail();
+					LibraryApp.initLibrary(l);
+				} catch (ParserConfigurationException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (SAXException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IllegalLoanOperationException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					Random r = new Random();
+					BookDetail window = new BookDetail(l, l.getBooks().get(r.nextInt(l.getBooks().size())));
 					window.frmBuchDetailansicht.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -51,8 +81,12 @@ public class BookDetail {
 
 	/**
 	 * Create the application.
+	 * @param book 
+	 * @param l 
 	 */
-	public BookDetail() {
+	public BookDetail(Library l, Book book) {
+		this.library = l;
+		this.book = book;
 		initialize();
 	}
 

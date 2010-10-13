@@ -95,7 +95,8 @@ public class LoanDetail {
 		
 		JLabel lblReturnDate = new JLabel("Zurück am:");
 		
-		JComboBox cmbCustomer = new JComboBox(library.getCustomers().toArray());
+		JComboBox cmbCustomer = new JComboBox();
+		//library.getCustomers().toArray()
 		
 		txtReturnDate = new JTextField();
 		txtReturnDate.setColumns(10);
