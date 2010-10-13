@@ -57,7 +57,7 @@ public class BookMaster {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 696, 477);
+		frame.setBounds(100, 100, 652, 477);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 
