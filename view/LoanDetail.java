@@ -38,7 +38,8 @@ public class LoanDetail {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
+		UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				Library l = new Library();
