@@ -22,12 +22,13 @@ import domain.Book;
 import domain.Shelf;
 
 public class LibraryApp {
+	
 	public static void main(String[] args) throws Exception {
 		Library library = new Library();
 		initLibrary(library);
 	}
 
-	private static void initLibrary(Library library) throws ParserConfigurationException, SAXException, IOException,
+	public static void initLibrary(Library library) throws ParserConfigurationException, SAXException, IOException,
 			IllegalLoanOperationException {
 
 		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();

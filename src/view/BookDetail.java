@@ -61,7 +61,7 @@ public class BookDetail {
 		frmBuchDetailansicht.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		JPanel pnlBookInformation = new JPanel();
-		pnlBookInformation.setBorder(new TitledBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), "Buch Informationen:", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		pnlBookInformation.setBorder(new TitledBorder(null, "Buch Informationen:", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		frmBuchDetailansicht.getContentPane().add(pnlBookInformation, BorderLayout.NORTH);
 		
 		JLabel lblTitel = new JLabel("Titel:");
@@ -87,29 +87,32 @@ public class BookDetail {
 		gl_pnlBookInformation.setHorizontalGroup(
 			gl_pnlBookInformation.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_pnlBookInformation.createSequentialGroup()
+					.addContainerGap()
 					.addGroup(gl_pnlBookInformation.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblTitel)
-						.addComponent(lblAuthor)
 						.addComponent(lblPublisher)
-						.addComponent(lblShelf))
-					.addGap(23)
+						.addComponent(lblShelf)
+						.addGroup(gl_pnlBookInformation.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblTitel))
+						.addComponent(lblAuthor))
+					.addGap(21)
 					.addGroup(gl_pnlBookInformation.createParallelGroup(Alignment.LEADING)
-						.addComponent(txtTitle, GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
-						.addComponent(txtAuthor, GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
-						.addComponent(txtPublisher, GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
-						.addComponent(cmbShelf, 0, 331, Short.MAX_VALUE))
+						.addComponent(txtTitle, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+						.addComponent(txtAuthor, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+						.addComponent(txtPublisher, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+						.addComponent(cmbShelf, 0, 339, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_pnlBookInformation.setVerticalGroup(
 			gl_pnlBookInformation.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_pnlBookInformation.createSequentialGroup()
 					.addGroup(gl_pnlBookInformation.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblTitel)
-						.addComponent(txtTitle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(txtTitle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblTitel))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_pnlBookInformation.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblAuthor)
-						.addComponent(txtAuthor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(txtAuthor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblAuthor))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_pnlBookInformation.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblPublisher)
@@ -123,7 +126,7 @@ public class BookDetail {
 		pnlBookInformation.setLayout(gl_pnlBookInformation);
 		
 		JPanel pnlCopies = new JPanel();
-		pnlCopies.setBorder(new TitledBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), "Exemplare", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		pnlCopies.setBorder(new TitledBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), "Exemplare", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		frmBuchDetailansicht.getContentPane().add(pnlCopies, BorderLayout.CENTER);
 		
 		JLabel lblQuantity = new JLabel("Anzahl: ");
@@ -141,10 +144,11 @@ public class BookDetail {
 				.addGroup(gl_pnlCopies.createSequentialGroup()
 					.addGroup(gl_pnlCopies.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_pnlCopies.createSequentialGroup()
+							.addContainerGap()
 							.addComponent(lblQuantity)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(lblQuantityNumber)
-							.addPreferredGap(ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
 							.addComponent(btnRemoveSelected)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnAddCopy))
@@ -157,12 +161,12 @@ public class BookDetail {
 			gl_pnlCopies.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_pnlCopies.createSequentialGroup()
 					.addGroup(gl_pnlCopies.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblQuantity)
 						.addComponent(btnRemoveSelected)
 						.addComponent(btnAddCopy)
-						.addComponent(lblQuantityNumber))
+						.addComponent(lblQuantityNumber)
+						.addComponent(lblQuantity))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrBooks, GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+					.addComponent(scrBooks, GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
 					.addGap(1))
 		);
 		
