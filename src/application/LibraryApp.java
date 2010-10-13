@@ -28,6 +28,26 @@ public class LibraryApp {
 		initLibrary(library);
 	}
 
+	public static Library inst(){
+		Library library = new Library();
+		try {
+			initLibrary(library);
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalLoanOperationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return library;
+	}
+	
 	public static void initLibrary(Library library) throws ParserConfigurationException, SAXException, IOException,
 			IllegalLoanOperationException {
 
