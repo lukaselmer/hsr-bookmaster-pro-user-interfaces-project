@@ -160,8 +160,8 @@ public class LoanDetail {
 					.addComponent(lblCopyID)
 					.addGap(18)
 					.addComponent(txtCopyID, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnExemplarAusleihen, GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+					.addGap(12)
+					.addComponent(btnExemplarAusleihen, GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		gl_pnlLoanNewCopy.setVerticalGroup(
