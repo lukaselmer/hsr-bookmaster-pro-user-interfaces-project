@@ -11,14 +11,15 @@ public class Copy {
 	private final long inventoryNumber;
 	private final Book book;
 	private Condition condition;
+	private Loan currentLoan;
 
-	public Copy(Book title) {
-		this.book = title;
+	public Copy(Book book) {
+		this.book = book;
 		inventoryNumber = nextInventoryNumber++;
 		condition = Condition.NEW;
 	}
 
-	public Book getTitle() {
+	public Book getBook() {
 		return book;
 	}
 
@@ -33,4 +34,18 @@ public class Copy {
 	public long getInventoryNumber() {
 		return inventoryNumber;
 	}
+
+	public Loan getCurrentLoan() {
+		return currentLoan;
+	}
+
+	public void setCurrentLoan(Loan currentLoan) {
+		this.currentLoan = currentLoan;
+	}
+
+	@Override
+	public String toString() {
+		return getBook() + (currentLoan == null ? "" : " - " + currentLoan);
+	}
+
 }
