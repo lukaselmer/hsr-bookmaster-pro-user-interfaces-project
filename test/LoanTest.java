@@ -11,7 +11,8 @@ public class LoanTest extends TestCase {
 		Loan l = createSampleLoan();
 		assertTrue(new GregorianCalendar().equals(l.getPickupDate()));
 		assertEquals("Keller", l.getCustomer().getName());
-		assertEquals("Design Pattern", l.getCopy().getTitle().getName());
+		assertEquals("Design Pattern", l.getCopy().getBook().getName());
+		assertEquals(l.getCopy().getCurrentLoan(), l);
 	}
 
 	private Loan createSampleLoan() {
@@ -25,8 +26,10 @@ public class LoanTest extends TestCase {
 	public void testReturn() {
 		Loan l = createSampleLoan();
 		assertTrue(l.isLent());
+		assertEquals(l.getCopy().getCurrentLoan(), l);
 		l.returnCopy();
 		assertFalse(l.isLent());
+		assertNull(l.getCopy().getCurrentLoan());
 	}
 
 	public void testDurationCalculation() throws IllegalLoanOperationException {

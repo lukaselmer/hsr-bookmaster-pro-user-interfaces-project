@@ -15,6 +15,7 @@ public class Loan {
 		this.copy = copy;
 		this.customer = customer;
 		pickupDate = new GregorianCalendar();
+		copy.setCurrentLoan(this);
 	}
 
 	public boolean isLent() {
@@ -35,6 +36,7 @@ public class Loan {
 			throw new IllegalLoanOperationException("Return Date is before pickupDate");
 		}
 		this.returnDate = returnDate;
+		copy.setCurrentLoan(null);
 	}
 
 	public void setPickupDate(GregorianCalendar pickupDate) throws IllegalLoanOperationException {
@@ -62,7 +64,7 @@ public class Loan {
 
 	@Override
 	public String toString() {
-		return "Loan of: " + copy.getTitle().getName() + "\tFrom: " + customer.getName() + " " + customer.getSurname() + "\tPick up: "
+		return "Loan of: " + copy.getBook().getName() + "\tFrom: " + customer.getName() + " " + customer.getSurname() + "\tPick up: "
 				+ getFormattedDate(pickupDate) + "\tReturn: " + getFormattedDate(returnDate) + "\tDays: " + getDaysOfLoanDuration();
 	}
 
