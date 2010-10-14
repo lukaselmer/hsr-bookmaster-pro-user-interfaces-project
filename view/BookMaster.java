@@ -22,11 +22,27 @@ import javax.swing.JButton;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import domain.Library;
+
+import application.LibraryApp;
+import org.jdesktop.beansbinding.BeanProperty;
+import java.util.List;
+import domain.Book;
+import org.jdesktop.beansbinding.ELProperty;
+import org.jdesktop.beansbinding.AutoBinding;
+import org.jdesktop.beansbinding.Bindings;
+import org.jdesktop.beansbinding.AutoBinding.UpdateStrategy;
+import org.jdesktop.swingbinding.JTableBinding;
+import org.jdesktop.swingbinding.SwingBindings;
+import domain.Shelf;
+import javax.swing.JScrollPane;
+
 public class BookMaster {
 
 	private JFrame frame;
 	private JTable tblBooks;
 	private JTextField textField;
+	private Library library;
 
 	/**
 	 * Launch the application.
@@ -36,7 +52,7 @@ public class BookMaster {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					BookMaster window = new BookMaster();
+					BookMaster window = new BookMaster(LibraryApp.inst());
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,8 +63,11 @@ public class BookMaster {
 
 	/**
 	 * Create the application.
+	 * 
+	 * @param library
 	 */
-	public BookMaster() {
+	public BookMaster(Library library) {
+		this.library = library;
 		initialize();
 	}
 
@@ -99,9 +118,6 @@ public class BookMaster {
 		pnlBooks.add(panel, BorderLayout.CENTER);
 		panel.setLayout(new BorderLayout(0, 0));
 
-		tblBooks = new JTable();
-		panel.add(tblBooks, BorderLayout.CENTER);
-
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "Buch Inventar", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel.add(panel_1, BorderLayout.NORTH);
@@ -149,8 +165,37 @@ public class BookMaster {
 												GroupLayout.PREFERRED_SIZE).addComponent(lblSearch).addComponent(chckbxAvailibleOnly)
 										.addComponent(btnShowSelected).addComponent(btnAddNewBook))));
 		panel_1.setLayout(gl_panel_1);
+				
+				JScrollPane scrollPane_1 = new JScrollPane();
+				panel.add(scrollPane_1, BorderLayout.CENTER);
+				
+						tblBooks = new JTable();
+						scrollPane_1.setViewportView(tblBooks);
 
 		JPanel pnlLoans = new JPanel();
 		tabbedPane.addTab("Ausleihen", null, pnlLoans, null);
+		initDataBindings();
+	}
+	protected void initDataBindings() {
+		BeanProperty<Library, List<Book>> libraryBeanProperty = BeanProperty.create("books");
+		ELProperty<JTable, Object> jTableEvalutionProperty = ELProperty.create("xxx");
+		AutoBinding<Library, List<Book>, JTable, Object> autoBinding = Bindings.createAutoBinding(UpdateStrategy.READ, library, libraryBeanProperty, tblBooks, jTableEvalutionProperty);
+		autoBinding.bind();
+		//
+		JTableBinding<Book, Library, JTable> jTableBinding = SwingBindings.createJTableBinding(UpdateStrategy.READ, library, libraryBeanProperty, tblBooks, "Name");
+		//
+		BeanProperty<Book, String> bookBeanProperty = BeanProperty.create("name");
+		jTableBinding.addColumnBinding(bookBeanProperty).setColumnName("Name");
+		//
+		BeanProperty<Book, String> bookBeanProperty_1 = BeanProperty.create("author");
+		jTableBinding.addColumnBinding(bookBeanProperty_1).setColumnName("Author");
+		//
+		BeanProperty<Book, String> bookBeanProperty_2 = BeanProperty.create("publisher");
+		jTableBinding.addColumnBinding(bookBeanProperty_2).setColumnName("Publisher");
+		//
+		BeanProperty<Book, Shelf> bookBeanProperty_3 = BeanProperty.create("shelf");
+		jTableBinding.addColumnBinding(bookBeanProperty_3).setColumnName("Shelf");
+		//
+		jTableBinding.bind();
 	}
 }
