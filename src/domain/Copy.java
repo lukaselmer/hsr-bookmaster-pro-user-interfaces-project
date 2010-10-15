@@ -1,6 +1,8 @@
 package domain;
 
-public class Copy {
+import java.util.Observable;
+
+public class Copy extends Observable {
 
 	public enum Condition {
 		NEW, GOOD, DAMAGED, WASTE, LOST
@@ -29,6 +31,8 @@ public class Copy {
 
 	public void setCondition(Condition condition) {
 		this.condition = condition;
+		setChanged();
+		notifyObservers();
 	}
 
 	public long getInventoryNumber() {
@@ -41,6 +45,8 @@ public class Copy {
 
 	public void setCurrentLoan(Loan currentLoan) {
 		this.currentLoan = currentLoan;
+		setChanged();
+		notifyObservers();
 	}
 
 	@Override

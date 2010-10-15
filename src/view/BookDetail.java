@@ -59,7 +59,7 @@ public class BookDetail {
 				try {
 					Random r = new Random();
 					BookDetail window = new BookDetail(l, l.getBooks().get(r.nextInt(l.getBooks().size())));
-					window.frmBuchDetailansicht.setVisible(true);
+					//window.frmBuchDetailansicht.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -77,6 +77,7 @@ public class BookDetail {
 		this.library = l;
 		this.book = book;
 		initialize();
+		frmBuchDetailansicht.setVisible(true);
 	}
 
 	/**

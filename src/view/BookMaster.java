@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -26,6 +27,8 @@ import domain.Library;
 
 import application.LibraryApp;
 import org.jdesktop.beansbinding.BeanProperty;
+
+import java.util.ArrayList;
 import java.util.List;
 import domain.Book;
 import org.jdesktop.beansbinding.ELProperty;
@@ -36,10 +39,12 @@ import org.jdesktop.swingbinding.JTableBinding;
 import org.jdesktop.swingbinding.SwingBindings;
 import domain.Shelf;
 import javax.swing.JScrollPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class BookMaster {
 
-	private JFrame frame;
+	private JFrame frmBookmaster;
 	private JTable tblBooks;
 	private JTextField textField;
 	private Library library;
@@ -53,7 +58,7 @@ public class BookMaster {
 			public void run() {
 				try {
 					BookMaster window = new BookMaster(LibraryApp.inst());
-					window.frame.setVisible(true);
+					//window.frmBookmaster.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -69,19 +74,22 @@ public class BookMaster {
 	public BookMaster(Library library) {
 		this.library = library;
 		initialize();
+		frmBookmaster.setVisible(true);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 652, 477);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+		frmBookmaster = new JFrame();
+		frmBookmaster.setTitle("BookMaster");
+		frmBookmaster.setBounds(100, 100, 650, 477);
+		frmBookmaster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmBookmaster.getContentPane().setLayout(new BorderLayout(0, 0));
+		frmBookmaster.setMinimumSize(new Dimension(650, 400));
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
+		frmBookmaster.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 
 		JPanel pnlBooks = new JPanel();
 		tabbedPane.addTab("Bücher", null, pnlBooks, null);
@@ -132,6 +140,14 @@ public class BookMaster {
 		JCheckBox chckbxAvailibleOnly = new JCheckBox("Nur Verfügbare");
 
 		JButton btnShowSelected = new JButton("Selektierte Anzeigen");
+		btnShowSelected.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				List<Book> books = getSelectedBooks();
+				for (Book book : books) {
+					BookDetail bd = new BookDetail(library, book);
+				}
+			}
+		});
 
 		JButton btnAddNewBook = new JButton("Neues Buch Hinzufügen");
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
@@ -165,24 +181,38 @@ public class BookMaster {
 												GroupLayout.PREFERRED_SIZE).addComponent(lblSearch).addComponent(chckbxAvailibleOnly)
 										.addComponent(btnShowSelected).addComponent(btnAddNewBook))));
 		panel_1.setLayout(gl_panel_1);
-				
-				JScrollPane scrollPane_1 = new JScrollPane();
-				panel.add(scrollPane_1, BorderLayout.CENTER);
-				
-						tblBooks = new JTable();
-						scrollPane_1.setViewportView(tblBooks);
+
+		JScrollPane scrollPane_1 = new JScrollPane();
+		panel.add(scrollPane_1, BorderLayout.CENTER);
+
+		tblBooks = new JTable();
+		scrollPane_1.setViewportView(tblBooks);
 
 		JPanel pnlLoans = new JPanel();
 		tabbedPane.addTab("Ausleihen", null, pnlLoans, null);
 		initDataBindings();
 	}
+
+	protected List<Book> getSelectedBooks() {
+		List<Book> lst = new ArrayList<Book>();
+		//tblBooks.get
+		// for (Book book : tblBooks.getSelectedRows()) {
+		//
+		// }
+		// TODO: Get books out of the table
+		return lst;
+		//return null;
+	}
+
 	protected void initDataBindings() {
 		BeanProperty<Library, List<Book>> libraryBeanProperty = BeanProperty.create("books");
 		ELProperty<JTable, Object> jTableEvalutionProperty = ELProperty.create("xxx");
-		AutoBinding<Library, List<Book>, JTable, Object> autoBinding = Bindings.createAutoBinding(UpdateStrategy.READ, library, libraryBeanProperty, tblBooks, jTableEvalutionProperty);
+		AutoBinding<Library, List<Book>, JTable, Object> autoBinding = Bindings.createAutoBinding(UpdateStrategy.READ, library,
+				libraryBeanProperty, tblBooks, jTableEvalutionProperty);
 		autoBinding.bind();
 		//
-		JTableBinding<Book, Library, JTable> jTableBinding = SwingBindings.createJTableBinding(UpdateStrategy.READ, library, libraryBeanProperty, tblBooks, "Name");
+		JTableBinding<Book, Library, JTable> jTableBinding = SwingBindings.createJTableBinding(UpdateStrategy.READ, library,
+				libraryBeanProperty, tblBooks, "Name");
 		//
 		BeanProperty<Book, String> bookBeanProperty = BeanProperty.create("name");
 		jTableBinding.addColumnBinding(bookBeanProperty).setColumnName("Name");
