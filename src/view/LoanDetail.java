@@ -36,8 +36,7 @@ public class LoanDetail {
 			public void run() {
 				Library l = LibraryApp.inst();
 				try {
-					LoanDetail window = new LoanDetail(l);
-					window.frame.setVisible(true);
+					new LoanDetail(l);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -51,6 +50,8 @@ public class LoanDetail {
 	public LoanDetail(Library library) {
 		this.library = library;
 		initialize();
+		frame.setLocationByPlatform(true);
+		frame.setVisible(true);
 	}
 
 	/**
@@ -59,7 +60,7 @@ public class LoanDetail {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 
 		JPanel pnlLoanInformation = new JPanel();

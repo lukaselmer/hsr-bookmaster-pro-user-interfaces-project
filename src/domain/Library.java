@@ -63,14 +63,20 @@ public class Library extends Observable {
 		return null;
 	}
 
-	public List<Book> searchBooksByTitle(String title) {
+	public List<Book> searchBooks(String searchString, boolean searchAvailibles) {
 		List<Book> foundBooks = new ArrayList<Book>();
 		for (Book b : books) {
-			if (b.getName().toLowerCase().contains(title.toLowerCase())) {
-				foundBooks.add(b);
+			if ((b.getName() + " " + b.getAuthor() + " " + b.getPublisher()).toLowerCase().contains(searchString.toLowerCase())) {
+				if (!searchAvailibles || isBookAvailible(b)) {
+					foundBooks.add(b);
+				}
 			}
 		}
 		return foundBooks;
+	}
+
+	private boolean isBookAvailible(Book b) {
+		return getAvailibleCopiesOfBook(b).size() > 0;
 	}
 
 	public boolean isCopyLent(Copy copy) {

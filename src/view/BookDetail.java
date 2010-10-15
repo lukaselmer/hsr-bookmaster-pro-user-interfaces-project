@@ -18,7 +18,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.TitledBorder;
 
 import application.LibraryApp;
@@ -37,11 +36,6 @@ public class BookDetail {
 
 	/**
 	 * Launch the application.
-	 * 
-	 * @throws UnsupportedLookAndFeelException
-	 * @throws IllegalAccessException
-	 * @throws InstantiationException
-	 * @throws ClassNotFoundException
 	 */
 	public static void main(String[] args) throws Exception {
 		UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
@@ -68,6 +62,7 @@ public class BookDetail {
 		this.library = l;
 		this.book = book;
 		initialize();
+		frmBuchDetailansicht.setLocationByPlatform(true);
 		frmBuchDetailansicht.setVisible(true);
 	}
 
@@ -78,7 +73,7 @@ public class BookDetail {
 		frmBuchDetailansicht = new JFrame();
 		frmBuchDetailansicht.setTitle("Buch Detailansicht");
 		frmBuchDetailansicht.setBounds(100, 100, 450, 300);
-		frmBuchDetailansicht.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmBuchDetailansicht.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmBuchDetailansicht.getContentPane().setLayout(new BorderLayout(0, 0));
 
 		JPanel pnlBookInformation = new JPanel();
@@ -107,7 +102,7 @@ public class BookDetail {
 		txtPublisher.setColumns(10);
 
 		book.getShelf();
-		//JComboBox cmbShelf = new JComboBox(book.getShelf().values());
+		// JComboBox cmbShelf = new JComboBox(book.getShelf().values());
 		JComboBox cmbShelf = new JComboBox(Shelf.values());
 		GroupLayout gl_pnlBookInformation = new GroupLayout(pnlBookInformation);
 		gl_pnlBookInformation.setHorizontalGroup(gl_pnlBookInformation.createParallelGroup(Alignment.LEADING).addGroup(
