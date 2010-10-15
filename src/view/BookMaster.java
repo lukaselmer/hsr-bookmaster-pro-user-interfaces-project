@@ -161,12 +161,10 @@ public class BookMaster implements Observer {
 		JButton btnAddNewBook = new JButton("Neues Buch Hinzufügen");
 		btnAddNewBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				// TODO implement this
 				for (int i = 0; i < 200; ++i) {
 					library.createAndAddBook("bububu");
 				}
-				// for (Book b : getSelectedBooks()) {
-				// library.createAndAddBook("bububu");
-				// }
 			}
 		});
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
