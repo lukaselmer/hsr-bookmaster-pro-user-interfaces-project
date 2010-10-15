@@ -46,6 +46,8 @@ public class BookMaster implements Observer {
 	private List<BookDetail> bookDetailFrames = new ArrayList<BookDetail>();
 	private JCheckBox chckbxAvailibleOnly;
 	private JScrollPane scrollTblBooks;
+	private JLabel lblBooksAmountNum;
+	private JLabel lblExemplarAmountNum;
 
 	/**
 	 * Launch the application.
@@ -68,6 +70,7 @@ public class BookMaster implements Observer {
 		this.library = library;
 		initialize();
 		library.addObserver(this);
+		setBookAndCopiesAmount();
 		frmBookmaster.setLocationByPlatform(true);
 		frmBookmaster.setVisible(true);
 	}
@@ -97,11 +100,11 @@ public class BookMaster implements Observer {
 
 		JLabel lblBooksAmount = new JLabel("Anzahl Bücher:");
 
-		JLabel lblBooksAmountNum = new JLabel("777");
+		lblBooksAmountNum = new JLabel("");
 
 		JLabel lblExemplarAmount = new JLabel("Anzahl Exemplare:");
 
-		JLabel lblExemplarAmountNum = new JLabel("777");
+		lblExemplarAmountNum = new JLabel("");
 		GroupLayout gl_pnlInventoryStatistics = new GroupLayout(pnlInventoryStatistics);
 		gl_pnlInventoryStatistics.setHorizontalGroup(gl_pnlInventoryStatistics.createParallelGroup(Alignment.LEADING).addGroup(
 				gl_pnlInventoryStatistics.createSequentialGroup().addContainerGap().addComponent(lblBooksAmount)
@@ -265,5 +268,11 @@ public class BookMaster implements Observer {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		searchAndUpdateBooks();
+		setBookAndCopiesAmount();
+	}
+
+	private void setBookAndCopiesAmount() {
+		lblBooksAmountNum.setText("" + library.getBooks().size());
+		lblExemplarAmountNum.setText("" + library.getCopies().size());
 	}
 }
