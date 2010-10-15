@@ -3,8 +3,9 @@ package domain;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
+import java.util.Observable;
 
-public class Loan {
+public class Loan extends Observable {
 
 	private Copy copy;
 	private Customer customer;
@@ -25,6 +26,8 @@ public class Loan {
 	public boolean returnCopy() {
 		try {
 			returnCopy(new GregorianCalendar());
+			setChanged();
+			notifyObservers();
 		} catch (IllegalLoanOperationException e) {
 			return false;
 		}
@@ -37,6 +40,8 @@ public class Loan {
 		}
 		this.returnDate = returnDate;
 		copy.setCurrentLoan(null);
+		setChanged();
+		notifyObservers();
 	}
 
 	public void setPickupDate(GregorianCalendar pickupDate) throws IllegalLoanOperationException {
@@ -44,6 +49,8 @@ public class Loan {
 			throw new IllegalLoanOperationException("Loan is already retuned");
 		}
 		this.pickupDate = pickupDate;
+		setChanged();
+		notifyObservers();
 	}
 
 	public GregorianCalendar getPickupDate() {

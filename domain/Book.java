@@ -1,6 +1,8 @@
 package domain;
 
-public class Book {
+import java.util.Observable;
+
+public class Book extends Observable {
 
 	private String title, author, publisher;
 	private Shelf shelf;
@@ -15,6 +17,8 @@ public class Book {
 
 	public void setName(String name) {
 		this.title = name;
+		setChanged();
+		notifyObservers();
 	}
 
 	public String getAuthor() {
@@ -23,6 +27,8 @@ public class Book {
 
 	public void setAuthor(String autor) {
 		this.author = autor;
+		setChanged();
+		notifyObservers();
 	}
 
 	public String getPublisher() {
@@ -31,6 +37,8 @@ public class Book {
 
 	public void setPublisher(String publisher) {
 		this.publisher = publisher;
+		setChanged();
+		notifyObservers();
 	}
 
 	public Shelf getShelf() {
@@ -39,6 +47,8 @@ public class Book {
 
 	public void setShelf(Shelf shelf) {
 		this.shelf = shelf;
+		setChanged();
+		notifyObservers();
 	}
 
 	@Override
