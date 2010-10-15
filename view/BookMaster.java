@@ -31,6 +31,8 @@ import javax.swing.border.TitledBorder;
 import application.LibraryApp;
 import domain.Book;
 import domain.Library;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class BookMaster {
 
@@ -40,6 +42,7 @@ public class BookMaster {
 	private Library library;
 	private BookMasterTableModel tblBooksModel;
 	private List<BookDetail> bookDetailFrames = new ArrayList<BookDetail>();
+	private JCheckBox chckbxAvailibleOnly;
 
 	/**
 	 * Launch the application.
@@ -48,11 +51,7 @@ public class BookMaster {
 		UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try {
-					new BookMaster(LibraryApp.inst());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				new BookMaster(LibraryApp.inst());
 			}
 		});
 	}
@@ -65,6 +64,7 @@ public class BookMaster {
 	public BookMaster(Library library) {
 		this.library = library;
 		initialize();
+		frmBookmaster.setLocationByPlatform(true);
 		frmBookmaster.setVisible(true);
 	}
 
@@ -127,15 +127,19 @@ public class BookMaster {
 		txtSearch.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				tblBooksModel.updateBooks(library.searchBooksByTitle(txtSearch.getText()));
-				tblBooks.repaint();
+				searchAndUpdateBooks();
 			}
 		});
 		txtSearch.setColumns(10);
 
 		JLabel lblSearch = new JLabel("Suche:");
 
-		JCheckBox chckbxAvailibleOnly = new JCheckBox("Nur Verfügbare");
+		chckbxAvailibleOnly = new JCheckBox("Nur Verfügbare");
+		chckbxAvailibleOnly.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				searchAndUpdateBooks();
+			}
+		});
 
 		JButton btnShowSelected = new JButton("Selektierte Anzeigen");
 		btnShowSelected.addActionListener(new ActionListener() {
@@ -148,6 +152,11 @@ public class BookMaster {
 		});
 
 		JButton btnAddNewBook = new JButton("Neues Buch Hinzufügen");
+		btnAddNewBook.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				getSelectedBooks();
+			}
+		});
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addGroup(
 				gl_panel_1
@@ -189,10 +198,9 @@ public class BookMaster {
 			@Override
 			public void mouseClicked(MouseEvent mouseEvent) {
 				if (mouseEvent.getClickCount() == 2) {
-					int row = tblBooks.getSelectedRow();
-					System.out.println(row);
-					if (row != -1) {
-						createBookDetailFrame(getBookOfRow(row));
+					Book b = getSelectedBook();
+					if (b != null) {
+						createBookDetailFrame(b);
 					}
 				}
 			}
@@ -201,6 +209,11 @@ public class BookMaster {
 
 		JPanel pnlLoans = new JPanel();
 		tabbedPane.addTab("Ausleihen", null, pnlLoans, null);
+	}
+
+	protected void searchAndUpdateBooks() {
+		tblBooksModel.updateBooks(library.searchBooks(txtSearch.getText(), chckbxAvailibleOnly.isSelected()));
+		tblBooks.repaint();
 	}
 
 	protected BookDetail createBookDetailFrame(Book b) {
@@ -225,6 +238,14 @@ public class BookMaster {
 			lst.add(getBookOfRow(row));
 		}
 		return lst;
+	}
+
+	protected Book getSelectedBook() {
+		int row = tblBooks.getSelectedRow();
+		if (row != -1) {
+			return getBookOfRow(row);
+		}
+		return null;
 	}
 
 	protected Book getBookOfRow(int row) {
