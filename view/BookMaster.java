@@ -154,35 +154,38 @@ public class BookMaster {
 
 		JButton btnAddNewBook = new JButton("Neues Buch Hinzufügen");
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-		gl_panel_1.setHorizontalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_panel_1
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								gl_panel_1
-										.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblBookTableDescription)
-										.addGroup(
-												gl_panel_1
-														.createSequentialGroup()
-														.addComponent(lblSearch)
-														.addGap(12)
-														.addComponent(textField, GroupLayout.PREFERRED_SIZE, 157,
-																GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED)
-														.addComponent(chckbxAvailibleOnly).addPreferredGap(ComponentPlacement.UNRELATED)
-														.addComponent(btnShowSelected).addGap(12).addComponent(btnAddNewBook)))
-						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-		gl_panel_1.setVerticalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_panel_1
-						.createSequentialGroup()
+		gl_panel_1.setHorizontalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblBookTableDescription)
-						.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addGroup(
-								gl_panel_1
-										.createParallelGroup(Alignment.BASELINE)
-										.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE).addComponent(lblSearch).addComponent(chckbxAvailibleOnly)
-										.addComponent(btnShowSelected).addComponent(btnAddNewBook))));
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addComponent(lblSearch)
+							.addGap(12)
+							.addComponent(textField, GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(chckbxAvailibleOnly)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(btnShowSelected)
+							.addGap(12)
+							.addComponent(btnAddNewBook)))
+					.addGap(6))
+		);
+		gl_panel_1.setVerticalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addComponent(lblBookTableDescription)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE, false)
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGap(1)
+							.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblSearch)
+						.addComponent(chckbxAvailibleOnly)
+						.addComponent(btnShowSelected)
+						.addComponent(btnAddNewBook)))
+		);
 		panel_1.setLayout(gl_panel_1);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
@@ -216,7 +219,10 @@ public class BookMaster {
 			@Override
 			public Object getValueAt(int row, int col) {
 				Book b = library.getBooks().get(row);
-				if (getColumnName(col).equals("Titel")) {
+				if(col == -1){
+					return b;
+				}
+				else if (getColumnName(col).equals("Titel")) {
 					return b.getName();
 				} else if (getColumnName(col).equals("Author")) {
 					return b.getAuthor();
@@ -247,12 +253,9 @@ public class BookMaster {
 
 	protected List<Book> getSelectedBooks() {
 		List<Book> lst = new ArrayList<Book>();
-		// tblBooks.get
-		// for (Book book : tblBooks.getSelectedRows()) {
-		//
-		// }
-		// TODO: Get books out of the table
+		for (int row : tblBooks.getSelectedRows()) {
+			lst.add((Book) tblBooks.getModel().getValueAt(row, -1));
+		}
 		return lst;
-		// return null;
 	}
 }
