@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 
@@ -56,6 +57,7 @@ public class BookMaster {
 	private JTextField txtSearch;
 	private Library library;
 	private BookMasterTableModel tblBooksModel;
+	private List<BookDetail> bookDetailFrames = new ArrayList<BookDetail>();
 
 	/**
 	 * Launch the application.
@@ -205,8 +207,11 @@ public class BookMaster {
 			@Override
 			public void mouseClicked(MouseEvent mouseEvent) {
 				if (mouseEvent.getClickCount() == 2) {
-					Book b = getBookOfRow(tblBooks.getSelectedRow());
-					createBookDetailFrame(b);
+					int row = tblBooks.getSelectedRow();
+					System.out.println(row);
+					if (row != -1) {
+						createBookDetailFrame(getBookOfRow(row));
+					}
 				}
 			}
 		});
@@ -217,7 +222,9 @@ public class BookMaster {
 	}
 
 	protected BookDetail createBookDetailFrame(Book b) {
-		return new BookDetail(library, b);
+		BookDetail bd = new BookDetail(library, b);
+		bookDetailFrames.add(bd);
+		return bd;
 	}
 
 	private void initTblBooks() {
