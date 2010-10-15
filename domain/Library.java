@@ -64,7 +64,7 @@ public class Library extends Observable {
 	}
 
 	public List<Book> searchBooksByTitle(String title) {
-		List<Book> foundBooks = new ArrayList();
+		List<Book> foundBooks = new ArrayList<Book>();
 		for (Book b : books) {
 			if (b.getName().toLowerCase().contains(title.toLowerCase())) {
 				foundBooks.add(b);

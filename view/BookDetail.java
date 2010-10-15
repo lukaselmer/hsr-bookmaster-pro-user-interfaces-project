@@ -1,38 +1,30 @@
 package view;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
 import java.awt.BorderLayout;
-import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
-import javax.swing.UIManager;
 import java.awt.Color;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.awt.EventQueue;
 import java.util.Random;
 
-import javax.swing.DefaultComboBoxModel;
+import javax.swing.AbstractListModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.AbstractListModel;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
 import javax.swing.JButton;
-import javax.swing.JScrollPane;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
+import javax.swing.border.TitledBorder;
 
 import application.LibraryApp;
-
 import domain.Book;
-import domain.IllegalLoanOperationException;
 import domain.Library;
+import domain.Shelf;
 
 public class BookDetail {
 
@@ -58,8 +50,7 @@ public class BookDetail {
 				Library l = LibraryApp.inst();
 				try {
 					Random r = new Random();
-					BookDetail window = new BookDetail(l, l.getBooks().get(r.nextInt(l.getBooks().size())));
-					//window.frmBuchDetailansicht.setVisible(true);
+					new BookDetail(l, l.getBooks().get(r.nextInt(l.getBooks().size())));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -115,7 +106,9 @@ public class BookDetail {
 		txtPublisher.setEditable(false);
 		txtPublisher.setColumns(10);
 
-		JComboBox cmbShelf = new JComboBox(book.getShelf().values());
+		book.getShelf();
+		//JComboBox cmbShelf = new JComboBox(book.getShelf().values());
+		JComboBox cmbShelf = new JComboBox(Shelf.values());
 		GroupLayout gl_pnlBookInformation = new GroupLayout(pnlBookInformation);
 		gl_pnlBookInformation.setHorizontalGroup(gl_pnlBookInformation.createParallelGroup(Alignment.LEADING).addGroup(
 				gl_pnlBookInformation
@@ -211,6 +204,8 @@ public class BookDetail {
 		JList lstBooks = new JList();
 
 		lstBooks.setModel(new AbstractListModel() {
+			private static final long serialVersionUID = -7689939655782098398L;
+
 			public int getSize() {
 				return library.getCopiesOfBook(book).size();
 			}

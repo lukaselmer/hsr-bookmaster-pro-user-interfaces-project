@@ -10,6 +10,7 @@ import domain.Loan;
 
 public class BookMasterTableModel extends AbstractTableModel {
 
+	private static final long serialVersionUID = 8466707343843649023L;
 	String[] columnNames = { "Verfügbar", "Titel", "Author", "Verlag" };
 	Library library;
 	List<Book> currentBooks;
