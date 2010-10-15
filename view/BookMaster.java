@@ -51,8 +51,9 @@ public class BookMaster {
 
 	private JFrame frmBookmaster;
 	private JTable tblBooks;
-	private JTextField textField;
+	private JTextField txtSearch;
 	private Library library;
+	private BookMasterTableModel tblBooksModel;
 
 	/**
 	 * Launch the application.
@@ -63,7 +64,6 @@ public class BookMaster {
 			public void run() {
 				try {
 					BookMaster window = new BookMaster(LibraryApp.inst());
-					// window.frmBookmaster.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -137,14 +137,15 @@ public class BookMaster {
 
 		JLabel lblBookTableDescription = new JLabel("Alle Bücher in der Bibliothek sind in der  unterstehenden Tabelle");
 
-		textField = new JTextField();
-		textField.addKeyListener(new KeyAdapter() {
+		txtSearch = new JTextField();
+		txtSearch.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(KeyEvent arg0) {
-				//tblBooks.getModel().
+			public void keyReleased(KeyEvent e) {
+				tblBooksModel.updateBooks(library.searchBooksByTitle(txtSearch.getText()));
+				tblBooks.repaint();
 			}
 		});
-		textField.setColumns(10);
+		txtSearch.setColumns(10);
 
 		JLabel lblSearch = new JLabel("Suche:");
 
@@ -162,38 +163,35 @@ public class BookMaster {
 
 		JButton btnAddNewBook = new JButton("Neues Buch Hinzufügen");
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-		gl_panel_1.setHorizontalGroup(
-			gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_1.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+		gl_panel_1.setHorizontalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addGroup(
+				gl_panel_1
+						.createSequentialGroup()
+						.addContainerGap()
+						.addGroup(
+								gl_panel_1
+										.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblBookTableDescription)
+										.addGroup(
+												gl_panel_1.createSequentialGroup().addComponent(lblSearch).addGap(12)
+														.addComponent(txtSearch, GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+														.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(chckbxAvailibleOnly)
+														.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnShowSelected)
+														.addGap(12).addComponent(btnAddNewBook))).addGap(6)));
+		gl_panel_1.setVerticalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addGroup(
+				gl_panel_1
+						.createSequentialGroup()
 						.addComponent(lblBookTableDescription)
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addComponent(lblSearch)
-							.addGap(12)
-							.addComponent(textField, GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(chckbxAvailibleOnly)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(btnShowSelected)
-							.addGap(12)
-							.addComponent(btnAddNewBook)))
-					.addGap(6))
-		);
-		gl_panel_1.setVerticalGroup(
-			gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_1.createSequentialGroup()
-					.addComponent(lblBookTableDescription)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE, false)
-						.addGroup(gl_panel_1.createSequentialGroup()
-							.addGap(1)
-							.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addComponent(lblSearch)
-						.addComponent(chckbxAvailibleOnly)
-						.addComponent(btnShowSelected)
-						.addComponent(btnAddNewBook)))
-		);
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(
+								gl_panel_1
+										.createParallelGroup(Alignment.BASELINE, false)
+										.addGroup(
+												gl_panel_1
+														.createSequentialGroup()
+														.addGap(1)
+														.addComponent(txtSearch, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+																GroupLayout.PREFERRED_SIZE)).addComponent(lblSearch)
+										.addComponent(chckbxAvailibleOnly).addComponent(btnShowSelected).addComponent(btnAddNewBook))));
 		panel_1.setLayout(gl_panel_1);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
@@ -210,54 +208,8 @@ public class BookMaster {
 	private void initTblBooks() {
 		tblBooks.setColumnSelectionAllowed(false);
 		tblBooks.setRowSelectionAllowed(true);
-
-		TableModel tblModel = new AbstractTableModel() {
-			String[] columnNames = { "Verfügbar", "Titel", "Author", "Verlag" };
-			List<Book> books = library.getBooks();
-
-			public void updateBooks(List<Book> books){
-				this.books = books;
-			}
-			
-			@Override
-			public int getColumnCount() {
-				return columnNames.length;
-			}
-
-			@Override
-			public int getRowCount() {
-				return books.size();
-			}
-
-			@Override
-			public Object getValueAt(int row, int col) {
-				Book b = books.get(row);
-				if (col == -1) {
-					return b;
-				} else if (getColumnName(col).equals("Titel")) {
-					return b.getName();
-				} else if (getColumnName(col).equals("Author")) {
-					return b.getAuthor();
-				} else if (getColumnName(col).equals("Verlag")) {
-					return b.getPublisher();
-				} else if (getColumnName(col).equals("Verfügbar")) {
-					int availibleCopies = library.getAvailibleCopiesOfBook(b).size();
-					if (availibleCopies > 0) {
-						return availibleCopies == 1 ? "1 Exemplar" : availibleCopies + " Stück";
-					} else {
-						return "ab " + Loan.getFormattedDate(library.getNextAvailibleCopyOfBook(b).getCurrentLoan().getDueDate());
-					}
-				} else {
-					throw new RuntimeException("Undefined column name!");
-				}
-			}
-
-			@Override
-			public String getColumnName(int column) {
-				return columnNames[column];
-			}
-		};
-		tblBooks.setModel(tblModel);
+		tblBooksModel = new BookMasterTableModel(library);
+		tblBooks.setModel(tblBooksModel);
 		tblBooks.getColumn("Verfügbar").setMaxWidth(90);
 		tblBooks.getColumn("Verfügbar").setMinWidth(90);
 		tblBooks.getColumn("Verfügbar").setResizable(false);
