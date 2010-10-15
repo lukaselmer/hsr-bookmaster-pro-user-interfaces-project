@@ -63,6 +63,16 @@ public class Library extends Observable {
 		return null;
 	}
 
+	public List<Book> searchBooksByTitle(String title) {
+		List<Book> foundBooks = new ArrayList();
+		for (Book b : books) {
+			if (b.getName().toLowerCase().contains(title.toLowerCase())) {
+				foundBooks.add(b);
+			}
+		}
+		return foundBooks;
+	}
+
 	public boolean isCopyLent(Copy copy) {
 		for (Loan l : loans) {
 			if (l.getCopy().equals(copy) && l.isLent()) {
