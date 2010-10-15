@@ -96,13 +96,16 @@ public class Loan extends Observable {
 		return days;
 	}
 
+	public GregorianCalendar getDueDate() {
+		GregorianCalendar dueDate = (GregorianCalendar) pickupDate.clone();
+		dueDate.add(GregorianCalendar.DAY_OF_YEAR, DAYS_TO_RETURN_BOOK);
+		return dueDate;
+	}
+
 	public int getDaysOverdue() {
 		if (!isOverdue())
 			return 0;
-
-		GregorianCalendar dueDate = (GregorianCalendar) pickupDate.clone();
-		dueDate.add(GregorianCalendar.DAY_OF_YEAR, DAYS_TO_RETURN_BOOK);
-
+		GregorianCalendar dueDate = getDueDate();
 		return (int) (new GregorianCalendar().getTimeInMillis() - dueDate.getTimeInMillis()) / 1000 / 60 / 60 / 24;
 	}
 
