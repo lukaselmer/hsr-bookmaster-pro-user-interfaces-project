@@ -75,7 +75,7 @@ public class Loan extends Observable {
 				+ getFormattedDate(pickupDate) + "\tReturn: " + getFormattedDate(returnDate) + "\tDays: " + getDaysOfLoanDuration();
 	}
 
-	private String getFormattedDate(GregorianCalendar date) {
+	public static String getFormattedDate(GregorianCalendar date) {
 		if (date != null) {
 			DateFormat f = SimpleDateFormat.getDateInstance();
 			return f.format(date.getTime());
@@ -87,6 +87,13 @@ public class Loan extends Observable {
 		if (returnDate != null)
 			return (int) (returnDate.getTimeInMillis() - pickupDate.getTimeInMillis()) / 1000 / 60 / 60 / 24;
 		return -1;
+	}
+
+	public int getDaysOfExpectedLeftLoanDuration() {
+		int days = DAYS_TO_RETURN_BOOK - getDaysOfLoanDuration();
+		if (days < 0)
+			return -1;
+		return days;
 	}
 
 	public int getDaysOverdue() {

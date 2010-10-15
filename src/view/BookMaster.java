@@ -13,7 +13,9 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 import java.awt.Color;
 import javax.swing.JTable;
@@ -24,6 +26,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import domain.Library;
+import domain.Loan;
 
 import application.LibraryApp;
 import org.jdesktop.beansbinding.BeanProperty;
@@ -58,7 +61,7 @@ public class BookMaster {
 			public void run() {
 				try {
 					BookMaster window = new BookMaster(LibraryApp.inst());
-					//window.frmBookmaster.setVisible(true);
+					// window.frmBookmaster.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -186,46 +189,68 @@ public class BookMaster {
 		panel.add(scrollPane_1, BorderLayout.CENTER);
 
 		tblBooks = new JTable();
+		initTblBooks();
 		scrollPane_1.setViewportView(tblBooks);
 
 		JPanel pnlLoans = new JPanel();
 		tabbedPane.addTab("Ausleihen", null, pnlLoans, null);
-		initDataBindings();
+	}
+
+	private void initTblBooks() {
+		tblBooks.setColumnSelectionAllowed(false);
+		tblBooks.setRowSelectionAllowed(true);
+		
+		TableModel tblModel = new AbstractTableModel() {
+			String[] columnNames = { "Verfügbar", "Titel", "Author", "Verlag" };
+
+			@Override
+			public int getColumnCount() {
+				return columnNames.length;
+			}
+
+			@Override
+			public int getRowCount() {
+				return library.getBooks().size();
+			}
+
+			@Override
+			public Object getValueAt(int row, int col) {
+				Book b = library.getBooks().get(row);
+				if (getColumnName(col).equals("Titel")) {
+					return b.getName();
+				} else if (getColumnName(col).equals("Author")) {
+					return b.getAuthor();
+				} else if (getColumnName(col).equals("Verlag")) {
+					return b.getPublisher();
+				} else if (getColumnName(col).equals("Verfügbar")) {
+					int availibleCopies = library.getAvailibleCopiesOfBook(b).size();
+					if (availibleCopies > 0) {
+						return availibleCopies;
+					} else {
+						return Loan.getFormattedDate(library.getNextAvailibleCopyOfBook(b).getCurrentLoan().getReturnDate());
+					}
+				} else {
+					throw new RuntimeException("Undefined column name!");
+				}
+			}
+
+			@Override
+			public String getColumnName(int column) {
+				return columnNames[column];
+			}
+		};
+		tblBooks.setModel(tblModel);
+		tblBooks.getColumn("Verfügbar").setPreferredWidth(1);
 	}
 
 	protected List<Book> getSelectedBooks() {
 		List<Book> lst = new ArrayList<Book>();
-		//tblBooks.get
+		// tblBooks.get
 		// for (Book book : tblBooks.getSelectedRows()) {
 		//
 		// }
 		// TODO: Get books out of the table
 		return lst;
-		//return null;
-	}
-
-	protected void initDataBindings() {
-		BeanProperty<Library, List<Book>> libraryBeanProperty = BeanProperty.create("books");
-		ELProperty<JTable, Object> jTableEvalutionProperty = ELProperty.create("xxx");
-		AutoBinding<Library, List<Book>, JTable, Object> autoBinding = Bindings.createAutoBinding(UpdateStrategy.READ, library,
-				libraryBeanProperty, tblBooks, jTableEvalutionProperty);
-		autoBinding.bind();
-		//
-		JTableBinding<Book, Library, JTable> jTableBinding = SwingBindings.createJTableBinding(UpdateStrategy.READ, library,
-				libraryBeanProperty, tblBooks, "Name");
-		//
-		BeanProperty<Book, String> bookBeanProperty = BeanProperty.create("name");
-		jTableBinding.addColumnBinding(bookBeanProperty).setColumnName("Name");
-		//
-		BeanProperty<Book, String> bookBeanProperty_1 = BeanProperty.create("author");
-		jTableBinding.addColumnBinding(bookBeanProperty_1).setColumnName("Author");
-		//
-		BeanProperty<Book, String> bookBeanProperty_2 = BeanProperty.create("publisher");
-		jTableBinding.addColumnBinding(bookBeanProperty_2).setColumnName("Publisher");
-		//
-		BeanProperty<Book, Shelf> bookBeanProperty_3 = BeanProperty.create("shelf");
-		jTableBinding.addColumnBinding(bookBeanProperty_3).setColumnName("Shelf");
-		//
-		jTableBinding.bind();
+		// return null;
 	}
 }
