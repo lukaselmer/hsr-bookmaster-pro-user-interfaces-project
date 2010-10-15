@@ -242,6 +242,7 @@ public class BookMaster {
 		tblBooks.setModel(tblModel);
 		tblBooks.getColumn("Verfügbar").setMaxWidth(90);
 		tblBooks.getColumn("Verfügbar").setMinWidth(90);
+		tblBooks.getColumn("Verfügbar").setResizable(false);
 	}
 
 	protected List<Book> getSelectedBooks() {
