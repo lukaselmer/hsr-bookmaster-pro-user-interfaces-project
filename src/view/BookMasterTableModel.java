@@ -43,7 +43,7 @@ public class BookMasterTableModel extends AbstractTableModel {
 		} else if (getColumnName(col).equals("Verfügbar")) {
 			int availibleCopies = library.getAvailibleCopiesOfBook(b).size();
 			if (availibleCopies > 0) {
-				return availibleCopies == 1 ? "1 Exemplar" : availibleCopies + " Stück";
+				return availibleCopies == 1 ? "1 Exemplar" : availibleCopies + " Exemplare";
 			} else {
 				return "ab " + Loan.getFormattedDate(library.getNextAvailibleCopyOfBook(b).getCurrentLoan().getDueDate());
 			}

@@ -22,13 +22,13 @@ import domain.Book;
 import domain.Shelf;
 
 public class LibraryApp {
-	
+
 	public static void main(String[] args) throws Exception {
 		Library library = new Library();
 		initLibrary(library);
 	}
 
-	public static Library inst(){
+	public static Library inst() {
 		Library library = new Library();
 		try {
 			initLibrary(library);
@@ -47,7 +47,7 @@ public class LibraryApp {
 		}
 		return library;
 	}
-	
+
 	public static void initLibrary(Library library) throws ParserConfigurationException, SAXException, IOException,
 			IllegalLoanOperationException {
 
@@ -59,6 +59,9 @@ public class LibraryApp {
 
 		// create pseudo random books and loans
 		createBooksAndLoans(library);
+
+		if (true)
+			return;
 
 		System.out.println("Initialisation of the library was successful!\n");
 		System.out.println("Books in library: " + library.getBooks().size());
