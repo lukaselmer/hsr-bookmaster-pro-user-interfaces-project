@@ -46,6 +46,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class BookMaster {
 
@@ -155,8 +157,8 @@ public class BookMaster {
 		btnShowSelected.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				List<Book> books = getSelectedBooks();
-				for (Book book : books) {
-					BookDetail bd = new BookDetail(library, book);
+				for (Book b : books) {
+					createBookDetailFrame(b);
 				}
 			}
 		});
@@ -199,10 +201,23 @@ public class BookMaster {
 
 		tblBooks = new JTable();
 		initTblBooks();
+		tblBooks.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent mouseEvent) {
+				if (mouseEvent.getClickCount() == 2) {
+					Book b = getBookOfRow(tblBooks.getSelectedRow());
+					createBookDetailFrame(b);
+				}
+			}
+		});
 		scrollPane_1.setViewportView(tblBooks);
 
 		JPanel pnlLoans = new JPanel();
 		tabbedPane.addTab("Ausleihen", null, pnlLoans, null);
+	}
+
+	protected BookDetail createBookDetailFrame(Book b) {
+		return new BookDetail(library, b);
 	}
 
 	private void initTblBooks() {
@@ -218,8 +233,12 @@ public class BookMaster {
 	protected List<Book> getSelectedBooks() {
 		List<Book> lst = new ArrayList<Book>();
 		for (int row : tblBooks.getSelectedRows()) {
-			lst.add((Book) tblBooks.getModel().getValueAt(row, -1));
+			lst.add(getBookOfRow(row));
 		}
 		return lst;
+	}
+
+	protected Book getBookOfRow(int row) {
+		return (Book) tblBooks.getModel().getValueAt(row, -1);
 	}
 }
