@@ -134,6 +134,10 @@ public class Library extends Observable {
 		return nextAvailibleCopy;
 	}
 
+	public boolean hasNextAvailibleCopyOfBook(Book book) {
+		return getNextAvailibleCopyOfBook(book) != null;
+	}
+
 	public List<Loan> getCustomerLoans(Customer customer) {
 		List<Loan> lentCopies = new ArrayList<Loan>();
 		for (Loan l : loans) {

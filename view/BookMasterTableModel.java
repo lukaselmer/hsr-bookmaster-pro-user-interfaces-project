@@ -46,7 +46,11 @@ public class BookMasterTableModel extends AbstractTableModel {
 			if (availibleCopies > 0) {
 				return availibleCopies == 1 ? "1 Exemplar" : availibleCopies + " Exemplare";
 			} else {
-				return "ab " + Loan.getFormattedDate(library.getNextAvailibleCopyOfBook(b).getCurrentLoan().getDueDate());
+				if (library.hasNextAvailibleCopyOfBook(b)) {
+					return "ab " + Loan.getFormattedDate(library.getNextAvailibleCopyOfBook(b).getCurrentLoan().getDueDate());
+				} else {
+					return "nicht verfügbar";
+				}
 			}
 		} else {
 			throw new RuntimeException("Undefined column name!");
