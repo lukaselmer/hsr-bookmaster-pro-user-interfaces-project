@@ -44,6 +44,8 @@ import domain.Shelf;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class BookMaster {
 
@@ -136,6 +138,12 @@ public class BookMaster {
 		JLabel lblBookTableDescription = new JLabel("Alle Bücher in der Bibliothek sind in der  unterstehenden Tabelle");
 
 		textField = new JTextField();
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				//tblBooks.getModel().
+			}
+		});
 		textField.setColumns(10);
 
 		JLabel lblSearch = new JLabel("Suche:");
@@ -205,7 +213,12 @@ public class BookMaster {
 
 		TableModel tblModel = new AbstractTableModel() {
 			String[] columnNames = { "Verfügbar", "Titel", "Author", "Verlag" };
+			List<Book> books = library.getBooks();
 
+			public void updateBooks(List<Book> books){
+				this.books = books;
+			}
+			
 			@Override
 			public int getColumnCount() {
 				return columnNames.length;
@@ -213,16 +226,15 @@ public class BookMaster {
 
 			@Override
 			public int getRowCount() {
-				return library.getBooks().size();
+				return books.size();
 			}
 
 			@Override
 			public Object getValueAt(int row, int col) {
-				Book b = library.getBooks().get(row);
-				if(col == -1){
+				Book b = books.get(row);
+				if (col == -1) {
 					return b;
-				}
-				else if (getColumnName(col).equals("Titel")) {
+				} else if (getColumnName(col).equals("Titel")) {
 					return b.getName();
 				} else if (getColumnName(col).equals("Author")) {
 					return b.getAuthor();
