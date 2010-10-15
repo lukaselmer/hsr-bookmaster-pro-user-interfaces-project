@@ -79,7 +79,6 @@ public class Library extends Observable {
 				res.add(c);
 			}
 		}
-
 		return res;
 	}
 
@@ -91,6 +90,32 @@ public class Library extends Observable {
 			}
 		}
 		return lentCopies;
+	}
+
+	public List<Loan> getAvailibleCopiesOfBook(Book book) {
+		List<Loan> availibleCopies = new ArrayList<Loan>();
+		for (Loan l : loans) {
+			if (l.getCopy().getBook().equals(book) && !l.isLent()) {
+				availibleCopies.add(l);
+			}
+		}
+		return availibleCopies;
+	}
+
+	public Copy getNextAvailibleCopyOfBook(Book book) {
+		Copy nextAvailibleCopy = null;
+		for (Copy c : copies) {
+			if (c.getBook().equals(book)) {
+				if (!c.isLent()) {
+					return c;
+				}
+				if (nextAvailibleCopy == null
+						|| c.getDaysOfExpectedLeftLoanDuration() < nextAvailibleCopy.getDaysOfExpectedLeftLoanDuration()) {
+					nextAvailibleCopy = c;
+				}
+			}
+		}
+		return nextAvailibleCopy;
 	}
 
 	public List<Loan> getCustomerLoans(Customer customer) {

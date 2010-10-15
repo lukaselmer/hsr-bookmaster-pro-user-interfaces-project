@@ -49,6 +49,17 @@ public class Copy extends Observable {
 		notifyObservers();
 	}
 
+	public boolean isLent() {
+		return currentLoan != null;
+	}
+
+	public int getDaysOfExpectedLeftLoanDuration() {
+		if (!isLent())
+			return -1;
+		else
+			return getCurrentLoan().getDaysOfExpectedLeftLoanDuration();
+	}
+
 	@Override
 	public String toString() {
 		return getBook() + (currentLoan == null ? "" : " - " + currentLoan);
