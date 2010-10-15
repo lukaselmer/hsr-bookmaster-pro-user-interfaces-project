@@ -199,7 +199,7 @@ public class BookMaster {
 	private void initTblBooks() {
 		tblBooks.setColumnSelectionAllowed(false);
 		tblBooks.setRowSelectionAllowed(true);
-		
+
 		TableModel tblModel = new AbstractTableModel() {
 			String[] columnNames = { "Verfügbar", "Titel", "Author", "Verlag" };
 
@@ -225,9 +225,9 @@ public class BookMaster {
 				} else if (getColumnName(col).equals("Verfügbar")) {
 					int availibleCopies = library.getAvailibleCopiesOfBook(b).size();
 					if (availibleCopies > 0) {
-						return availibleCopies;
+						return availibleCopies == 1 ? "1 Exemplar" : availibleCopies + " Stück";
 					} else {
-						return Loan.getFormattedDate(library.getNextAvailibleCopyOfBook(b).getCurrentLoan().getReturnDate());
+						return "ab " + Loan.getFormattedDate(library.getNextAvailibleCopyOfBook(b).getCurrentLoan().getDueDate());
 					}
 				} else {
 					throw new RuntimeException("Undefined column name!");
@@ -240,7 +240,8 @@ public class BookMaster {
 			}
 		};
 		tblBooks.setModel(tblModel);
-		tblBooks.getColumn("Verfügbar").setPreferredWidth(1);
+		tblBooks.getColumn("Verfügbar").setMaxWidth(90);
+		tblBooks.getColumn("Verfügbar").setMinWidth(90);
 	}
 
 	protected List<Book> getSelectedBooks() {
