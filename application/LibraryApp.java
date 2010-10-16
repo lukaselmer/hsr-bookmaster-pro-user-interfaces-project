@@ -3,6 +3,7 @@ package application;
 import java.io.File;
 import java.io.IOException;
 import java.util.GregorianCalendar;
+import java.util.Random;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -12,6 +13,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import view.BookMaster;
 
 import domain.Copy;
 import domain.Customer;
@@ -23,9 +26,9 @@ import domain.Shelf;
 
 public class LibraryApp {
 
-	public static void main(String[] args) throws Exception {
-		Library library = new Library();
-		initLibrary(library);
+	public static void main(String[] args) {
+		Library library = inst();
+		new BookMaster(library);
 	}
 
 	public static Library inst() {
@@ -118,7 +121,9 @@ public class LibraryApp {
 			Book b = library.createAndAddBook(getTextContentOf(title, "name"));
 			b.setAuthor(getTextContentOf(title, "author"));
 			b.setPublisher(getTextContentOf(title, "publisher"));
-			b.setShelf(Shelf.A1);
+			Random r = new Random();
+			Shelf[] vals = Shelf.values();
+			b.setShelf(vals[r.nextInt(vals.length)]);
 		}
 	}
 

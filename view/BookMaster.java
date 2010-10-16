@@ -36,18 +36,21 @@ import domain.Library;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
+import view.book_master.BookMasterTableModelBook;
+
 public class BookMaster implements Observer {
 
 	private JFrame frmBookmaster;
 	private JTable tblBooks;
 	private JTextField txtSearch;
 	private Library library;
-	private BookMasterTableModel tblBooksModel;
+	private BookMasterTableModelBook tblBooksModel;
 	private List<BookDetail> bookDetailFrames = new ArrayList<BookDetail>();
 	private JCheckBox chckbxAvailibleOnly;
 	private JScrollPane scrollTblBooks;
 	private JLabel lblBooksAmountNum;
 	private JLabel lblExemplarAmountNum;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -81,7 +84,7 @@ public class BookMaster implements Observer {
 	private void initialize() {
 		frmBookmaster = new JFrame();
 		frmBookmaster.setTitle("BookMaster");
-		frmBookmaster.setBounds(100, 100, 650, 477);
+		frmBookmaster.setBounds(100, 100, 950, 600);
 		frmBookmaster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmBookmaster.getContentPane().setLayout(new BorderLayout(0, 0));
 		frmBookmaster.setMinimumSize(new Dimension(650, 400));
@@ -94,8 +97,7 @@ public class BookMaster implements Observer {
 		pnlBooks.setLayout(new BorderLayout(0, 0));
 
 		JPanel pnlInventoryStatistics = new JPanel();
-		pnlInventoryStatistics.setBorder(new TitledBorder(null, "InventarStatistik", TitledBorder.LEADING, TitledBorder.TOP, null,
-				new Color(0, 0, 0)));
+		pnlInventoryStatistics.setBorder(new TitledBorder(null, "InventarStatistik", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		pnlBooks.add(pnlInventoryStatistics, BorderLayout.NORTH);
 
 		JLabel lblBooksAmount = new JLabel("Anzahl Bücher:");
@@ -125,7 +127,7 @@ public class BookMaster implements Observer {
 		panel.setLayout(new BorderLayout(0, 0));
 
 		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(null, "Buch Inventar", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_1.setBorder(new TitledBorder(null, "Buch Inventar", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel.add(panel_1, BorderLayout.NORTH);
 
 		JLabel lblBookTableDescription = new JLabel("Alle Bücher in der Bibliothek sind in der  unterstehenden Tabelle");
@@ -219,6 +221,110 @@ public class BookMaster implements Observer {
 
 		JPanel pnlLoans = new JPanel();
 		tabbedPane.addTab("Ausleihen", null, pnlLoans, null);
+		pnlLoans.setLayout(new BorderLayout(0, 0));
+		
+		JPanel pnlLoanStatistics = new JPanel();
+		pnlLoanStatistics.setBorder(new TitledBorder(null, "Ausleihe Statistik", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		pnlLoans.add(pnlLoanStatistics, BorderLayout.NORTH);
+		
+		JLabel lblLoansAmount = new JLabel("Anzahl Ausleihen:");
+		
+		JLabel lblLoansAmountNum = new JLabel("0");
+		
+		JLabel lblCurrentlyLoaned = new JLabel("Aktuell Ausgeliehen:");
+		
+		JLabel lblCurrentlyLoanedNum = new JLabel("0");
+		
+		JLabel lblOverdueAmount = new JLabel("Überfällige Ausgeliehen:");
+		
+		JLabel lblOverdueAmountNum = new JLabel("0");
+		GroupLayout gl_pnlLoanStatistics = new GroupLayout(pnlLoanStatistics);
+		gl_pnlLoanStatistics.setHorizontalGroup(
+			gl_pnlLoanStatistics.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pnlLoanStatistics.createSequentialGroup()
+					.addGap(12)
+					.addComponent(lblLoansAmount)
+					.addGap(7)
+					.addComponent(lblLoansAmountNum)
+					.addGap(21)
+					.addComponent(lblCurrentlyLoaned)
+					.addGap(7)
+					.addComponent(lblCurrentlyLoanedNum)
+					.addGap(18)
+					.addComponent(lblOverdueAmount, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
+					.addGap(7)
+					.addComponent(lblOverdueAmountNum))
+		);
+		gl_pnlLoanStatistics.setVerticalGroup(
+			gl_pnlLoanStatistics.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pnlLoanStatistics.createSequentialGroup()
+					.addGap(5)
+					.addGroup(gl_pnlLoanStatistics.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblLoansAmount)
+						.addComponent(lblLoansAmountNum)
+						.addComponent(lblCurrentlyLoaned)
+						.addComponent(lblCurrentlyLoanedNum)
+						.addComponent(lblOverdueAmount)
+						.addComponent(lblOverdueAmountNum)))
+		);
+		pnlLoanStatistics.setLayout(gl_pnlLoanStatistics);
+		
+		JPanel panel_2 = new JPanel();
+		pnlLoans.add(panel_2, BorderLayout.CENTER);
+		
+		JPanel panel_3 = new JPanel();
+		panel_3.setBorder(new TitledBorder(null, "Erfasste Ausleihen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_2.add(panel_3);
+		
+		JLabel label = new JLabel("Alle Bücher in der Bibliothek sind in der  unterstehenden Tabelle");
+		
+		JLabel label_1 = new JLabel("Suche:");
+		
+		textField = new JTextField();
+		textField.setColumns(10);
+		
+		JCheckBox checkBox = new JCheckBox("Nur Verfügbare");
+		
+		JButton button = new JButton("Selektierte Anzeigen");
+		
+		JButton button_1 = new JButton("Neues Buch Hinzufügen");
+		GroupLayout gl_panel_3 = new GroupLayout(panel_3);
+		gl_panel_3.setHorizontalGroup(
+			gl_panel_3.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 929, Short.MAX_VALUE)
+				.addGroup(gl_panel_3.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel_3.createParallelGroup(Alignment.LEADING)
+						.addComponent(label)
+						.addGroup(gl_panel_3.createSequentialGroup()
+							.addComponent(label_1)
+							.addGap(12)
+							.addComponent(textField, GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(checkBox)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(button)
+							.addGap(12)
+							.addComponent(button_1)))
+					.addGap(6))
+		);
+		gl_panel_3.setVerticalGroup(
+			gl_panel_3.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 74, Short.MAX_VALUE)
+				.addGroup(gl_panel_3.createSequentialGroup()
+					.addComponent(label)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_3.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(gl_panel_3.createSequentialGroup()
+							.addGap(1)
+							.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel_3.createParallelGroup(Alignment.BASELINE)
+							.addComponent(label_1)
+							.addComponent(checkBox)
+							.addComponent(button)
+							.addComponent(button_1))))
+		);
+		panel_3.setLayout(gl_panel_3);
 	}
 
 	protected List<Book> getSelectedBooks() {
@@ -235,20 +341,33 @@ public class BookMaster implements Observer {
 		scrollTblBooks.updateUI();
 	}
 
-	protected BookDetail createBookDetailFrame(Book b) {
-		BookDetail bd = new BookDetail(library, b);
-		bookDetailFrames.add(bd);
-		return bd;
+	protected void createBookDetailFrame(Book b) {
+		boolean bookDetailOpen = false;
+		for (BookDetail bd : bookDetailFrames) {
+			if (bd.getBook().equals(b)) {
+				bookDetailOpen = true;
+				bd.getFrame().toFront();
+				break;
+			}
+		}
+		if (!bookDetailOpen) {
+			BookDetail bd = new BookDetail(library, b);
+			bookDetailFrames.add(bd);
+			bd.addObserver(this);
+		}
 	}
 
 	private void initTblBooks() {
 		tblBooks.setColumnSelectionAllowed(false);
 		tblBooks.setRowSelectionAllowed(true);
-		tblBooksModel = new BookMasterTableModel(library);
+		tblBooksModel = new BookMasterTableModelBook(library);
 		tblBooks.setModel(tblBooksModel);
-		tblBooks.getColumn("Verfügbar").setMaxWidth(90);
-		tblBooks.getColumn("Verfügbar").setMinWidth(90);
-		tblBooks.getColumn("Verfügbar").setResizable(false);
+		tblBooks.getColumn("" + BookMasterTableModelBook.ColumnName.STATUS).setMaxWidth(90);
+		tblBooks.getColumn("" + BookMasterTableModelBook.ColumnName.STATUS).setMinWidth(90);
+		tblBooks.getColumn("" + BookMasterTableModelBook.ColumnName.STATUS).setResizable(false);
+		tblBooks.getColumn("" + BookMasterTableModelBook.ColumnName.SHELF).setMaxWidth(40);
+		tblBooks.getColumn("" + BookMasterTableModelBook.ColumnName.SHELF).setMinWidth(40);
+		tblBooks.getColumn("" + BookMasterTableModelBook.ColumnName.SHELF).setResizable(false);
 	}
 
 	protected Book getSelectedBook() {
@@ -264,9 +383,18 @@ public class BookMaster implements Observer {
 	}
 
 	@Override
-	public void update(Observable arg0, Object arg1) {
-		searchAndUpdateBooks();
-		setBookAndCopiesAmount();
+	public void update(Observable observable, Object o) {
+		if (observable instanceof BookDetail) {
+			BookDetail bd = (BookDetail) observable;
+			if (!bd.getFrame().isValid()) {
+				bookDetailFrames.remove(bd);
+			}
+		} else if (observable instanceof Library) {
+			searchAndUpdateBooks();
+			setBookAndCopiesAmount();
+		} else {
+			throw new RuntimeException("Unexpected observed object!");
+		}
 	}
 
 	private void setBookAndCopiesAmount() {
