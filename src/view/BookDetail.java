@@ -3,6 +3,7 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.util.Observable;
 import java.util.Random;
 
 import javax.swing.AbstractListModel;
@@ -24,8 +25,10 @@ import application.LibraryApp;
 import domain.Book;
 import domain.Library;
 import domain.Shelf;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-public class BookDetail {
+public class BookDetail extends Observable {
 
 	private JFrame frmBuchDetailansicht;
 	private JTextField txtTitle;
@@ -66,11 +69,26 @@ public class BookDetail {
 		frmBuchDetailansicht.setVisible(true);
 	}
 
+	public JFrame getFrame() {
+		return frmBuchDetailansicht;
+	}
+
+	public Book getBook() {
+		return book;
+	}
+
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
 		frmBuchDetailansicht = new JFrame();
+		frmBuchDetailansicht.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent arg0) {
+				setChanged();
+				notifyObservers();
+			}
+		});
 		frmBuchDetailansicht.setTitle("Buch Detailansicht");
 		frmBuchDetailansicht.setBounds(100, 100, 450, 300);
 		frmBuchDetailansicht.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
