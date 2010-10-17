@@ -4,19 +4,19 @@ import java.util.Observable;
 
 public class Book extends Observable {
 
-	private String title, author, publisher;
+	private String name, author, publisher;
 	private Shelf shelf;
 
 	public Book(String name) {
-		this.title = name;
+		this.name = name;
 	}
 
 	public String getName() {
-		return title;
+		return name;
 	}
 
 	public void setName(String name) {
-		this.title = name;
+		this.name = name;
 		setChanged();
 		notifyObservers();
 	}
@@ -53,6 +53,6 @@ public class Book extends Observable {
 
 	@Override
 	public String toString() {
-		return title + ", " + author + ", " + publisher;
+		return name + ", " + author + ", " + publisher;
 	}
 }
