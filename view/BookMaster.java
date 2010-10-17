@@ -40,6 +40,7 @@ import javax.swing.table.TableModel;
 
 import sun.swing.SwingUtilities2;
 import view.book_master.BookMasterTableModelBook;
+import view.book_master.BookMasterTableModelCustomer;
 import view.book_master.BookMasterTableModelLoan;
 
 public class BookMaster implements Observer {
@@ -66,6 +67,15 @@ public class BookMaster implements Observer {
 	private JLabel lblLoansAmountNum;
 	private JLabel lblCurrentlyLoanedNum;
 	private JLabel lblOverdueAmountNum;
+	private JPanel pnlCustomers;
+	private JLabel lblCustomersAmountNum;
+	private JLabel lblCurrentlyCustomeredNum;
+	private JTextField txtSearchCustomers;
+	private JScrollPane scrollTblCustomers;
+	private JTable tblCustomers;
+	private BookMasterTableModelCustomer tblCustomersModel;
+	private JLabel lblXXXOverdueAmountNum;
+	private JCheckBox chckbxXXXOverduesOnly;
 
 	/**
 	 * Launch the application.
@@ -89,10 +99,12 @@ public class BookMaster implements Observer {
 		initialize();
 		library.addObserver(this);
 		updateBooksStatistics();
+		updateLoansStatistics();
+		updateCustomersStatistics();
 		frmBookmaster.setLocationByPlatform(true);
 		frmBookmaster.setVisible(true);
 		// TEMP!!! DEBUG!!!
-		tabbedPane.setSelectedIndex(1);
+		tabbedPane.setSelectedIndex(2);
 	}
 
 	/**
@@ -109,6 +121,12 @@ public class BookMaster implements Observer {
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frmBookmaster.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 
+		initBooksPanel();
+		initLoansPanel();
+		initCustomersPanel();
+	}
+
+	private void initBooksPanel() {
 		pnlBooks = new JPanel();
 		tabbedPane.addTab("Bücher", null, pnlBooks, null);
 		pnlBooks.setLayout(new BorderLayout(0, 0));
@@ -236,7 +254,9 @@ public class BookMaster implements Observer {
 			}
 		});
 		scrollTblBooks.setViewportView(tblBooks);
+	}
 
+	private void initLoansPanel() {
 		pnlLoans = new JPanel();
 		tabbedPane.addTab("Ausleihen", null, pnlLoans, null);
 		pnlLoans.setLayout(new BorderLayout(0, 0));
@@ -295,6 +315,11 @@ public class BookMaster implements Observer {
 		txtSearchLoans.setColumns(10);
 
 		chckbxOverduesOnly = new JCheckBox("Nur Überfällige");
+		chckbxOverduesOnly.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				searchAndUpdateLoans();
+			}
+		});
 
 		JButton button = new JButton("Selektierte Anzeigen");
 
@@ -346,6 +371,116 @@ public class BookMaster implements Observer {
 		scrollTblLoans.setViewportView(tblLoans);
 	}
 
+	private void initCustomersPanel() {
+		pnlCustomers = new JPanel();
+		tabbedPane.addTab("Kunden", null, pnlCustomers, null);
+		pnlCustomers.setLayout(new BorderLayout(0, 0));
+
+		JPanel pnlCustomersStatistics = new JPanel();
+		pnlCustomersStatistics.setBorder(new TitledBorder(null, "Kunden Statistik", TitledBorder.LEADING, TitledBorder.TOP, null,
+				new Color(0, 0, 0)));
+		pnlCustomers.add(pnlCustomersStatistics, BorderLayout.NORTH);
+
+		JLabel lblCustomersAmount = new JLabel("Anzahl Kunden:");
+
+		lblCustomersAmountNum = new JLabel("0");
+
+		JLabel lblCurrentlyCustomered = new JLabel("Aktuell Ausgeliehen:");
+
+		lblCurrentlyCustomeredNum = new JLabel("0");
+
+		JLabel lblOverdueAmount = new JLabel("Überfällige Ausgeliehen:");
+
+		lblXXXOverdueAmountNum = new JLabel("0");
+		GroupLayout gl_pnlCustomerStatistics = new GroupLayout(pnlCustomersStatistics);
+		gl_pnlCustomerStatistics.setHorizontalGroup(gl_pnlCustomerStatistics.createParallelGroup(Alignment.LEADING).addGroup(
+				gl_pnlCustomerStatistics.createSequentialGroup().addGap(12).addComponent(lblCustomersAmount).addGap(7)
+						.addComponent(lblCustomersAmountNum).addGap(21).addComponent(lblCurrentlyCustomered).addGap(7)
+						.addComponent(lblCurrentlyCustomeredNum).addGap(18)
+						.addComponent(lblOverdueAmount, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE).addGap(7)
+						.addComponent(lblXXXOverdueAmountNum)));
+		gl_pnlCustomerStatistics.setVerticalGroup(gl_pnlCustomerStatistics.createParallelGroup(Alignment.LEADING).addGroup(
+				gl_pnlCustomerStatistics
+						.createSequentialGroup()
+						.addGap(5)
+						.addGroup(
+								gl_pnlCustomerStatistics.createParallelGroup(Alignment.LEADING).addComponent(lblCustomersAmount)
+										.addComponent(lblCustomersAmountNum).addComponent(lblCurrentlyCustomered)
+										.addComponent(lblCurrentlyCustomeredNum).addComponent(lblOverdueAmount)
+										.addComponent(lblXXXOverdueAmountNum))));
+		pnlCustomersStatistics.setLayout(gl_pnlCustomerStatistics);
+
+		JPanel panel_2 = new JPanel();
+		pnlCustomers.add(panel_2, BorderLayout.CENTER);
+		panel_2.setLayout(new BorderLayout(0, 0));
+
+		JPanel panel_3 = new JPanel();
+		panel_3.setBorder(new TitledBorder(null, "Erfasste Ausleihen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_2.add(panel_3, BorderLayout.NORTH);
+
+		JLabel lblSearchCustomers = new JLabel("Suche:");
+
+		txtSearchCustomers = new JTextField();
+		txtSearchCustomers.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				searchAndUpdateCustomers();
+			}
+		});
+		txtSearchCustomers.setColumns(10);
+
+		chckbxXXXOverduesOnly = new JCheckBox("Nur Überfällige");
+
+		JButton button = new JButton("Selektierte Anzeigen");
+
+		JButton btnNeueAusleiheErfassen = new JButton("Neue Ausleihe Erfassen");
+
+		JLabel lblAlleAusleighen = new JLabel("Alle Ausleihen für jeden Kunden sind in der untenstehenden Tabelle ersichtlich");
+		GroupLayout gl_panel_3 = new GroupLayout(panel_3);
+		gl_panel_3.setHorizontalGroup(gl_panel_3.createParallelGroup(Alignment.LEADING).addGroup(
+				gl_panel_3
+						.createSequentialGroup()
+						.addContainerGap()
+						.addGroup(
+								gl_panel_3
+										.createParallelGroup(Alignment.LEADING)
+										.addGroup(
+												gl_panel_3.createSequentialGroup().addComponent(lblSearchCustomers).addGap(12)
+														.addComponent(txtSearchCustomers, GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
+														.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(chckbxXXXOverduesOnly)
+														.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(button).addGap(12)
+														.addComponent(btnNeueAusleiheErfassen).addGap(6))
+										.addGroup(
+												gl_panel_3.createSequentialGroup().addComponent(lblAlleAusleighen)
+														.addContainerGap(491, Short.MAX_VALUE)))));
+		gl_panel_3.setVerticalGroup(gl_panel_3.createParallelGroup(Alignment.LEADING).addGroup(
+				gl_panel_3
+						.createSequentialGroup()
+						.addComponent(lblAlleAusleighen)
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(
+								gl_panel_3
+										.createParallelGroup(Alignment.LEADING, false)
+										.addGroup(
+												gl_panel_3
+														.createSequentialGroup()
+														.addGap(1)
+														.addComponent(txtSearchCustomers, GroupLayout.PREFERRED_SIZE,
+																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+										.addGroup(
+												gl_panel_3.createParallelGroup(Alignment.BASELINE).addComponent(lblSearchCustomers)
+														.addComponent(chckbxXXXOverduesOnly).addComponent(button)
+														.addComponent(btnNeueAusleiheErfassen)))));
+		panel_3.setLayout(gl_panel_3);
+
+		scrollTblCustomers = new JScrollPane();
+		panel_2.add(scrollTblCustomers, BorderLayout.CENTER);
+
+		tblCustomers = new JTable();
+		initTblCustomers();
+		scrollTblCustomers.setViewportView(tblCustomers);
+	}
+
 	protected List<Book> getSelectedBooks() {
 		List<Book> lst = new ArrayList<Book>();
 		for (int row : tblBooks.getSelectedRows()) {
@@ -364,6 +499,12 @@ public class BookMaster implements Observer {
 		tblLoansModel.updateLoans(library.searchLoans(txtSearchLoans.getText(), chckbxOverduesOnly.isSelected()));
 		tblLoans.updateUI();
 		scrollTblLoans.updateUI();
+	}
+
+	protected void searchAndUpdateCustomers() {
+		tblCustomersModel.updateCustomers(library.searchCustomers(txtSearchCustomers.getText()));
+		tblCustomers.updateUI();
+		scrollTblCustomers.updateUI();
 	}
 
 	protected void createBookDetailFrame(Book b) {
@@ -415,6 +556,39 @@ public class BookMaster implements Observer {
 		tblLoans.getColumn("" + BookMasterTableModelLoan.ColumnName.LOAN_UNTIL).setResizable(false);
 	}
 
+	private void initTblCustomers() {
+		tblCustomers.setColumnSelectionAllowed(false);
+		tblCustomers.setRowSelectionAllowed(true);
+		tblCustomersModel = new BookMasterTableModelCustomer(library);
+		tblCustomers.setModel(tblCustomersModel);
+		// tblCustomers.getColumn("" +
+		// BookMasterTableModelCustomer.ColumnName.STATUS).setMaxWidth(50);
+		// tblCustomers.getColumn("" +
+		// BookMasterTableModelCustomer.ColumnName.STATUS).setMinWidth(50);
+		// tblCustomers.getColumn("" +
+		// BookMasterTableModelCustomer.ColumnName.STATUS).setResizable(false);
+		// tblCustomers.getColumn("" +
+		// BookMasterTableModelCustomer.ColumnName.ID).setMaxWidth(80);
+		// tblCustomers.getColumn("" +
+		// BookMasterTableModelCustomer.ColumnName.ID).setMinWidth(80);
+		// tblCustomers.getColumn("" +
+		// BookMasterTableModelCustomer.ColumnName.ID).setResizable(false);
+		// tblCustomers.getColumn("" +
+		// BookMasterTableModelCustomer.ColumnName.TITLE).setPreferredWidth(800);
+		// tblCustomers.getColumn("" +
+		// BookMasterTableModelCustomer.ColumnName.Customer_TO).setMinWidth(200);
+		// tblCustomers.getColumn("" +
+		// BookMasterTableModelCustomer.ColumnName.Customer_TO).setMaxWidth(700);
+		// tblCustomers.getColumn("" +
+		// BookMasterTableModelCustomer.ColumnName.Customer_TO).setPreferredWidth(100);
+		// tblCustomers.getColumn("" +
+		// BookMasterTableModelCustomer.ColumnName.Customer_UNTIL).setMaxWidth(95);
+		// tblCustomers.getColumn("" +
+		// BookMasterTableModelCustomer.ColumnName.Customer_UNTIL).setMinWidth(95);
+		// tblCustomers.getColumn("" +
+		// BookMasterTableModelCustomer.ColumnName.Customer_UNTIL).setResizable(false);
+	}
+
 	protected Book getSelectedBook() {
 		int row = tblBooks.getSelectedRow();
 		if (row != -1) {
@@ -446,8 +620,8 @@ public class BookMaster implements Observer {
 				updateLoansStatistics();
 				break;
 			case INDEX_OF_CUSTOMERS_TAB:
-				// searchAndUpdateCustomers();
-				// updateCustomersStatistics();
+				searchAndUpdateCustomers();
+				updateCustomersStatistics();
 				break;
 			default:
 				throw new RuntimeException("Invalid Tab ID: " + index);
@@ -466,5 +640,13 @@ public class BookMaster implements Observer {
 		lblLoansAmountNum.setText("" + library.getLoans().size());
 		lblCurrentlyLoanedNum.setText("" + library.getCurrentLoans().size());
 		lblOverdueAmountNum.setText("" + library.getCurrentLoans(true).size());
+	}
+
+	private void updateCustomersStatistics() {
+		lblCustomersAmountNum.setText("" + library.getCustomers().size());
+		// lblCurrentlyCustomeredNum.setText("" +
+		// library.getCurrentCustomers().size());
+		// lblOverdueAmountNum.setText("" +
+		// library.getCurrentCustomers(true).size());
 	}
 }
