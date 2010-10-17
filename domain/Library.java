@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
+import view.book_master.BookMasterTableModelLoan.ColumnName;
+
 public class Library extends Observable {
 
 	private List<Copy> copies;
@@ -181,6 +183,32 @@ public class Library extends Observable {
 
 	public List<Loan> getLoans() {
 		return loans;
+	}
+
+	public List<Loan> getCurrentLoans() {
+		return getCurrentLoans(false);
+	}
+
+	public List<Loan> getCurrentLoans(boolean overduesOnly) {
+		List<Loan> retLoans = new ArrayList<Loan>();
+		for (Loan l : loans) {
+			if (l.isLent() && (!overduesOnly || l.isOverdue())) {
+				retLoans.add(l);
+			}
+		}
+		return retLoans;
+	}
+
+	public List<Loan> searchLoans(String searchString, boolean searchOverduesOnly) {
+		List<Loan> foundBooks = new ArrayList<Loan>();
+		for (Loan l : getCurrentLoans(searchOverduesOnly)) {
+			if ((Loan.getFormattedDate(l.getDueDate()) + " " + l.getBook().getName() + " " + l.getCustomer() + " "
+					+ (l.isOverdue() ? "Fällig" : "Ok") + " " + l.getCopy().getInventoryNumber()).toLowerCase().contains(
+					searchString.toLowerCase())) {
+				foundBooks.add(l);
+			}
+		}
+		return foundBooks;
 	}
 
 	public List<Book> getBooks() {

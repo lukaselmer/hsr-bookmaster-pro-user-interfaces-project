@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import domain.Book;
+import domain.Copy;
 import domain.Library;
 import domain.Loan;
 
@@ -27,11 +28,11 @@ public class BookMasterTableModelLoan extends AbstractTableModel {
 	private static final long serialVersionUID = 8466707343843649023L;
 	ColumnName[] columnNames = ColumnName.values();
 	Library library;
-	List<Book> currentBooks;
+	List<Loan> currentLoans;
 
 	public BookMasterTableModelLoan(Library library) {
 		this.library = library;
-		currentBooks = library.getBooks();
+		currentLoans = library.getCurrentLoans();
 	}
 
 	@Override
@@ -41,35 +42,26 @@ public class BookMasterTableModelLoan extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		return currentBooks.size();
+		return currentLoans.size();
 	}
 
 	@Override
 	public Object getValueAt(int row, int col) {
-		Book b = currentBooks.get(row);
+		Loan l = currentLoans.get(row);
+		Copy c = l.getCopy();
+		Book b = c.getBook();
 		if (col == -1) {
-			return b;
+			return l;
+		} else if (getColumnName(col).equals(ColumnName.STATUS.toString())) {
+			return l.isOverdue() ? "Fällig" : "Ok";
+		} else if (getColumnName(col).equals(ColumnName.ID.toString())) {
+			return c.getInventoryNumber();
 		} else if (getColumnName(col).equals(ColumnName.TITLE.toString())) {
 			return b.getName();
-			// } else if (getColumnName(col).equals("Regal")) {
-			// return b.getShelf();
-			// } else if (getColumnName(col).equals("Author")) {
-			// return b.getAuthor();
-			// } else if (getColumnName(col).equals("Verlag")) {
-			// return b.getPublisher();
-			// } else if (getColumnName(col).equals("Verfügbar")) {
-			// int availibleCopies = library.getAvailibleCopiesOfBook(b).size();
-			// if (availibleCopies > 0) {
-			// return availibleCopies == 1 ? "1 Exemplar" : availibleCopies +
-			// " Exemplare";
-			// } else {
-			// if (library.hasNextAvailibleCopyOfBook(b)) {
-			// return "ab " +
-			// Loan.getFormattedDate(library.getNextAvailibleCopyOfBook(b).getCurrentLoan().getDueDate());
-			// } else {
-			// return "nicht verfügbar";
-			// }
-			// }
+		} else if (getColumnName(col).equals(ColumnName.LOAN_UNTIL.toString())) {
+			return Loan.getFormattedDate(l.getDueDate());
+		} else if (getColumnName(col).equals(ColumnName.LOAN_TO.toString())) {
+			return l.getCustomer();
 		} else {
 			throw new RuntimeException("Undefined column name!");
 		}
@@ -80,7 +72,7 @@ public class BookMasterTableModelLoan extends AbstractTableModel {
 		return "" + columnNames[column];
 	}
 
-	public void updateBooks(List<Book> newBooks) {
-		currentBooks = newBooks;
+	public void updateLoans(List<Loan> newLoans) {
+		currentLoans = newLoans;
 	}
 }
