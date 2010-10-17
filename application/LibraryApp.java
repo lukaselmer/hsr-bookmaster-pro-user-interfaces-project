@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.Random;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -26,7 +28,8 @@ import domain.Shelf;
 
 public class LibraryApp {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
+		UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
 		Library library = inst();
 		new BookMaster(library);
 	}
