@@ -12,13 +12,12 @@ public class Copy extends Observable {
 
 	private final long inventoryNumber;
 	private final Book book;
-	private Condition condition;
+	private Condition condition = Condition.NEW;
 	private Loan currentLoan;
 
 	public Copy(Book book) {
 		this.book = book;
 		inventoryNumber = nextInventoryNumber++;
-		condition = Condition.NEW;
 	}
 
 	public Book getBook() {
