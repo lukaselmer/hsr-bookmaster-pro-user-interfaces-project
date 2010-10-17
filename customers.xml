@@ -1,491 +1,491 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <library xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<customer>
-		<name>Jenni</name>
-		<surname>Heinrich</surname>
+		<surname>Jenni</surname>
+		<name>Heinrich</name>
 		<street>Unter Geissrüti 7</street>
 		<zip>8716</zip>
 		<city>Schmerikon</city>
 	</customer>
 	<customer>
-		<name>Zürcher</name>
-		<surname>Margrit</surname>
+		<surname>Zürcher</surname>
+		<name>Margrit</name>
 		<street>Willenhofstr. 13</street>
 		<zip>8716</zip>
 		<city>Schmerikon</city>
 	</customer>
 	<customer>
-		<name>Sigrist</name>
-		<surname>Regula</surname>
+		<surname>Sigrist</surname>
+		<name>Regula</name>
 		<street>Steigstr. 3</street>
 		<zip>8820</zip>
 		<city>Wädenswil</city>
 	</customer>
 	<customer>
-		<name>Aeschlimann</name>
-		<surname>Heidemarie</surname>
+		<surname>Aeschlimann</surname>
+		<name>Heidemarie</name>
 		<street>Stadlerstr. 5a</street>
 		<zip>8716</zip>
 		<city>Schmerikon</city>
 	</customer>
 	<customer>
-		<name>Ulrich-Herger</name>
-		<surname>Ruth</surname>
+		<surname>Ulrich-Herger</surname>
+		<name>Ruth</name>
 		<street>Römerhof 16</street>
 		<zip>8302</zip>
 		<city>Kloten</city>
 	</customer>
 	<customer>
-		<name>Reichlin</name>
-		<surname>Ernst</surname>
+		<surname>Reichlin</surname>
+		<name>Ernst</name>
 		<street>Arenastr. 12</street>
 		<zip>6153</zip>
 		<city>Ufhusen</city>
 	</customer>
 	<customer>
-		<name>Lüthi-Jost</name>
-		<surname>Edith</surname>
+		<surname>Lüthi-Jost</surname>
+		<name>Edith</name>
 		<street>Fliederweg 4</street>
 		<zip>6153</zip>
 		<city>Ufhusen</city>
 	</customer>
 	<customer>
-		<name>Stöckli</name>
-		<surname>Bernadette</surname>
+		<surname>Stöckli</surname>
+		<name>Bernadette</name>
 		<street>Tulpenweg 8</street>
 		<zip>6153</zip>
 		<city>Ufhusen</city>
 	</customer>
 	<customer>
-		<name>Bürgler</name>
-		<surname>Renate</surname>
+		<surname>Bürgler</surname>
+		<name>Renate</name>
 		<street>Zelgliweg 13</street>
 		<zip>3631</zip>
 		<city>Höfen b. Thun</city>
 	</customer>
 	<customer>
-		<name>Marty</name>
-		<surname>Klara</surname>
+		<surname>Marty</surname>
+		<name>Klara</name>
 		<street>Bachstr. 35</street>
 		<zip>3631</zip>
 		<city>Höfen b. Thun</city>
 	</customer>
 	<customer>
-		<name>Humm</name>
-		<surname>Heidi</surname>
+		<surname>Humm</surname>
+		<name>Heidi</name>
 		<street>Krebsgasse 6</street>
 		<zip>5630</zip>
 		<city>Muri AG</city>
 	</customer>
 	<customer>
-		<name>Kuriger</name>
-		<surname>Vreny</surname>
+		<surname>Kuriger</surname>
+		<name>Vreny</name>
 		<street>Farn</street>
 		<zip>3778</zip>
 		<city>Schönried</city>
 	</customer>
 	<customer>
-		<name>Andres</name>
-		<surname>Therese</surname>
+		<surname>Andres</surname>
+		<name>Therese</name>
 		<street>Riedappel</street>
 		<zip>9450</zip>
 		<city>Altstätten SG</city>
 	</customer>
 	<customer>
-		<name>Meinen</name>
-		<surname>Daniel</surname>
+		<surname>Meinen</surname>
+		<name>Daniel</name>
 		<street>Senseriedweg 11</street>
 		<zip>8152</zip>
 		<city>Glattbrugg</city>
 	</customer>
 	<customer>
-		<name>Mosimann</name>
-		<surname>Trudy</surname>
+		<surname>Mosimann</surname>
+		<name>Trudy</name>
 		<street>Talstr. 24</street>
 		<zip>8184</zip>
 		<city>Bachenbülach</city>
 	</customer>
 	<customer>
-		<name>Liechti</name>
-		<surname>Rosmarie</surname>
+		<surname>Liechti</surname>
+		<name>Rosmarie</name>
 		<street>Bruggereggstr. 15</street>
 		<zip>8184</zip>
 		<city>Bachenbülach</city>
 	</customer>
 	<customer>
-		<name>Waldmeier</name>
-		<surname>Anni</surname>
+		<surname>Waldmeier</surname>
+		<name>Anni</name>
 		<street>Schlossstr. 39</street>
 		<zip>4402</zip>
 		<city>Frenkendorf</city>
 	</customer>
 	<customer>
-		<name>Leutwyler-Feissli</name>
-		<surname>Dora</surname>
+		<surname>Leutwyler-Feissli</surname>
+		<name>Dora</name>
 		<street>Schlossstr. 42a</street>
 		<zip>4402</zip>
 		<city>Frenkendorf</city>
 	</customer>
 	<customer>
-		<name>Albisser-Isenschmid</name>
-		<surname>Sybille</surname>
+		<surname>Albisser-Isenschmid</surname>
+		<name>Sybille</name>
 		<street>Schlossstr. 28</street>
 		<zip>5210</zip>
 		<city>Windisch</city>
 	</customer>
 	<customer>
-		<name>Wigger</name>
-		<surname>Iréne</surname>
+		<surname>Wigger</surname>
+		<name>Iréne</name>
 		<street>Bahnhofstr. 26</street>
 		<zip>4442</zip>
 		<city>Diepflingen</city>
 	</customer>
 	<customer>
-		<name>Koch</name>
-		<surname>Andrea</surname>
+		<surname>Koch</surname>
+		<name>Andrea</name>
 		<street>Schwellbrunnerstr. 36</street>
 		<zip>4402</zip>
 		<city>Frenkendorf</city>
 	</customer>
 	<customer>
-		<name>Willener</name>
-		<surname>Dominik</surname>
+		<surname>Willener</surname>
+		<name>Dominik</name>
 		<street>Spiegelacker 13</street>
 		<zip>4402</zip>
 		<city>Frenkendorf</city>
 	</customer>
 	<customer>
-		<name>Tschan</name>
-		<surname>Therese</surname>
+		<surname>Tschan</surname>
+		<name>Therese</name>
 		<street>Prattlerstr. 14</street>
 		<zip>6153</zip>
 		<city>Ufhusen</city>
 	</customer>
 	<customer>
-		<name>Dober</name>
-		<surname>Liliane</surname>
+		<surname>Dober</surname>
+		<name>Liliane</name>
 		<street>Erlistr. 8</street>
 		<zip>6153</zip>
 		<city>Ufhusen</city>
 	</customer>
 	<customer>
-		<name>Schär</name>
-		<surname>Patricia</surname>
+		<surname>Schär</surname>
+		<name>Patricia</name>
 		<street>Eggstr. 25A</street>
 		<zip>6014</zip>
 		<city>Littau</city>
 	</customer>
 	<customer>
-		<name>Sahli</name>
-		<surname>Urs</surname>
+		<surname>Sahli</surname>
+		<name>Urs</name>
 		<street>Eggstr. 27</street>
 		<zip>9450</zip>
 		<city>Altstätten SG</city>
 	</customer>
 	<customer>
-		<name>Wigger</name>
-		<surname>Elisabeth</surname>
+		<surname>Wigger</surname>
+		<name>Elisabeth</name>
 		<street>Oberkäppeliberg</street>
 		<zip>4402</zip>
 		<city>Frenkendorf</city>
 	</customer>
 	<customer>
-		<name>Portmann</name>
-		<surname>Delia</surname>
+		<surname>Portmann</surname>
+		<name>Delia</name>
 		<street>Nüden</street>
 		<zip>6416</zip>
 		<city>Steinerberg</city>
 	</customer>
 	<customer>
-		<name>Zahnd</name>
-		<surname>Käthy</surname>
+		<surname>Zahnd</surname>
+		<name>Käthy</name>
 		<street>Seestr. 65</street>
 		<zip>8820</zip>
 		<city>Wädenswil</city>
 	</customer>
 	<customer>
-		<name>Loosli</name>
-		<surname>Gerald</surname>
+		<surname>Loosli</surname>
+		<name>Gerald</name>
 		<street>Chronenmatte 5</street>
 		<zip>9242</zip>
 		<city>Oberuzwil</city>
 	</customer>
 	<customer>
-		<name>Müller</name>
-		<surname>Simone</surname>
+		<surname>Müller</surname>
+		<name>Simone</name>
 		<street>Hegackerstr. 6</street>
 		<zip>7074</zip>
 		<city>Malix</city>
 	</customer>
 	<customer>
-		<name>Lüdi</name>
-		<surname>Konrad</surname>
+		<surname>Lüdi</surname>
+		<name>Konrad</name>
 		<street>Dössihubelstr. 1</street>
 		<zip>9450</zip>
 		<city>Altstätten SG</city>
 	</customer>
 	<customer>
-		<name>Betschart</name>
-		<surname>Rosmarie</surname>
+		<surname>Betschart</surname>
+		<name>Rosmarie</name>
 		<street>Obermatt</street>
 		<zip>3631</zip>
 		<city>Höfen b. Thun</city>
 	</customer>
 	<customer>
-		<name>Hagmann-Halbeisen</name>
-		<surname>Lara</surname>
+		<surname>Hagmann-Halbeisen</surname>
+		<name>Lara</name>
 		<street>Luftstr. 14</street>
 		<zip>3792</zip>
 		<city>Saanen</city>
 	</customer>
 	<customer>
-		<name>Baumann</name>
-		<surname>Trudy</surname>
+		<surname>Baumann</surname>
+		<name>Trudy</name>
 		<street>Ob. Bistrich</street>
 		<zip>4900</zip>
 		<city>Langenthal</city>
 	</customer>
 	<customer>
-		<name>Wildberger</name>
-		<surname>Erika</surname>
+		<surname>Wildberger</surname>
+		<name>Erika</name>
 		<street>Breitestr. 4</street>
 		<zip>4900</zip>
 		<city>Langenthal</city>
 	</customer>
 	<customer>
-		<name>Wendel</name>
-		<surname>Sabine</surname>
+		<surname>Wendel</surname>
+		<name>Sabine</name>
 		<street>Ausserschwandstr. 65</street>
 		<zip>9244</zip>
 		<city>Niederuzwil</city>
 	</customer>
 	<customer>
-		<name>Reichlin</name>
-		<surname>Petronella</surname>
+		<surname>Reichlin</surname>
+		<name>Petronella</name>
 		<street>Freiestr. 49</street>
 		<zip>4955</zip>
 		<city>Gondiswil</city>
 	</customer>
 	<customer>
-		<name>Studer</name>
-		<surname>Rosmarie</surname>
+		<surname>Studer</surname>
+		<name>Rosmarie</name>
 		<street>Regulastr. 43</street>
 		<zip>6153</zip>
 		<city>Ufhusen</city>
 	</customer>
 	<customer>
-		<name>Erhard</name>
-		<surname>Beat+Regina</surname>
+		<surname>Erhard</surname>
+		<name>Beat+Regina</name>
 		<street>Claridenstr. 25</street>
 		<zip>6033</zip>
 		<city>Buchrain</city>
 	</customer>
 	<customer>
-		<name>Bärtschi</name>
-		<surname>Maria</surname>
+		<surname>Bärtschi</surname>
+		<name>Maria</name>
 		<street>Brunnmattstr. 5</street>
 		<zip>6033</zip>
 		<city>Buchrain</city>
 	</customer>
 	<customer>
-		<name>Hunziker</name>
-		<surname>Esther</surname>
+		<surname>Hunziker</surname>
+		<name>Esther</name>
 		<street>Brunnmattstr. 5</street>
 		<zip>6033</zip>
 		<city>Buchrain</city>
 	</customer>
 	<customer>
-		<name>Wampfler</name>
-		<surname>Reto/Roy</surname>
+		<surname>Wampfler</surname>
+		<name>Reto/Roy</name>
 		<street>Wallberg</street>
 		<zip>6033</zip>
 		<city>Buchrain</city>
 	</customer>
 	<customer>
-		<name>Utiger</name>
-		<surname>Margrit</surname>
+		<surname>Utiger</surname>
+		<name>Margrit</name>
 		<street>Krebsgasse 14B</street>
 		<zip>5637</zip>
 		<city>Beinwil (Freiamt)</city>
 	</customer>
 	<customer>
-		<name>Glatz</name>
-		<surname>Margrit</surname>
+		<surname>Glatz</surname>
+		<name>Margrit</name>
 		<street>Lerchenweg 44</street>
 		<zip>5637</zip>
 		<city>Beinwil (Freiamt)</city>
 	</customer>
 	<customer>
-		<name>Burri</name>
-		<surname>Annemarie</surname>
+		<surname>Burri</surname>
+		<name>Annemarie</name>
 		<street>Seestr. 93</street>
 		<zip>6078</zip>
 		<city>Lungern</city>
 	</customer>
 	<customer>
-		<name>Schärer-Heusser</name>
-		<surname>Katharina</surname>
+		<surname>Schärer-Heusser</surname>
+		<name>Katharina</name>
 		<street>Tiefackerstr. 142</street>
 		<zip>6078</zip>
 		<city>Lungern</city>
 	</customer>
 	<customer>
-		<name>Schumacher</name>
-		<surname>Juliana</surname>
+		<surname>Schumacher</surname>
+		<name>Juliana</name>
 		<street>Kehlmattliweg 1</street>
 		<zip>8185</zip>
 		<city>Winkel</city>
 	</customer>
 	<customer>
-		<name>Stöckli</name>
-		<surname>Margrit</surname>
+		<surname>Stöckli</surname>
+		<name>Margrit</name>
 		<street>Vorholzstr. 20</street>
 		<zip>8185</zip>
 		<city>Winkel</city>
 	</customer>
 	<customer>
-		<name>Tanner-Gygax</name>
-		<surname>Vreni</surname>
+		<surname>Tanner-Gygax</surname>
+		<name>Vreni</name>
 		<street>Frickerstr. 5</street>
 		<zip>8185</zip>
 		<city>Winkel</city>
 	</customer>
 	<customer>
-		<name>Oberli-Jakob</name>
-		<surname>Margret</surname>
+		<surname>Oberli-Jakob</surname>
+		<name>Margret</name>
 		<street>Rütliweg 3B</street>
 		<zip>6472</zip>
 		<city>Erstfeld</city>
 	</customer>
 	<customer>
-		<name>Krebs-Lüthi</name>
-		<surname>Beatrice</surname>
+		<surname>Krebs-Lüthi</surname>
+		<name>Beatrice</name>
 		<street>Vorderweystr. 36</street>
 		<zip>6472</zip>
 		<city>Erstfeld</city>
 	</customer>
 	<customer>
-		<name>Wüthrich-Baumgartner</name>
-		<surname>Adriana</surname>
+		<surname>Wüthrich-Baumgartner</surname>
+		<name>Adriana</name>
 		<street>Böschenmadstr. 9</street>
 		<zip>6472</zip>
 		<city>Erstfeld</city>
 	</customer>
 	<customer>
-		<name>Schär-Jordi</name>
-		<surname>Ruth</surname>
+		<surname>Schär-Jordi</surname>
+		<name>Ruth</name>
 		<street>Unterführungsstr. 5A</street>
 		<zip>3421</zip>
 		<city>Lyssach</city>
 	</customer>
 	<customer>
-		<name>Marti-Andres</name>
-		<surname>Margrit</surname>
+		<surname>Marti-Andres</surname>
+		<name>Margrit</name>
 		<street>Bürgerstr. 10</street>
 		<zip>6033</zip>
 		<city>Buchrain</city>
 	</customer>
 	<customer>
-		<name>Jenni-Günter</name>
-		<surname>August</surname>
+		<surname>Jenni-Günter</surname>
+		<name>August</name>
 		<street>Sportstr. 5</street>
 		<zip>5637</zip>
 		<city>Beinwil (Freiamt)</city>
 	</customer>
 	<customer>
-		<name>Hachen-Schütz</name>
-		<surname>Marie</surname>
+		<surname>Hachen-Schütz</surname>
+		<name>Marie</name>
 		<street>Wagnerhof 4</street>
 		<zip>5637</zip>
 		<city>Beinwil (Freiamt)</city>
 	</customer>
 	<customer>
-		<name>Stalder-Gerber</name>
-		<surname>Bernd</surname>
+		<surname>Stalder-Gerber</surname>
+		<name>Bernd</name>
 		<street>Lindhofstr. 36</street>
 		<zip>5637</zip>
 		<city>Beinwil (Freiamt)</city>
 	</customer>
 	<customer>
-		<name>Flückiger</name>
-		<surname>Alois</surname>
+		<surname>Flückiger</surname>
+		<name>Alois</name>
 		<street>Nübrigweg 14</street>
 		<zip>6472</zip>
 		<city>Erstfeld</city>
 	</customer>
 	<customer>
-		<name>Oppliger-Aebi</name>
-		<surname>Martin</surname>
+		<surname>Oppliger-Aebi</surname>
+		<name>Martin</name>
 		<street>Schauenburgerstr. 17</street>
 		<zip>8716</zip>
 		<city>Schmerikon</city>
 	</customer>
 	<customer>
-		<name>Flückiger-Bieri</name>
-		<surname>Paula</surname>
+		<surname>Flückiger-Bieri</surname>
+		<name>Paula</name>
 		<street>Schauenburgerstr. 11</street>
 		<zip>8716</zip>
 		<city>Schmerikon</city>
 	</customer>
 	<customer>
-		<name>Haldemann</name>
-		<surname>Urs</surname>
+		<surname>Haldemann</surname>
+		<name>Urs</name>
 		<street>Bifitmatte 14</street>
 		<zip>8716</zip>
 		<city>Schmerikon</city>
 	</customer>
 	<customer>
-		<name>Hostettler</name>
-		<surname>Armin+Anita</surname>
+		<surname>Hostettler</surname>
+		<name>Armin+Anita</name>
 		<street>Bifitstr. 102</street>
 		<zip>6232</zip>
 		<city>Geuensee</city>
 	</customer>
 	<customer>
-		<name>Schertenleib-Jegerlehner</name>
-		<surname>Margrit</surname>
+		<surname>Schertenleib-Jegerlehner</surname>
+		<name>Margrit</name>
 		<street>Haltenstr. 127</street>
 		<zip>6232</zip>
 		<city>Geuensee</city>
 	</customer>
 	<customer>
-		<name>Haldi</name>
-		<surname>Sulamith</surname>
+		<surname>Haldi</surname>
+		<name>Sulamith</name>
 		<street>Schwarzenburgstr. 865</street>
 		<zip>8185</zip>
 		<city>Winkel</city>
 	</customer>
 	<customer>
-		<name>Felber</name>
-		<surname>Manuela</surname>
+		<surname>Felber</surname>
+		<name>Manuela</name>
 		<street>Hinter Schwarzenbach</street>
 		<zip>6033</zip>
 		<city>Buchrain</city>
 	</customer>
 	<customer>
-		<name>Büchi</name>
-		<surname>Annina</surname>
+		<surname>Büchi</surname>
+		<name>Annina</name>
 		<street>Baumgärtli</street>
 		<zip>7144</zip>
 		<city>Vella</city>
 	</customer>
 	<customer>
-		<name>Mattl</name>
-		<surname>Bettina</surname>
+		<surname>Mattl</surname>
+		<name>Bettina</name>
 		<street>Sonnegg</street>
 		<zip>7172</zip>
 		<city>Rabius</city>
 	</customer>
 	<customer>
-		<name>von Jns</name>
-		<surname>Margrit</surname>
+		<surname>von Jns</surname>
+		<name>Margrit</name>
 		<street>Vorschwarzenbach</street>
 		<zip>7166</zip>
 		<city>Trun</city>
 	</customer>
 	<customer>
-		<name>Kuonen-Montani</name>
-		<surname>Fini</surname>
+		<surname>Kuonen-Montani</surname>
+		<name>Fini</name>
 		<street>Guggihüsli</street>
 		<zip>6410</zip>
 		<city>Goldau</city>
