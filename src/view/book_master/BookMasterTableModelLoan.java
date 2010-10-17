@@ -74,5 +74,6 @@ public class BookMasterTableModelLoan extends AbstractTableModel {
 
 	public void updateLoans(List<Loan> newLoans) {
 		currentLoans = newLoans;
+		fireTableDataChanged();
 	}
 }
