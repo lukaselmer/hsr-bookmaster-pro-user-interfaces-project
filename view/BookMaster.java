@@ -2,6 +2,7 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.EventQueue;
@@ -11,10 +12,17 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -34,14 +42,18 @@ import javax.swing.border.TitledBorder;
 import application.LibraryApp;
 import domain.Book;
 import domain.Library;
+import domain.Loan;
+
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import sun.swing.SwingUtilities2;
 import view.book_master.BookMasterTableModelBook;
 import view.book_master.BookMasterTableModelCustomer;
 import view.book_master.BookMasterTableModelLoan;
+import javax.swing.DropMode;
 
 public class BookMaster implements Observer {
 
@@ -101,7 +113,7 @@ public class BookMaster implements Observer {
 		frmBookmaster.setLocationByPlatform(true);
 		frmBookmaster.setVisible(true);
 		// TEMP!!! DEBUG!!!
-		// tabbedPane.setSelectedIndex(2);
+		// tabbedPane.setSelectedIndex(1);
 	}
 
 	/**
@@ -121,6 +133,10 @@ public class BookMaster implements Observer {
 		initBooksPanel();
 		initLoansPanel();
 		initCustomersPanel();
+
+		tabbedPane.setMnemonicAt(INDEX_OF_BOOKS_TAB, KeyEvent.VK_B);
+		tabbedPane.setMnemonicAt(INDEX_OF_LOANS_TAB, KeyEvent.VK_A);
+		tabbedPane.setMnemonicAt(INDEX_OF_CUSTOMERS_TAB, KeyEvent.VK_K);
 	}
 
 	private void initBooksPanel() {
@@ -166,6 +182,7 @@ public class BookMaster implements Observer {
 		JLabel lblBookTableDescription = new JLabel("Alle Bücher in der Bibliothek sind in der  unterstehenden Tabelle ersichtlich");
 
 		txtSearchBooks = new JTextField();
+		txtSearchBooks.setToolTipText("Suchen nach Exemplar-IDs, Buchtitel, Regal, Author oder Verlag");
 		txtSearchBooks.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -175,8 +192,12 @@ public class BookMaster implements Observer {
 		txtSearchBooks.setColumns(10);
 
 		JLabel lblSearchBooks = new JLabel("Suche:");
+		lblSearchBooks.setDisplayedMnemonic('s');
+		lblSearchBooks.setLabelFor(txtSearchBooks);
+		lblSearchBooks.setToolTipText("Suchen nach Exemplar-IDs, Buchtitel, Regal, Author oder Verlag");
 
 		chckbxAvailibleOnly = new JCheckBox("Nur Verfügbare");
+		chckbxAvailibleOnly.setMnemonic('v');
 		chckbxAvailibleOnly.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				searchAndUpdateBooks();
@@ -184,6 +205,7 @@ public class BookMaster implements Observer {
 		});
 
 		JButton btnShowSelected = new JButton("Selektierte Anzeigen");
+		btnShowSelected.setMnemonic('a');
 		btnShowSelected.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				List<Book> books = getSelectedBooks();
@@ -194,6 +216,7 @@ public class BookMaster implements Observer {
 		});
 
 		JButton btnAddNewBook = new JButton("Neuer Buchtitel Erfassen");
+		btnAddNewBook.setMnemonic('n');
 		btnAddNewBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO implement this
@@ -237,7 +260,6 @@ public class BookMaster implements Observer {
 		scrollTblBooks = new JScrollPane();
 		panel.add(scrollTblBooks, BorderLayout.CENTER);
 
-		tblBooks = new JTable();
 		initTblBooks();
 		tblBooks.addMouseListener(new MouseAdapter() {
 			@Override
@@ -301,8 +323,12 @@ public class BookMaster implements Observer {
 		panel_2.add(panel_3, BorderLayout.NORTH);
 
 		JLabel lblSearchLoans = new JLabel("Suche:");
+		lblSearchLoans.setDisplayedMnemonic('s');
+		lblSearchLoans.setToolTipText("Suchen nach Status, Exemplar-ID, Buchtitel, Ausgeliehen Bis oder Ausgeliehen An");
 
 		txtSearchLoans = new JTextField();
+		txtSearchLoans.setToolTipText("Suchen nach Status, Exemplar-ID, Buchtitel, Ausgeliehen Bis oder Ausgeliehen An");
+		lblSearchLoans.setLabelFor(txtSearchLoans);
 		txtSearchLoans.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -319,8 +345,10 @@ public class BookMaster implements Observer {
 		});
 
 		JButton button = new JButton("Selektierte Anzeigen");
+		button.setMnemonic('a');
 
 		JButton btnNeueAusleiheErfassen = new JButton("Neue Ausleihe Erfassen");
+		btnNeueAusleiheErfassen.setMnemonic('n');
 
 		JLabel lblAlleAusleighen = new JLabel("Alle Ausleihen für jeden Kunden sind in der untenstehenden Tabelle ersichtlich");
 		GroupLayout gl_panel_3 = new GroupLayout(panel_3);
@@ -363,7 +391,6 @@ public class BookMaster implements Observer {
 		scrollTblLoans = new JScrollPane();
 		panel_2.add(scrollTblLoans, BorderLayout.CENTER);
 
-		tblLoans = new JTable();
 		initTblLoans();
 		scrollTblLoans.setViewportView(tblLoans);
 	}
@@ -382,23 +409,16 @@ public class BookMaster implements Observer {
 
 		lblCustomersAmountNum = new JLabel("0");
 		GroupLayout gl_pnlCustomersStatistics = new GroupLayout(pnlCustomersStatistics);
-		gl_pnlCustomersStatistics.setHorizontalGroup(
-			gl_pnlCustomersStatistics.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_pnlCustomersStatistics.createSequentialGroup()
-					.addGap(12)
-					.addComponent(lblCustomersAmount)
-					.addGap(7)
-					.addComponent(lblCustomersAmountNum)
-					.addGap(305))
-		);
-		gl_pnlCustomersStatistics.setVerticalGroup(
-			gl_pnlCustomersStatistics.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_pnlCustomersStatistics.createSequentialGroup()
-					.addGap(5)
-					.addGroup(gl_pnlCustomersStatistics.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblCustomersAmount)
-						.addComponent(lblCustomersAmountNum)))
-		);
+		gl_pnlCustomersStatistics.setHorizontalGroup(gl_pnlCustomersStatistics.createParallelGroup(Alignment.LEADING).addGroup(
+				gl_pnlCustomersStatistics.createSequentialGroup().addGap(12).addComponent(lblCustomersAmount).addGap(7)
+						.addComponent(lblCustomersAmountNum).addGap(305)));
+		gl_pnlCustomersStatistics.setVerticalGroup(gl_pnlCustomersStatistics.createParallelGroup(Alignment.LEADING).addGroup(
+				gl_pnlCustomersStatistics
+						.createSequentialGroup()
+						.addGap(5)
+						.addGroup(
+								gl_pnlCustomersStatistics.createParallelGroup(Alignment.LEADING).addComponent(lblCustomersAmount)
+										.addComponent(lblCustomersAmountNum))));
 		pnlCustomersStatistics.setLayout(gl_pnlCustomersStatistics);
 
 		JPanel panel_2 = new JPanel();
@@ -410,8 +430,11 @@ public class BookMaster implements Observer {
 		panel_2.add(panel_3, BorderLayout.NORTH);
 
 		JLabel lblSearchCustomers = new JLabel("Suche:");
+		lblSearchCustomers.setDisplayedMnemonic('s');
+		lblSearchCustomers.setToolTipText("Suchen nach Vorname, Nachname, Strasse, Stadt oder PLZ");
 
 		txtSearchCustomers = new JTextField();
+		lblSearchCustomers.setLabelFor(txtSearchCustomers);
 		txtSearchCustomers.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -421,49 +444,50 @@ public class BookMaster implements Observer {
 		txtSearchCustomers.setColumns(10);
 
 		JButton showSelectedCustomers = new JButton("Selektierte Anzeigen");
+		showSelectedCustomers.setMnemonic('a');
 
 		JButton btnNewClient = new JButton("Neuer Kunde Erfassen");
+		btnNewClient.setMnemonic('n');
 
-		JLabel lblAlleAusleighen = new JLabel("Alle Ausleihen für jeden Kunden sind in der untenstehenden Tabelle ersichtlich");
+		JLabel lblAlleAusleighen = new JLabel("Alle Kunden sind in der untenstehenden Tabelle ersichtlich");
 		GroupLayout gl_panel_3 = new GroupLayout(panel_3);
-		gl_panel_3.setHorizontalGroup(
-			gl_panel_3.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_3.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panel_3.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel_3.createSequentialGroup()
-							.addComponent(lblSearchCustomers)
-							.addGap(12)
-							.addComponent(txtSearchCustomers, GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
-							.addGap(12)
-							.addComponent(showSelectedCustomers)
-							.addGap(12)
-							.addComponent(btnNewClient)
-							.addGap(6))
-						.addGroup(gl_panel_3.createSequentialGroup()
-							.addComponent(lblAlleAusleighen)
-							.addContainerGap(491, Short.MAX_VALUE))))
-		);
-		gl_panel_3.setVerticalGroup(
-			gl_panel_3.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_3.createSequentialGroup()
-					.addComponent(lblAlleAusleighen)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel_3.createParallelGroup(Alignment.LEADING, false)
-						.addGroup(gl_panel_3.createSequentialGroup()
-							.addGap(1)
-							.addComponent(txtSearchCustomers, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel_3.createParallelGroup(Alignment.BASELINE)
-							.addComponent(lblSearchCustomers)
-							.addComponent(showSelectedCustomers)
-							.addComponent(btnNewClient))))
-		);
+		gl_panel_3.setHorizontalGroup(gl_panel_3.createParallelGroup(Alignment.LEADING).addGroup(
+				gl_panel_3
+						.createSequentialGroup()
+						.addContainerGap()
+						.addGroup(
+								gl_panel_3
+										.createParallelGroup(Alignment.LEADING)
+										.addGroup(
+												gl_panel_3.createSequentialGroup().addComponent(lblSearchCustomers).addGap(12)
+														.addComponent(txtSearchCustomers, GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
+														.addGap(12).addComponent(showSelectedCustomers).addGap(12)
+														.addComponent(btnNewClient).addGap(6))
+										.addGroup(
+												gl_panel_3.createSequentialGroup().addComponent(lblAlleAusleighen)
+														.addContainerGap(491, Short.MAX_VALUE)))));
+		gl_panel_3.setVerticalGroup(gl_panel_3.createParallelGroup(Alignment.LEADING).addGroup(
+				gl_panel_3
+						.createSequentialGroup()
+						.addComponent(lblAlleAusleighen)
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(
+								gl_panel_3
+										.createParallelGroup(Alignment.LEADING, false)
+										.addGroup(
+												gl_panel_3
+														.createSequentialGroup()
+														.addGap(1)
+														.addComponent(txtSearchCustomers, GroupLayout.PREFERRED_SIZE,
+																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+										.addGroup(
+												gl_panel_3.createParallelGroup(Alignment.BASELINE).addComponent(lblSearchCustomers)
+														.addComponent(showSelectedCustomers).addComponent(btnNewClient)))));
 		panel_3.setLayout(gl_panel_3);
 
 		scrollTblCustomers = new JScrollPane();
 		panel_2.add(scrollTblCustomers, BorderLayout.CENTER);
 
-		tblCustomers = new JTable();
 		initTblCustomers();
 		scrollTblCustomers.setViewportView(tblCustomers);
 	}
@@ -511,6 +535,25 @@ public class BookMaster implements Observer {
 	}
 
 	private void initTblBooks() {
+		tblBooks = new JTable() {
+			public Component prepareRenderer(javax.swing.table.TableCellRenderer renderer, int row, int column) {
+				Component c = super.prepareRenderer(renderer, row, column);
+				if (!isCellSelected(row, column)) {
+					Color col = colorForRow(row);
+					c.setBackground(col != null ? col : UIManager.getColor("Table.background"));
+					c.setForeground(UIManager.getColor("Table.foreground"));
+				} else {
+					c.setBackground(UIManager.getColor("Table.selectionBackground"));
+					c.setForeground(UIManager.getColor("Table.selectionForeground"));
+				}
+				return c;
+			}
+
+			private Color colorForRow(int row) {
+				Book b = (Book) getModel().getValueAt(convertRowIndexToModel(row), -1);
+				return library.getAvailibleCopiesOfBook(b).size() == 0 ? Color.ORANGE : null;
+			};
+		};
 		tblBooks.setColumnSelectionAllowed(false);
 		tblBooks.setRowSelectionAllowed(true);
 		tblBooksModel = new BookMasterTableModelBook(library);
@@ -521,9 +564,55 @@ public class BookMaster implements Observer {
 		tblBooks.getColumn("" + BookMasterTableModelBook.ColumnName.SHELF).setMaxWidth(40);
 		tblBooks.getColumn("" + BookMasterTableModelBook.ColumnName.SHELF).setMinWidth(40);
 		tblBooks.getColumn("" + BookMasterTableModelBook.ColumnName.SHELF).setResizable(false);
+
+		TableRowSorter<BookMasterTableModelBook> rowSorter = new TableRowSorter<BookMasterTableModelBook>(tblBooksModel);
+		rowSorter.setComparator(0, new Comparator<String>() {
+			@Override
+			public int compare(String s1, String s2) {
+				if (s1.startsWith("ab ") && s2.startsWith("ab ")) {
+					s1 = s1.substring(3, 13);
+					s2 = s2.substring(3, 13);
+					try {
+						Date d1 = SimpleDateFormat.getDateInstance().parse(s1);
+						Date d2 = SimpleDateFormat.getDateInstance().parse(s2);
+						return d1.compareTo(d2);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+				} else if (s1.startsWith("ab ") || s2.startsWith("ab ")) {
+					return s1.startsWith("ab ") ? 1 : -1;
+				} else {
+					Integer i1 = Integer.parseInt(s1.split(" ")[0]);
+					Integer i2 = Integer.parseInt(s2.split(" ")[0]);
+					return i1.compareTo(i2);
+				}
+				System.out.println(":-((");
+				return 0;
+			}
+		});
+		tblBooks.setRowSorter(rowSorter);
 	}
 
 	private void initTblLoans() {
+		tblLoans = new JTable() {
+			public Component prepareRenderer(javax.swing.table.TableCellRenderer renderer, int row, int column) {
+				Component c = super.prepareRenderer(renderer, row, column);
+				if (!isCellSelected(row, column)) {
+					Color col = colorForRow(row);
+					c.setBackground(col != null ? col : UIManager.getColor("Table.background"));
+					c.setForeground(UIManager.getColor("Table.foreground"));
+				} else {
+					c.setBackground(UIManager.getColor("Table.selectionBackground"));
+					c.setForeground(UIManager.getColor("Table.selectionForeground"));
+				}
+				return c;
+			}
+
+			private Color colorForRow(int row) {
+				Loan l = (Loan) getModel().getValueAt(convertRowIndexToModel(row), -1);
+				return l.isOverdue() ? Color.ORANGE : null;
+			};
+		};
 		tblLoans.setColumnSelectionAllowed(false);
 		tblLoans.setRowSelectionAllowed(true);
 		tblLoansModel = new BookMasterTableModelLoan(library);
@@ -541,39 +630,39 @@ public class BookMaster implements Observer {
 		tblLoans.getColumn("" + BookMasterTableModelLoan.ColumnName.LOAN_UNTIL).setMaxWidth(95);
 		tblLoans.getColumn("" + BookMasterTableModelLoan.ColumnName.LOAN_UNTIL).setMinWidth(95);
 		tblLoans.getColumn("" + BookMasterTableModelLoan.ColumnName.LOAN_UNTIL).setResizable(false);
+
+		TableRowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>(tblLoansModel);
+		rowSorter.setComparator(1, new Comparator<Long>() {
+			@Override
+			public int compare(Long l1, Long l2) {
+				return l1.compareTo(l2);
+
+			}
+		});
+		rowSorter.setComparator(3, new Comparator<String>() {
+			@Override
+			public int compare(String s1, String s2) {
+				try {
+					Date d1 = SimpleDateFormat.getDateInstance().parse(s1);
+					Date d2 = SimpleDateFormat.getDateInstance().parse(s2);
+					return d1.compareTo(d2);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				return s1.compareTo(s2);
+
+			}
+		});
+		tblLoans.setRowSorter(rowSorter);
 	}
 
 	private void initTblCustomers() {
+		tblCustomers = new JTable();
 		tblCustomers.setColumnSelectionAllowed(false);
 		tblCustomers.setRowSelectionAllowed(true);
 		tblCustomersModel = new BookMasterTableModelCustomer(library);
 		tblCustomers.setModel(tblCustomersModel);
-		// tblCustomers.getColumn("" +
-		// BookMasterTableModelCustomer.ColumnName.STATUS).setMaxWidth(50);
-		// tblCustomers.getColumn("" +
-		// BookMasterTableModelCustomer.ColumnName.STATUS).setMinWidth(50);
-		// tblCustomers.getColumn("" +
-		// BookMasterTableModelCustomer.ColumnName.STATUS).setResizable(false);
-		// tblCustomers.getColumn("" +
-		// BookMasterTableModelCustomer.ColumnName.ID).setMaxWidth(80);
-		// tblCustomers.getColumn("" +
-		// BookMasterTableModelCustomer.ColumnName.ID).setMinWidth(80);
-		// tblCustomers.getColumn("" +
-		// BookMasterTableModelCustomer.ColumnName.ID).setResizable(false);
-		// tblCustomers.getColumn("" +
-		// BookMasterTableModelCustomer.ColumnName.TITLE).setPreferredWidth(800);
-		// tblCustomers.getColumn("" +
-		// BookMasterTableModelCustomer.ColumnName.Customer_TO).setMinWidth(200);
-		// tblCustomers.getColumn("" +
-		// BookMasterTableModelCustomer.ColumnName.Customer_TO).setMaxWidth(700);
-		// tblCustomers.getColumn("" +
-		// BookMasterTableModelCustomer.ColumnName.Customer_TO).setPreferredWidth(100);
-		// tblCustomers.getColumn("" +
-		// BookMasterTableModelCustomer.ColumnName.Customer_UNTIL).setMaxWidth(95);
-		// tblCustomers.getColumn("" +
-		// BookMasterTableModelCustomer.ColumnName.Customer_UNTIL).setMinWidth(95);
-		// tblCustomers.getColumn("" +
-		// BookMasterTableModelCustomer.ColumnName.Customer_UNTIL).setResizable(false);
+		tblCustomers.setAutoCreateRowSorter(true);
 	}
 
 	protected Book getSelectedBook() {
@@ -585,6 +674,7 @@ public class BookMaster implements Observer {
 	}
 
 	protected Book getBookOfRow(int row) {
+		row = tblBooks.convertRowIndexToModel(row);
 		return (Book) tblBooks.getModel().getValueAt(row, -1);
 	}
 
@@ -596,23 +686,23 @@ public class BookMaster implements Observer {
 				bookDetailFrames.remove(bd);
 			}
 		} else if (observable instanceof Library) {
-			int index = tabbedPane.getSelectedIndex();
-			switch (index) {
-			case INDEX_OF_BOOKS_TAB: // Books
-				searchAndUpdateBooks();
-				updateBooksStatistics();
-				break;
-			case INDEX_OF_LOANS_TAB:
-				searchAndUpdateLoans();
-				updateLoansStatistics();
-				break;
-			case INDEX_OF_CUSTOMERS_TAB:
-				searchAndUpdateCustomers();
-				updateCustomersStatistics();
-				break;
-			default:
-				throw new RuntimeException("Invalid Tab ID: " + index);
-			}
+			// int index = tabbedPane.getSelectedIndex();
+			// switch (index) {
+			// case INDEX_OF_BOOKS_TAB:
+			searchAndUpdateBooks();
+			updateBooksStatistics();
+			// break;
+			// case INDEX_OF_LOANS_TAB:
+			searchAndUpdateLoans();
+			updateLoansStatistics();
+			// break;
+			// case INDEX_OF_CUSTOMERS_TAB:
+			searchAndUpdateCustomers();
+			updateCustomersStatistics();
+			// break;
+			// default:
+			// throw new RuntimeException("Invalid Tab ID: " + index);
+			// }
 		} else {
 			throw new RuntimeException("Unexpected observed object!");
 		}

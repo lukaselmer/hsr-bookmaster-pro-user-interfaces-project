@@ -80,5 +80,6 @@ public class BookMasterTableModelBook extends AbstractTableModel {
 
 	public void updateBooks(List<Book> newBooks) {
 		currentBooks = newBooks;
+		fireTableDataChanged();
 	}
 }

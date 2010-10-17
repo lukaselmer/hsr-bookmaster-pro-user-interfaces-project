@@ -10,7 +10,7 @@ import domain.Library;
 public class BookMasterTableModelCustomer extends AbstractTableModel {
 
 	public enum ColumnName {
-		NAME("Vorname"), SURNAME("Nachname"), STREET("Strasse"), CITY("Stadt"), ZIP("Plz");
+		NAME("Vorname"), SURNAME("Nachname"), STREET("Strasse"), CITY("Stadt"), ZIP("PLZ");
 		private String name;
 
 		private ColumnName(String name) {
@@ -70,5 +70,6 @@ public class BookMasterTableModelCustomer extends AbstractTableModel {
 
 	public void updateCustomers(List<Customer> newCustomers) {
 		currentCustomers = newCustomers;
+		fireTableDataChanged();
 	}
 }
