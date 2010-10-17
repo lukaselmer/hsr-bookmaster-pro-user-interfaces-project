@@ -69,13 +69,10 @@ public class BookMaster implements Observer {
 	private JLabel lblOverdueAmountNum;
 	private JPanel pnlCustomers;
 	private JLabel lblCustomersAmountNum;
-	private JLabel lblCurrentlyCustomeredNum;
 	private JTextField txtSearchCustomers;
 	private JScrollPane scrollTblCustomers;
 	private JTable tblCustomers;
 	private BookMasterTableModelCustomer tblCustomersModel;
-	private JLabel lblXXXOverdueAmountNum;
-	private JCheckBox chckbxXXXOverduesOnly;
 
 	/**
 	 * Launch the application.
@@ -384,31 +381,25 @@ public class BookMaster implements Observer {
 		JLabel lblCustomersAmount = new JLabel("Anzahl Kunden:");
 
 		lblCustomersAmountNum = new JLabel("0");
-
-		JLabel lblCurrentlyCustomered = new JLabel("Aktuell Ausgeliehen:");
-
-		lblCurrentlyCustomeredNum = new JLabel("0");
-
-		JLabel lblOverdueAmount = new JLabel("Überfällige Ausgeliehen:");
-
-		lblXXXOverdueAmountNum = new JLabel("0");
-		GroupLayout gl_pnlCustomerStatistics = new GroupLayout(pnlCustomersStatistics);
-		gl_pnlCustomerStatistics.setHorizontalGroup(gl_pnlCustomerStatistics.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_pnlCustomerStatistics.createSequentialGroup().addGap(12).addComponent(lblCustomersAmount).addGap(7)
-						.addComponent(lblCustomersAmountNum).addGap(21).addComponent(lblCurrentlyCustomered).addGap(7)
-						.addComponent(lblCurrentlyCustomeredNum).addGap(18)
-						.addComponent(lblOverdueAmount, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE).addGap(7)
-						.addComponent(lblXXXOverdueAmountNum)));
-		gl_pnlCustomerStatistics.setVerticalGroup(gl_pnlCustomerStatistics.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_pnlCustomerStatistics
-						.createSequentialGroup()
-						.addGap(5)
-						.addGroup(
-								gl_pnlCustomerStatistics.createParallelGroup(Alignment.LEADING).addComponent(lblCustomersAmount)
-										.addComponent(lblCustomersAmountNum).addComponent(lblCurrentlyCustomered)
-										.addComponent(lblCurrentlyCustomeredNum).addComponent(lblOverdueAmount)
-										.addComponent(lblXXXOverdueAmountNum))));
-		pnlCustomersStatistics.setLayout(gl_pnlCustomerStatistics);
+		GroupLayout gl_pnlCustomersStatistics = new GroupLayout(pnlCustomersStatistics);
+		gl_pnlCustomersStatistics.setHorizontalGroup(
+			gl_pnlCustomersStatistics.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pnlCustomersStatistics.createSequentialGroup()
+					.addGap(12)
+					.addComponent(lblCustomersAmount)
+					.addGap(7)
+					.addComponent(lblCustomersAmountNum)
+					.addGap(305))
+		);
+		gl_pnlCustomersStatistics.setVerticalGroup(
+			gl_pnlCustomersStatistics.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pnlCustomersStatistics.createSequentialGroup()
+					.addGap(5)
+					.addGroup(gl_pnlCustomersStatistics.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblCustomersAmount)
+						.addComponent(lblCustomersAmountNum)))
+		);
+		pnlCustomersStatistics.setLayout(gl_pnlCustomersStatistics);
 
 		JPanel panel_2 = new JPanel();
 		pnlCustomers.add(panel_2, BorderLayout.CENTER);
@@ -429,48 +420,44 @@ public class BookMaster implements Observer {
 		});
 		txtSearchCustomers.setColumns(10);
 
-		chckbxXXXOverduesOnly = new JCheckBox("Nur Überfällige");
+		JButton showSelectedCustomers = new JButton("Selektierte Anzeigen");
 
-		JButton button = new JButton("Selektierte Anzeigen");
-
-		JButton btnNeueAusleiheErfassen = new JButton("Neue Ausleihe Erfassen");
+		JButton btnNewClient = new JButton("Neuer Kunde Erfassen");
 
 		JLabel lblAlleAusleighen = new JLabel("Alle Ausleihen für jeden Kunden sind in der untenstehenden Tabelle ersichtlich");
 		GroupLayout gl_panel_3 = new GroupLayout(panel_3);
-		gl_panel_3.setHorizontalGroup(gl_panel_3.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_panel_3
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								gl_panel_3
-										.createParallelGroup(Alignment.LEADING)
-										.addGroup(
-												gl_panel_3.createSequentialGroup().addComponent(lblSearchCustomers).addGap(12)
-														.addComponent(txtSearchCustomers, GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
-														.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(chckbxXXXOverduesOnly)
-														.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(button).addGap(12)
-														.addComponent(btnNeueAusleiheErfassen).addGap(6))
-										.addGroup(
-												gl_panel_3.createSequentialGroup().addComponent(lblAlleAusleighen)
-														.addContainerGap(491, Short.MAX_VALUE)))));
-		gl_panel_3.setVerticalGroup(gl_panel_3.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_panel_3
-						.createSequentialGroup()
-						.addComponent(lblAlleAusleighen)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								gl_panel_3
-										.createParallelGroup(Alignment.LEADING, false)
-										.addGroup(
-												gl_panel_3
-														.createSequentialGroup()
-														.addGap(1)
-														.addComponent(txtSearchCustomers, GroupLayout.PREFERRED_SIZE,
-																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-										.addGroup(
-												gl_panel_3.createParallelGroup(Alignment.BASELINE).addComponent(lblSearchCustomers)
-														.addComponent(chckbxXXXOverduesOnly).addComponent(button)
-														.addComponent(btnNeueAusleiheErfassen)))));
+		gl_panel_3.setHorizontalGroup(
+			gl_panel_3.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_3.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel_3.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_3.createSequentialGroup()
+							.addComponent(lblSearchCustomers)
+							.addGap(12)
+							.addComponent(txtSearchCustomers, GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
+							.addGap(12)
+							.addComponent(showSelectedCustomers)
+							.addGap(12)
+							.addComponent(btnNewClient)
+							.addGap(6))
+						.addGroup(gl_panel_3.createSequentialGroup()
+							.addComponent(lblAlleAusleighen)
+							.addContainerGap(491, Short.MAX_VALUE))))
+		);
+		gl_panel_3.setVerticalGroup(
+			gl_panel_3.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_3.createSequentialGroup()
+					.addComponent(lblAlleAusleighen)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_3.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(gl_panel_3.createSequentialGroup()
+							.addGap(1)
+							.addComponent(txtSearchCustomers, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel_3.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lblSearchCustomers)
+							.addComponent(showSelectedCustomers)
+							.addComponent(btnNewClient))))
+		);
 		panel_3.setLayout(gl_panel_3);
 
 		scrollTblCustomers = new JScrollPane();
