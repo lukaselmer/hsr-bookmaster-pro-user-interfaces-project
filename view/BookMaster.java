@@ -101,7 +101,7 @@ public class BookMaster implements Observer {
 		frmBookmaster.setLocationByPlatform(true);
 		frmBookmaster.setVisible(true);
 		// TEMP!!! DEBUG!!!
-		tabbedPane.setSelectedIndex(2);
+		// tabbedPane.setSelectedIndex(2);
 	}
 
 	/**
