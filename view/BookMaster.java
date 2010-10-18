@@ -109,6 +109,10 @@ public class BookMaster implements Observer {
 		// tabbedPane.setSelectedIndex(1);
 	}
 
+	public BookMaster inst() {
+		return this;
+	}
+
 	/**
 	 * Initialize the contents of the frame.
 	 */

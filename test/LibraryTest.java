@@ -33,10 +33,9 @@ public class LibraryTest extends TestCase {
 		library.createAndAddCopy(b3);
 
 		// Customers
-		library.createAndAddCustomer("Keller", "Peter");
-		library.createAndAddCustomer("Mueller", "Fritz");
-		library.createAndAddCustomer("Meier", "Martin");
-
+		library.addCustomer(new Customer("Keller", "Peter"));
+		library.addCustomer(new Customer("Mueller", "Fritz"));
+		library.addCustomer(new Customer("Meier", "Martin"));
 	}
 
 	public void testGetBooksPerTitle() {
