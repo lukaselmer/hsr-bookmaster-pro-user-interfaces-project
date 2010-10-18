@@ -36,6 +36,8 @@ import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -78,6 +80,9 @@ public class BookMaster implements Observer {
 	private JTable tblCustomers;
 	private BookMasterTableModelCustomer tblCustomersModel;
 	protected NewCustomerFrame newCustomerFrame;
+	private JButton btnShowSelectedBooks;
+	private JButton btnShowSelectedLoans;
+	private JButton btnShowSelectedCustomers;
 
 	/**
 	 * Launch the application.
@@ -201,9 +206,10 @@ public class BookMaster implements Observer {
 			}
 		});
 
-		JButton btnShowSelected = new JButton("Selektierte Anzeigen");
-		btnShowSelected.setMnemonic('a');
-		btnShowSelected.addActionListener(new ActionListener() {
+		btnShowSelectedBooks = new JButton("Selektierte Anzeigen");
+		btnShowSelectedBooks.setEnabled(false);
+		btnShowSelectedBooks.setMnemonic('a');
+		btnShowSelectedBooks.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				List<Book> books = getSelectedBooks();
 				for (Book b : books) {
@@ -235,23 +241,25 @@ public class BookMaster implements Observer {
 												gl_panel_1.createSequentialGroup().addComponent(lblSearchBooks).addGap(12)
 														.addComponent(txtSearchBooks, GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
 														.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(chckbxAvailibleOnly)
-														.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnShowSelected)
+														.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnShowSelectedBooks)
 														.addGap(12).addComponent(btnAddNewBook))).addGap(6)));
-		gl_panel_1.setVerticalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_panel_1
-						.createSequentialGroup()
-						.addComponent(lblBookTableDescription)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								gl_panel_1
-										.createParallelGroup(Alignment.BASELINE, false)
-										.addGroup(
-												gl_panel_1
-														.createSequentialGroup()
-														.addGap(1)
-														.addComponent(txtSearchBooks, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-																GroupLayout.PREFERRED_SIZE)).addComponent(lblSearchBooks)
-										.addComponent(chckbxAvailibleOnly).addComponent(btnShowSelected).addComponent(btnAddNewBook))));
+		gl_panel_1
+				.setVerticalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addGroup(
+						gl_panel_1
+								.createSequentialGroup()
+								.addComponent(lblBookTableDescription)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(
+										gl_panel_1
+												.createParallelGroup(Alignment.BASELINE, false)
+												.addGroup(
+														gl_panel_1
+																.createSequentialGroup()
+																.addGap(1)
+																.addComponent(txtSearchBooks, GroupLayout.PREFERRED_SIZE,
+																		GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+												.addComponent(lblSearchBooks).addComponent(chckbxAvailibleOnly)
+												.addComponent(btnShowSelectedBooks).addComponent(btnAddNewBook))));
 		panel_1.setLayout(gl_panel_1);
 
 		scrollTblBooks = new JScrollPane();
@@ -341,8 +349,9 @@ public class BookMaster implements Observer {
 			}
 		});
 
-		JButton button = new JButton("Selektierte Anzeigen");
-		button.setMnemonic('a');
+		btnShowSelectedLoans = new JButton("Selektierte Anzeigen");
+		btnShowSelectedLoans.setEnabled(false);
+		btnShowSelectedLoans.setMnemonic('a');
 
 		JButton btnNeueAusleiheErfassen = new JButton("Neue Ausleihe Erfassen");
 		btnNeueAusleiheErfassen.setMnemonic('n');
@@ -360,8 +369,8 @@ public class BookMaster implements Observer {
 												gl_panel_3.createSequentialGroup().addComponent(lblSearchLoans).addGap(12)
 														.addComponent(txtSearchLoans, GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
 														.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(chckbxOverduesOnly)
-														.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(button).addGap(12)
-														.addComponent(btnNeueAusleiheErfassen).addGap(6))
+														.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnShowSelectedLoans)
+														.addGap(12).addComponent(btnNeueAusleiheErfassen).addGap(6))
 										.addGroup(
 												gl_panel_3.createSequentialGroup().addComponent(lblAlleAusleighen)
 														.addContainerGap(491, Short.MAX_VALUE)))));
@@ -381,7 +390,7 @@ public class BookMaster implements Observer {
 																GroupLayout.PREFERRED_SIZE))
 										.addGroup(
 												gl_panel_3.createParallelGroup(Alignment.BASELINE).addComponent(lblSearchLoans)
-														.addComponent(chckbxOverduesOnly).addComponent(button)
+														.addComponent(chckbxOverduesOnly).addComponent(btnShowSelectedLoans)
 														.addComponent(btnNeueAusleiheErfassen)))));
 		panel_3.setLayout(gl_panel_3);
 
@@ -440,8 +449,9 @@ public class BookMaster implements Observer {
 		});
 		txtSearchCustomers.setColumns(10);
 
-		JButton showSelectedCustomers = new JButton("Selektierte Anzeigen");
-		showSelectedCustomers.setMnemonic('a');
+		btnShowSelectedCustomers = new JButton("Selektierte Anzeigen");
+		btnShowSelectedCustomers.setEnabled(false);
+		btnShowSelectedCustomers.setMnemonic('a');
 
 		JButton btnNewClient = new JButton("Neuer Kunde Erfassen");
 		btnNewClient.addActionListener(new ActionListener() {
@@ -468,7 +478,7 @@ public class BookMaster implements Observer {
 										.addGroup(
 												gl_panel_3.createSequentialGroup().addComponent(lblSearchCustomers).addGap(12)
 														.addComponent(txtSearchCustomers, GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
-														.addGap(12).addComponent(showSelectedCustomers).addGap(12)
+														.addGap(12).addComponent(btnShowSelectedCustomers).addGap(12)
 														.addComponent(btnNewClient).addGap(6))
 										.addGroup(
 												gl_panel_3.createSequentialGroup().addComponent(lblAlleAusleighen)
@@ -489,7 +499,7 @@ public class BookMaster implements Observer {
 																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 										.addGroup(
 												gl_panel_3.createParallelGroup(Alignment.BASELINE).addComponent(lblSearchCustomers)
-														.addComponent(showSelectedCustomers).addComponent(btnNewClient)))));
+														.addComponent(btnShowSelectedCustomers).addComponent(btnNewClient)))));
 		panel_3.setLayout(gl_panel_3);
 
 		scrollTblCustomers = new JScrollPane();
@@ -598,6 +608,13 @@ public class BookMaster implements Observer {
 			}
 		});
 		tblBooks.setRowSorter(rowSorter);
+
+		tblBooks.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				btnShowSelectedBooks.setEnabled(tblBooks.getSelectedRowCount() > 0);
+			}
+		});
 	}
 
 	private void initTblLoans() {
@@ -661,6 +678,13 @@ public class BookMaster implements Observer {
 			}
 		});
 		tblLoans.setRowSorter(rowSorter);
+
+		tblLoans.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				btnShowSelectedLoans.setEnabled(tblLoans.getSelectedRowCount() > 0);
+			}
+		});
 	}
 
 	private void initTblCustomers() {
@@ -670,6 +694,13 @@ public class BookMaster implements Observer {
 		tblCustomersModel = new BookMasterTableModelCustomer(library);
 		tblCustomers.setModel(tblCustomersModel);
 		tblCustomers.setAutoCreateRowSorter(true);
+
+		tblCustomers.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				btnShowSelectedCustomers.setEnabled(tblCustomers.getSelectedRowCount() > 0);
+			}
+		});
 	}
 
 	protected Book getSelectedBook() {
