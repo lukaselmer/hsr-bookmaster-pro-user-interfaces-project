@@ -40,20 +40,20 @@ public class BookDetail extends Observable {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) throws Exception {
-		UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				Library l = LibraryApp.inst();
-				try {
-					Random r = new Random();
-					new BookDetail(l, l.getBooks().get(r.nextInt(l.getBooks().size())));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	// public static void main(String[] args) throws Exception {
+	// UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
+	// EventQueue.invokeLater(new Runnable() {
+	// public void run() {
+	// Library l = LibraryApp.inst();
+	// try {
+	// Random r = new Random();
+	// new BookDetail(l, l.getBooks().get(r.nextInt(l.getBooks().size())));
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
+	// });
+	// }
 
 	/**
 	 * Create the application.
