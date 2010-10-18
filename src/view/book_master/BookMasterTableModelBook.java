@@ -9,7 +9,7 @@ import domain.Library;
 import domain.Loan;
 
 public class BookMasterTableModelBook extends AbstractTableModel {
-
+	
 	public enum ColumnName {
 		STATUS("Verfügbar"), SHELF("Regal"), TITLE("Titel"), AUTHOR("Author"), PUBLISHER("Verlag");
 		private String name;
