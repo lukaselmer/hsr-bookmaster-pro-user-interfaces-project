@@ -28,11 +28,11 @@ import domain.Shelf;
 
 public class LibraryApp {
 
-	public static void main(String[] args) throws Exception {
-		UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-		Library library = inst();
-		new BookMaster(library);
-	}
+	// public static void main(String[] args) throws Exception {
+	// UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
+	// Library library = inst();
+	// new BookMaster(library);
+	// }
 
 	public static Library inst() {
 		Library library = new Library();

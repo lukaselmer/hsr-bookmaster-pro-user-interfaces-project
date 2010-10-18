@@ -88,14 +88,14 @@ public class BookMaster implements Observer {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) throws Exception {
-		UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				new BookMaster(LibraryApp.inst());
-			}
-		});
-	}
+	// public static void main(String[] args) throws Exception {
+	// UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
+	// EventQueue.invokeLater(new Runnable() {
+	// public void run() {
+	// new BookMaster(LibraryApp.inst());
+	// }
+	// });
+	// }
 
 	/**
 	 * Create the application.
