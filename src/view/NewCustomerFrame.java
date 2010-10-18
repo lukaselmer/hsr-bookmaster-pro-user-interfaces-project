@@ -108,7 +108,7 @@ public class NewCustomerFrame {
 
 		JPanel panel = new JPanel();
 		frmNeuerKunde.getContentPane().add(panel, BorderLayout.CENTER);
-
+		
 		JLabel lblName = new JLabel("Vorname:");
 		lblName.setDisplayedMnemonic('v');
 
