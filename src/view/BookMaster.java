@@ -44,6 +44,7 @@ import javax.swing.table.TableRowSorter;
 import view.book_master.BookMasterTableModelBook;
 import view.book_master.BookMasterTableModelCustomer;
 import view.book_master.BookMasterTableModelLoan;
+import view.customer.NewCustomer;
 import application.LibraryApp;
 import domain.Book;
 import domain.Library;
@@ -79,7 +80,7 @@ public class BookMaster implements Observer {
 	private JScrollPane scrollTblCustomers;
 	private JTable tblCustomers;
 	private BookMasterTableModelCustomer tblCustomersModel;
-	protected NewCustomerFrame newCustomerFrame;
+	protected NewCustomer newCustomerFrame;
 	private JButton btnShowSelectedBooks;
 	private JButton btnShowSelectedLoans;
 	private JButton btnShowSelectedCustomers;
@@ -460,7 +461,7 @@ public class BookMaster implements Observer {
 				if (newCustomerFrame != null && newCustomerFrame.isValid()) {
 					newCustomerFrame.toFront();
 				} else {
-					newCustomerFrame = new NewCustomerFrame(library);
+					newCustomerFrame = new NewCustomer(library);
 				}
 			}
 		});
@@ -553,6 +554,8 @@ public class BookMaster implements Observer {
 
 	private void initTblBooks() {
 		tblBooks = new JTable() {
+			private static final long serialVersionUID = -6660470510160948438L;
+
 			public Component prepareRenderer(javax.swing.table.TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
 				if (!isCellSelected(row, column)) {
@@ -619,6 +622,8 @@ public class BookMaster implements Observer {
 
 	private void initTblLoans() {
 		tblLoans = new JTable() {
+			private static final long serialVersionUID = -2284571437513151450L;
+
 			public Component prepareRenderer(javax.swing.table.TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
 				if (!isCellSelected(row, column)) {

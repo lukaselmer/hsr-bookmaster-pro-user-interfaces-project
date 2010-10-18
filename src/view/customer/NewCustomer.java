@@ -1,64 +1,45 @@
-package view;
+package view.customer;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Event;
 import java.awt.EventQueue;
-import java.awt.Frame;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.text.ParseException;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.UIManager;
+
+import validators.CustomerValidator;
+import application.LibraryApp;
+
+import com.jgoodies.validation.ValidationResult;
+import com.jgoodies.validation.view.ValidationComponentUtils;
 
 import domain.Customer;
 import domain.Library;
 
-import application.LibraryApp;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.text.MaskFormatter;
-import javax.swing.InputVerifier;
-import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.JButton;
-
-import sun.java2d.Disposer;
-import validators.CustomerValidator;
-
-import com.jgoodies.validation.ValidationResult;
-import com.jgoodies.validation.view.ValidationComponentUtils;
-import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
-import java.text.NumberFormat;
-import java.text.ParseException;
-
-public class NewCustomerFrame {
+public class NewCustomer {
 
 	private JFrame frmNeuerKunde;
 	private Library library;
-	private Customer customer;
 	private JTextField txtSurname;
 	private JTextField txtName;
 	private JTextField txtStreet;
 	private JTextField txtZip;
 	private JTextField txtCity;
 	private JButton btnSave;
-	private BookMaster bookMaster;
 
 	/**
 	 * Launch the application.
@@ -68,13 +49,7 @@ public class NewCustomerFrame {
 			public void run() {
 				try {
 					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-					Library l = LibraryApp.inst();
-					/*
-					 * , l.getCustomers().get(new
-					 * Random().nextInt(l.getCustomers().size()))
-					 */
-					NewCustomerFrame window = new NewCustomerFrame(l);
-					// window.frmNeuerKunde.setVisible(true);
+					new NewCustomer(LibraryApp.inst());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -89,7 +64,7 @@ public class NewCustomerFrame {
 	 * 
 	 * @param library
 	 */
-	public NewCustomerFrame(Library library) {
+	public NewCustomer(Library library) {
 		this.library = library;
 		try {
 			initialize();
