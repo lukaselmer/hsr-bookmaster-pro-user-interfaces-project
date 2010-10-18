@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Event;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,7 +11,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,8 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -38,22 +34,18 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
+import view.book_master.BookMasterTableModelBook;
+import view.book_master.BookMasterTableModelCustomer;
+import view.book_master.BookMasterTableModelLoan;
 import application.LibraryApp;
 import domain.Book;
 import domain.Library;
 import domain.Loan;
-
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
-
-import sun.swing.SwingUtilities2;
-import view.book_master.BookMasterTableModelBook;
-import view.book_master.BookMasterTableModelCustomer;
-import view.book_master.BookMasterTableModelLoan;
-import javax.swing.DropMode;
 
 public class BookMaster implements Observer {
 
@@ -697,23 +689,21 @@ public class BookMaster implements Observer {
 				bookDetailFrames.remove(bd);
 			}
 		} else if (observable instanceof Library) {
-			// int index = tabbedPane.getSelectedIndex();
-			// switch (index) {
-			// case INDEX_OF_BOOKS_TAB:
+			// update books
 			searchAndUpdateBooks();
 			updateBooksStatistics();
-			// break;
-			// case INDEX_OF_LOANS_TAB:
+			// update loans
 			searchAndUpdateLoans();
 			updateLoansStatistics();
-			// break;
-			// case INDEX_OF_CUSTOMERS_TAB:
+			// update customers
 			searchAndUpdateCustomers();
 			updateCustomersStatistics();
-			// break;
-			// default:
-			// throw new RuntimeException("Invalid Tab ID: " + index);
-			// }
+			/*
+			 * int index = tabbedPane.getSelectedIndex(); switch (index) { case
+			 * INDEX_OF_BOOKS_TAB: break; case INDEX_OF_LOANS_TAB: break; case
+			 * INDEX_OF_CUSTOMERS_TAB: break; default: throw new
+			 * RuntimeException("Invalid Tab ID: " + index); }
+			 */
 		} else {
 			throw new RuntimeException("Unexpected observed object!");
 		}
