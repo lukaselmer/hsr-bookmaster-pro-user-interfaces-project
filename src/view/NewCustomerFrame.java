@@ -1,5 +1,7 @@
 package view;
 
+import java.awt.Color;
+import java.awt.Event;
 import java.awt.EventQueue;
 import java.awt.Frame;
 
@@ -17,14 +19,31 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.text.MaskFormatter;
+import javax.swing.InputVerifier;
+import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.JButton;
+
+import sun.java2d.Disposer;
+import validators.CustomerValidator;
+
+import com.jgoodies.validation.ValidationResult;
+import com.jgoodies.validation.view.ValidationComponentUtils;
+import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 import java.text.NumberFormat;
 import java.text.ParseException;
 
@@ -36,8 +55,10 @@ public class NewCustomerFrame {
 	private JTextField txtSurname;
 	private JTextField txtName;
 	private JTextField txtStreet;
-	private JFormattedTextField txtZip;
-	private JTextField txtPlace;
+	private JTextField txtZip;
+	private JTextField txtCity;
+	private JButton btnSave;
+	private BookMaster bookMaster;
 
 	/**
 	 * Launch the application.
@@ -63,6 +84,8 @@ public class NewCustomerFrame {
 
 	/**
 	 * Create the application.
+	 * 
+	 * @param bookMaster
 	 * 
 	 * @param library
 	 */
@@ -108,7 +131,7 @@ public class NewCustomerFrame {
 
 		JPanel panel = new JPanel();
 		frmNeuerKunde.getContentPane().add(panel, BorderLayout.CENTER);
-		
+
 		JLabel lblName = new JLabel("Vorname:");
 		lblName.setDisplayedMnemonic('v');
 
@@ -121,41 +144,64 @@ public class NewCustomerFrame {
 		JLabel lblZip = new JLabel("PLZ:");
 		lblZip.setDisplayedMnemonic('p');
 
-		JLabel lblPlace = new JLabel("Ort:");
-		lblPlace.setDisplayedMnemonic('o');
+		JLabel lblCity = new JLabel("Ort:");
+		lblCity.setDisplayedMnemonic('o');
 
 		txtName = new JTextField();
 		lblName.setLabelFor(txtName);
 		txtName.setColumns(10);
+		txtName.setName("Customer.Name");
+		ValidationComponentUtils.setMandatoryBackground(txtName);
 
 		txtSurname = new JTextField();
 		lblSurname.setLabelFor(txtSurname);
 		txtSurname.setColumns(10);
+		txtSurname.setName("Customer.Surname");
+		ValidationComponentUtils.setMandatoryBackground(txtSurname);
 
 		txtStreet = new JTextField();
 		lblStreet.setLabelFor(txtStreet);
 		txtStreet.setColumns(10);
+		txtStreet.setName("Customer.Street");
+		ValidationComponentUtils.setMandatoryBackground(txtStreet);
 
-		MaskFormatter formatter = new MaskFormatter("####");
-		txtZip = new JFormattedTextField(formatter);
+		// MaskFormatter formatter = new MaskFormatter("####");
+		// txtZip = new JFormattedTextField(formatter);
+		txtZip = new JTextField();
 		lblZip.setLabelFor(txtZip);
 		txtZip.setColumns(10);
+		txtZip.setName("Customer.Zip");
+		ValidationComponentUtils.setMandatoryBackground(txtZip);
 
-		txtPlace = new JTextField();
-		lblPlace.setLabelFor(txtPlace);
-		txtPlace.setColumns(10);
+		txtCity = new JTextField();
+		lblCity.setLabelFor(txtCity);
+		txtCity.setColumns(10);
+		txtCity.setName("Customer.City");
+		ValidationComponentUtils.setMandatoryBackground(txtCity);
 
-		JTextField[] fields = { txtName, txtPlace, txtStreet, txtSurname, txtZip };
+		JTextField[] fields = { txtName, txtCity, txtStreet, txtSurname, txtZip };
 		for (final JTextField f : fields) {
 			f.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyReleased(KeyEvent e) {
-					validateForm(f, e);
+					validateForm(f);
 				}
 			});
 		}
 
-		JButton btnSave = new JButton("Kunde Erstellen");
+		btnSave = new JButton("Kunde Erstellen");
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Customer c = validateForm(null);
+				if (c == null) {
+					throw new RuntimeException("Bad state");
+				}
+				library.addCustomer(c);
+				JOptionPane.showMessageDialog(frmNeuerKunde, "Kunde wurde erfolgreich erstellt und der Kundentabelle hinzugefügt.",
+						"Hinweis", JOptionPane.INFORMATION_MESSAGE);
+				frmNeuerKunde.dispose();
+			}
+		});
 		btnSave.setEnabled(false);
 
 		JButton btnCancel = new JButton("Abbrechen");
@@ -172,7 +218,7 @@ public class NewCustomerFrame {
 						.addGroup(
 								gl_panel.createParallelGroup(Alignment.LEADING, false)
 										.addComponent(lblSurname, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE).addComponent(lblStreet).addComponent(lblZip).addComponent(lblPlace)
+												Short.MAX_VALUE).addComponent(lblStreet).addComponent(lblZip).addComponent(lblCity)
 										.addComponent(lblName))
 						.addGap(18)
 						.addGroup(
@@ -188,7 +234,7 @@ public class NewCustomerFrame {
 										.addComponent(txtZip, GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
 										.addComponent(txtName, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
 										.addComponent(txtSurname, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
-										.addComponent(txtPlace, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE))
+										.addComponent(txtCity, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE))
 						.addContainerGap()));
 		gl_panel.setVerticalGroup(gl_panel.createParallelGroup(Alignment.LEADING).addGroup(
 				gl_panel.createSequentialGroup()
@@ -219,18 +265,37 @@ public class NewCustomerFrame {
 						.addPreferredGap(ComponentPlacement.RELATED)
 						.addGroup(
 								gl_panel.createParallelGroup(Alignment.BASELINE)
-										.addComponent(lblPlace)
-										.addComponent(txtPlace, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										.addComponent(lblCity)
+										.addComponent(txtCity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 												GroupLayout.PREFERRED_SIZE)).addPreferredGap(ComponentPlacement.UNRELATED)
 						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE).addComponent(btnSave).addComponent(btnCancel))
 						.addContainerGap(58, Short.MAX_VALUE)));
 		panel.setLayout(gl_panel);
 	}
 
-	protected void validateForm(JTextField f, KeyEvent e) {
-		// Customer c = new Customer(txtName.getText(), txtSurname.getText(),
-		// txtStreet.getText(), txtPlace.getText(),
-		// Integer.parseInt("" + (Long) txtZip.getValue()));
-		System.out.println(txtZip.isValid());
+	private Customer validateForm(JTextField f) {
+		Customer c = createCustomer();
+		ValidationResult customerValidation = new CustomerValidator().validate(c);
+		btnSave.setEnabled(!customerValidation.hasErrors());
+		if (f != null) {
+			ValidationResult fieldValidation = customerValidation.subResult(f.getName());
+			if (fieldValidation.hasErrors()) {
+				ValidationComponentUtils.setErrorBackground(f);
+				f.setToolTipText(fieldValidation.getMessagesText().replaceFirst(f.getName() + " ", ""));
+			} else {
+				f.setBackground(Color.WHITE);
+				f.setToolTipText(null);
+			}
+		}
+		return customerValidation.hasErrors() ? null : c;
+	}
+
+	private Customer createCustomer() {
+		int zip = 0;
+		try {
+			zip = Integer.parseInt(txtZip.getText());
+		} catch (NumberFormatException ex) {
+		}
+		return new Customer(txtName.getText(), txtSurname.getText(), txtStreet.getText(), txtCity.getText(), zip);
 	}
 }

@@ -30,13 +30,13 @@ public class Library extends Observable {
 		}
 	}
 
-	public Customer createAndAddCustomer(String name, String surname) {
-		Customer c = new Customer(name, surname);
-		customers.add(c);
-		setChanged();
-		notifyObservers();
-		return c;
-	}
+	// public Customer createAndAddCustomer(String name, String surname) {
+	// Customer c = new Customer(name, surname);
+	// customers.add(c);
+	// setChanged();
+	// notifyObservers();
+	// return c;
+	// }
 
 	public Book createAndAddBook(String name) {
 		Book b = new Book(name);
@@ -225,6 +225,13 @@ public class Library extends Observable {
 
 	public List<Customer> getCustomers() {
 		return customers;
+	}
+
+	public Customer addCustomer(Customer c) {
+		customers.add(c);
+		setChanged();
+		notifyObservers();
+		return c;
 	}
 
 }

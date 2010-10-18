@@ -7,6 +7,9 @@ public class Customer extends Observable {
 	private String name, surname, street, city;
 	private int zip;
 
+	public Customer() {
+	}
+
 	public Customer(String name, String surname) {
 		this.name = name;
 		this.surname = surname;

@@ -136,9 +136,9 @@ public class LibraryApp {
 		for (int i = 0; i < customers.getLength(); i++) {
 			Node customer = customers.item(i);
 
-			Customer c = library.createAndAddCustomer(getTextContentOf(customer, "name"), getTextContentOf(customer, "surname"));
-			c.setAdress(getTextContentOf(customer, "street"), Integer.parseInt(getTextContentOf(customer, "zip")),
-					getTextContentOf(customer, "city"));
+			Customer c = library.addCustomer(new Customer(getTextContentOf(customer, "name"), getTextContentOf(customer, "surname"),
+					getTextContentOf(customer, "street"), getTextContentOf(customer, "city"), Integer.parseInt(getTextContentOf(customer,
+							"zip"))));
 		}
 	}
 
