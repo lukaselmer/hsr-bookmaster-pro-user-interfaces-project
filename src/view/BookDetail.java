@@ -231,4 +231,9 @@ public class BookDetail extends Observable {
 		scrBooks.setViewportView(lstBooks);
 		pnlCopies.setLayout(gl_pnlCopies);
 	}
+
+	public void toFront() {
+		getFrame().setState(JFrame.NORMAL);
+		getFrame().toFront();
+	}
 }

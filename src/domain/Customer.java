@@ -12,6 +12,15 @@ public class Customer extends Observable {
 		this.surname = surname;
 	}
 
+	public Customer(String name, String surname, String street, String city, int zip) {
+		super();
+		this.name = name;
+		this.surname = surname;
+		this.street = street;
+		this.city = city;
+		this.zip = zip;
+	}
+
 	public void setAdress(String street, int zip, String city) {
 		this.street = street;
 		this.zip = zip;

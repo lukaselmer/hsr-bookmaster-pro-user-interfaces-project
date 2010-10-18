@@ -85,6 +85,7 @@ public class BookMaster implements Observer {
 	private JScrollPane scrollTblCustomers;
 	private JTable tblCustomers;
 	private BookMasterTableModelCustomer tblCustomersModel;
+	protected NewCustomerFrame newCustomerFrame;
 
 	/**
 	 * Launch the application.
@@ -447,6 +448,16 @@ public class BookMaster implements Observer {
 		showSelectedCustomers.setMnemonic('a');
 
 		JButton btnNewClient = new JButton("Neuer Kunde Erfassen");
+		btnNewClient.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent arg0) {
+				if (newCustomerFrame != null && newCustomerFrame.isValid()) {
+					newCustomerFrame.toFront();
+				} else {
+					newCustomerFrame = new NewCustomerFrame(library);
+				}
+			}
+		});
 		btnNewClient.setMnemonic('n');
 
 		JLabel lblAlleAusleighen = new JLabel("Alle Kunden sind in der untenstehenden Tabelle ersichtlich");
@@ -523,7 +534,7 @@ public class BookMaster implements Observer {
 		for (BookDetail bd : bookDetailFrames) {
 			if (bd.getBook().equals(b)) {
 				bookDetailOpen = true;
-				bd.getFrame().toFront();
+				bd.toFront();
 				break;
 			}
 		}
