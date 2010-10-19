@@ -44,18 +44,18 @@ public class NewCustomer {
 	/**
 	 * Launch the application.
 	 */
-	// public static void main(String[] args) {
-	// EventQueue.invokeLater(new Runnable() {
-	// public void run() {
-	// try {
-	// UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-	// new NewCustomer(LibraryApp.inst());
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// }
-	// });
-	// }
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
+					new NewCustomer(LibraryApp.inst());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	/**
 	 * Create the application.
@@ -125,19 +125,19 @@ public class NewCustomer {
 		txtName = new JTextField();
 		lblName.setLabelFor(txtName);
 		txtName.setColumns(10);
-		txtName.setName("Customer.Name");
+		txtName.setName("Kunde.Vorname");
 		ValidationComponentUtils.setMandatoryBackground(txtName);
 
 		txtSurname = new JTextField();
 		lblSurname.setLabelFor(txtSurname);
 		txtSurname.setColumns(10);
-		txtSurname.setName("Customer.Surname");
+		txtSurname.setName("Kunde.Nachname");
 		ValidationComponentUtils.setMandatoryBackground(txtSurname);
 
 		txtStreet = new JTextField();
 		lblStreet.setLabelFor(txtStreet);
 		txtStreet.setColumns(10);
-		txtStreet.setName("Customer.Street");
+		txtStreet.setName("Kunde.Strasse");
 		ValidationComponentUtils.setMandatoryBackground(txtStreet);
 
 		// MaskFormatter formatter = new MaskFormatter("####");
@@ -145,13 +145,13 @@ public class NewCustomer {
 		txtZip = new JTextField();
 		lblZip.setLabelFor(txtZip);
 		txtZip.setColumns(10);
-		txtZip.setName("Customer.Zip");
+		txtZip.setName("Kunde.PLZ");
 		ValidationComponentUtils.setMandatoryBackground(txtZip);
 
 		txtCity = new JTextField();
 		lblCity.setLabelFor(txtCity);
 		txtCity.setColumns(10);
-		txtCity.setName("Customer.City");
+		txtCity.setName("Kunde.Stadt");
 		ValidationComponentUtils.setMandatoryBackground(txtCity);
 
 		JTextField[] fields = { txtName, txtCity, txtStreet, txtSurname, txtZip };
@@ -251,12 +251,15 @@ public class NewCustomer {
 	private Customer validateForm(JTextField f) {
 		Customer c = createCustomer();
 		ValidationResult customerValidation = new CustomerValidator().validate(c);
+		btnSave.setToolTipText(customerValidation.hasErrors() ? "<html>" + customerValidation.getMessagesText().replaceAll("\n", "<br/>")
+				+ "</html>" : null);
 		btnSave.setEnabled(!customerValidation.hasErrors());
 		if (f != null) {
 			ValidationResult fieldValidation = customerValidation.subResult(f.getName());
 			if (fieldValidation.hasErrors()) {
 				ValidationComponentUtils.setErrorBackground(f);
 				f.setToolTipText(fieldValidation.getMessagesText().replaceFirst(f.getName() + " ", ""));
+				
 			} else {
 				f.setBackground(Color.WHITE);
 				f.setToolTipText(null);
