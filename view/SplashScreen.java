@@ -43,7 +43,7 @@ public class SplashScreen {
 		label.setPreferredSize(new Dimension(100, 100));
 		content.add(label, BorderLayout.NORTH);
 
-		fan = new FanComponent(10, Color.green);
+		fan = new FanComponent(10, Color.GREEN);
 		content.add(fan, BorderLayout.CENTER);
 
 		win.setVisible(true);
