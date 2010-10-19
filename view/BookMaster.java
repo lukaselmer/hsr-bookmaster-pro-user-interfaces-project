@@ -270,7 +270,7 @@ public class BookMaster implements Observer {
 		tblBooks.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent mouseEvent) {
-				if (mouseEvent.getClickCount() == 2) {
+				if (mouseEvent.getClickCount() == 2 && mouseEvent.getButton() == MouseEvent.BUTTON1) {
 					Book b = getSelectedBook();
 					if (b != null) {
 						createBookDetailFrame(b);
