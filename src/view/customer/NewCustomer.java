@@ -28,8 +28,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 
-import validator.ObjectValidator;
 import validators.CustomerValidator;
+import validators.FormValidator;
 import application.LibraryApp;
 
 import com.jgoodies.validation.ValidationResult;
@@ -53,7 +53,7 @@ public class NewCustomer {
 	private JButton btnSave;
 	// private JDialog popup;
 	// private JLabel popupMessage;
-	private ObjectValidator<Customer> objectValidator;
+	private FormValidator<Customer> objectValidator;
 
 	/**
 	 * Launch the application.
@@ -184,7 +184,7 @@ public class NewCustomer {
 		btnSave.setEnabled(false);
 
 		JTextField[] fields = { txtName, txtCity, txtStreet, txtSurname, txtZip };
-		objectValidator = new ObjectValidator<Customer>(frmNeuerKunde, fields, new CustomerValidator(), btnSave) {
+		objectValidator = new FormValidator<Customer>(frmNeuerKunde, fields, new CustomerValidator(), btnSave) {
 			@Override
 			public Customer createObject() {
 				Integer zip = null;

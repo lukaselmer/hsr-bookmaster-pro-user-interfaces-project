@@ -1,4 +1,4 @@
-package validator;
+package validators;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -24,7 +24,7 @@ import com.jgoodies.validation.view.ValidationResultViewFactory;
 
 import domain.Customer;
 
-public abstract class ObjectValidator<T> {
+public abstract class FormValidator<T> {
 
 	protected JDialog popup;
 	protected JLabel popupMessage;
@@ -32,7 +32,7 @@ public abstract class ObjectValidator<T> {
 	protected Validator<T> validator;
 	private JComponent btnSave;
 
-	public ObjectValidator(JFrame frmNeuerKunde, JTextField[] fields, Validator<T> validator, JButton btnSave) {
+	public FormValidator(JFrame frmNeuerKunde, JTextField[] fields, Validator<T> validator, JButton btnSave) {
 		this.validator = validator;
 		// this.fields = fields;
 		this.btnSave = btnSave;
