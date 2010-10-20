@@ -27,7 +27,7 @@ import com.jgoodies.validation.view.ValidationComponentUtils;
 import domain.Customer;
 import domain.Library;
 
-public class NewCustomer {
+public class CustomerNew {
 
 	private JFrame frmNeuerKunde;
 	private Library library;
@@ -37,8 +37,6 @@ public class NewCustomer {
 	private JTextField txtZip;
 	private JTextField txtCity;
 	private JButton btnSave;
-	// private JDialog popup;
-	// private JLabel popupMessage;
 	private FormValidator<Customer> formValidator;
 
 	/**
@@ -49,7 +47,7 @@ public class NewCustomer {
 			public void run() {
 				try {
 					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-					new NewCustomer(LibraryApp.inst());
+					new CustomerNew(LibraryApp.inst());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -64,7 +62,7 @@ public class NewCustomer {
 	 * 
 	 * @param library
 	 */
-	public NewCustomer(Library library) {
+	public CustomerNew(Library library) {
 		this.library = library;
 		try {
 			initialize();

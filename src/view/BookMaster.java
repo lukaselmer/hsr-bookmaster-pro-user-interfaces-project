@@ -44,7 +44,7 @@ import javax.swing.table.TableRowSorter;
 import view.book_master.BookMasterTableModelBook;
 import view.book_master.BookMasterTableModelCustomer;
 import view.book_master.BookMasterTableModelLoan;
-import view.customer.NewCustomer;
+import view.customer.CustomerNew;
 import application.LibraryApp;
 import domain.Book;
 import domain.Library;
@@ -80,7 +80,7 @@ public class BookMaster implements Observer {
 	private JScrollPane scrollTblCustomers;
 	private JTable tblCustomers;
 	private BookMasterTableModelCustomer tblCustomersModel;
-	protected NewCustomer newCustomerFrame;
+	protected CustomerNew newCustomerFrame;
 	private JButton btnShowSelectedBooks;
 	private JButton btnShowSelectedLoans;
 	private JButton btnShowSelectedCustomers;
@@ -461,7 +461,7 @@ public class BookMaster implements Observer {
 				if (newCustomerFrame != null && newCustomerFrame.isValid()) {
 					newCustomerFrame.toFront();
 				} else {
-					newCustomerFrame = new NewCustomer(library);
+					newCustomerFrame = new CustomerNew(library);
 				}
 			}
 		});
