@@ -5,7 +5,7 @@ import java.util.Observable;
 public class Customer extends Observable {
 
 	private String name, surname, street, city;
-	private int zip;
+	private Integer zip;
 
 	public Customer() {
 	}
@@ -15,7 +15,7 @@ public class Customer extends Observable {
 		this.surname = surname;
 	}
 
-	public Customer(String name, String surname, String street, String city, int zip) {
+	public Customer(String name, String surname, String street, String city, Integer zip) {
 		super();
 		this.name = name;
 		this.surname = surname;
@@ -24,7 +24,7 @@ public class Customer extends Observable {
 		this.zip = zip;
 	}
 
-	public void setAdress(String street, int zip, String city) {
+	public void setAdress(String street, Integer zip, String city) {
 		this.street = street;
 		this.zip = zip;
 		this.city = city;
@@ -72,11 +72,11 @@ public class Customer extends Observable {
 		notifyObservers();
 	}
 
-	public int getZip() {
+	public Integer getZip() {
 		return zip;
 	}
 
-	public void setZip(int zip) {
+	public void setZip(Integer zip) {
 		this.zip = zip;
 		setChanged();
 		notifyObservers();

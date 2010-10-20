@@ -64,6 +64,10 @@ public abstract class ObjectValidator<T> {
 					validateForm(f);
 				}
 			});
+			if(ValidationComponentUtils.isMandatory(f) && f.getText().length() == 0){
+				ValidationComponentUtils.setMandatoryBackground(f);
+				f.setToolTipText("Muss ausgefüllt werden");
+			}
 		}
 	}
 
@@ -75,7 +79,12 @@ public abstract class ObjectValidator<T> {
 		btnSave.setEnabled(!validation.hasErrors());
 		if (f != null) {
 			ValidationResult fieldValidation = validation.subResult(f.getName());
-			if (fieldValidation.hasErrors()) {
+			if(ValidationComponentUtils.isMandatory(f) && f.getText().length() == 0){
+				ValidationComponentUtils.setMandatoryBackground(f);
+				f.setToolTipText("Muss ausgefüllt werden");
+				hidePopup();
+			}
+			else if (fieldValidation.hasErrors()) {
 				ValidationComponentUtils.setErrorBackground(f);
 				String message = fieldValidation.getMessagesText().replaceFirst(f.getName() + " ", "");
 				f.setToolTipText(message);

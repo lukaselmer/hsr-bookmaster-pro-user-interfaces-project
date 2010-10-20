@@ -13,7 +13,7 @@ public class CustomerTest extends TestCase {
 		assertEquals("Heinz", cu1.getSurname());
 
 		assertEquals("Zelgweg 12", cu1.getStreet());
-		assertEquals(8000, cu1.getZip());
+		assertEquals(new Integer(8000), cu1.getZip());
 		assertEquals("Z�rich", cu1.getCity());
 	}
 
