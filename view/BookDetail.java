@@ -226,6 +226,11 @@ public class BookDetail extends Observable {
 			public Object getElementAt(int index) {
 				return library.getCopiesOfBook(book).get(index);
 			}
+			@Override
+			public String toString() {
+				String text = "13";
+				return text;
+			}
 		});
 
 		scrBooks.setViewportView(lstBooks);
