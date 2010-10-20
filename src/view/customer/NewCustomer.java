@@ -46,6 +46,8 @@ public class NewCustomer {
 	private JTextField txtZip;
 	private JTextField txtCity;
 	private JButton btnSave;
+	private JDialog popup;
+	private JLabel popupMessage;
 
 	/**
 	 * Launch the application.
@@ -102,6 +104,15 @@ public class NewCustomer {
 		frmNeuerKunde.setBounds(100, 100, 450, 256);
 		frmNeuerKunde.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmNeuerKunde.setResizable(false);
+
+		popup = new JDialog(frmNeuerKunde);
+		popupMessage = new JLabel("");
+		popup.getContentPane().setLayout(new FlowLayout());
+		popup.setUndecorated(true);
+		popup.getContentPane().setBackground(Color.ORANGE);
+		// popup.getContentPane().add(image);
+		popup.getContentPane().add(popupMessage);
+		popup.setFocusableWindowState(false);
 
 		JPanel panel_1 = new JPanel();
 		frmNeuerKunde.getContentPane().add(panel_1, BorderLayout.NORTH);
@@ -266,30 +277,20 @@ public class NewCustomer {
 				ValidationComponentUtils.setErrorBackground(f);
 				String message = fieldValidation.getMessagesText().replaceFirst(f.getName() + " ", "");
 				f.setToolTipText(message);
-				//Object parent = f.getParent();
-		        
-				JDialog popup = new JDialog(frmNeuerKunde);
-				
-				popup.getContentPane().setLayout(new FlowLayout());
-		        popup.setUndecorated(true);
-		        popup.getContentPane().setBackground(Color.YELLOW);
-		        //popup.getContentPane().add(image);
-		        popup.getContentPane().add(new JLabel(message));
-		        popup.setFocusableWindowState(false);
 
-	            popup.setSize(0, 0);
-	            popup.setLocationRelativeTo(f);
-	            Point point = popup.getLocation();
-	            Dimension cDim = f.getSize();
-	            popup.setLocation(point.x-(int)cDim.getWidth()/2,
-	                point.y+(int)cDim.getHeight()/2);
-	            popup.pack();
-	            popup.setVisible(true);
-
-				
+				popupMessage.setText(message);
+				popup.setSize(0, 0);
+				popup.setLocationRelativeTo(f);
+				Point point = popup.getLocation();
+				Dimension cDim = f.getSize();
+				popup.setLocation(point.x - (int) cDim.getWidth() / 2, point.y + (int) cDim.getHeight() / 2);
+				popup.pack();
+				popup.setVisible(true);
 			} else {
 				f.setBackground(Color.WHITE);
 				f.setToolTipText(null);
+				popup.setVisible(false);
+				popupMessage.setText("");
 			}
 		}
 		return customerValidation.hasErrors() ? null : c;
