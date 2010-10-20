@@ -1,43 +1,60 @@
 package view.customer;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.ParseException;
+import java.util.Observable;
+import java.util.Observer;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.CellRendererPane;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
 
+import sun.swing.DefaultLookup;
 import validators.CustomerValidator;
 import validators.FormValidator;
 import application.LibraryApp;
 
+import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.validation.view.ValidationComponentUtils;
 
+import domain.Copy;
 import domain.Customer;
 import domain.Library;
 
-public abstract class CustomerForm {
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
-	private JFrame frmNeuerKunde;
-	private Library library;
-	private JTextField txtSurname;
-	private JTextField txtName;
-	private JTextField txtStreet;
-	private JTextField txtZip;
-	private JTextField txtCity;
-	private JButton btnSave;
-	private FormValidator<Customer> formValidator;
+public abstract class CustomerForm extends Observable {
+
+	protected JFrame frmCustomerForm;
+	protected Library library;
+	protected JTextField txtSurname;
+	protected JTextField txtName;
+	protected JTextField txtStreet;
+	protected JTextField txtZip;
+	protected JTextField txtCity;
+	protected JButton btnSave;
+	protected FormValidator<Customer> formValidator;
 
 	/**
 	 * Launch the application.
@@ -55,6 +72,12 @@ public abstract class CustomerForm {
 		});
 	}
 
+	protected abstract String getWindowTitle();
+
+	protected abstract String getSaveButtonTitle();
+
+	protected abstract void saveCustomer(Customer c);
+
 	/**
 	 * Create the application.
 	 * 
@@ -69,20 +92,19 @@ public abstract class CustomerForm {
 			initialize();
 		} catch (ParseException e) {
 			e.printStackTrace();
-			frmNeuerKunde.dispose();
+			frmCustomerForm.dispose();
 		}
-		frmNeuerKunde.setLocationByPlatform(true);
-		frmNeuerKunde.setVisible(true);
+		frmCustomerForm.setLocationByPlatform(true);
+		frmCustomerForm.setVisible(true);
 	}
 
-	
 	public boolean isValid() {
-		return frmNeuerKunde.isValid();
+		return frmCustomerForm.isValid();
 	}
 
 	public void toFront() {
-		frmNeuerKunde.setState(JFrame.NORMAL);
-		frmNeuerKunde.toFront();
+		frmCustomerForm.setState(JFrame.NORMAL);
+		frmCustomerForm.toFront();
 	}
 
 	/**
@@ -91,21 +113,22 @@ public abstract class CustomerForm {
 	 * @throws ParseException
 	 */
 	private void initialize() throws ParseException {
-		frmNeuerKunde = new JFrame();
-		frmNeuerKunde.setTitle("Neuer Kunde");
-		frmNeuerKunde.setBounds(100, 100, 450, 256);
-		frmNeuerKunde.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frmNeuerKunde.setResizable(false);
-
-		JPanel panel_1 = new JPanel();
-		frmNeuerKunde.getContentPane().add(panel_1, BorderLayout.NORTH);
-
-		JLabel lblNeuerKunde = new JLabel("Neuer Kunde");
-		panel_1.add(lblNeuerKunde);
-		lblNeuerKunde.setFont(new Font("Tahoma", Font.BOLD, 14));
+		frmCustomerForm = new JFrame();
+		frmCustomerForm.setTitle(getWindowTitle());
+		frmCustomerForm.setBounds(100, 100, 450, 256);
+		frmCustomerForm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmCustomerForm.setResizable(false);
+		frmCustomerForm.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent arg0) {
+				setChanged();
+				notifyObservers();
+			}
+		});
 
 		JPanel panel = new JPanel();
-		frmNeuerKunde.getContentPane().add(panel, BorderLayout.CENTER);
+		panel.setBorder(new TitledBorder(null, getWindowTitle(), TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		frmCustomerForm.getContentPane().add(panel, BorderLayout.CENTER);
 
 		JLabel lblName = new JLabel("Vorname:");
 		lblName.setDisplayedMnemonic('v');
@@ -154,23 +177,21 @@ public abstract class CustomerForm {
 		txtCity.setName("Kunde.Stadt");
 		ValidationComponentUtils.setMandatory(txtCity, true);
 
-		btnSave = new JButton("Kunde Erstellen");
+		btnSave = new JButton(getSaveButtonTitle());
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Customer c = formValidator.validateForm(null);
 				if (c == null) {
 					throw new RuntimeException("Bad state");
 				}
-				library.addCustomer(c);
-				JOptionPane.showMessageDialog(frmNeuerKunde, "Kunde wurde erfolgreich erstellt und der Kundentabelle hinzugefügt.",
-						"Hinweis", JOptionPane.INFORMATION_MESSAGE);
-				frmNeuerKunde.dispose();
+				saveCustomer(c);
+				frmCustomerForm.dispose();
 			}
 		});
 		btnSave.setEnabled(false);
 
 		JTextField[] fields = { txtName, txtCity, txtStreet, txtSurname, txtZip };
-		formValidator = new FormValidator<Customer>(frmNeuerKunde, fields, new CustomerValidator(), btnSave) {
+		formValidator = new FormValidator<Customer>(frmCustomerForm, fields, new CustomerValidator(), btnSave) {
 			@Override
 			public Customer createObject() {
 				Integer zip = null;
@@ -185,7 +206,7 @@ public abstract class CustomerForm {
 		JButton btnCancel = new JButton("Abbrechen");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frmNeuerKunde.dispose();
+				frmCustomerForm.dispose();
 			}
 		});
 
