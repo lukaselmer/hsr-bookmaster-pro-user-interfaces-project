@@ -87,4 +87,14 @@ public class Customer extends Observable {
 		return name + " " + surname + " , " + street + " , " + zip + " " + city;
 	}
 
+	public void updateValues(Customer c) {
+		name = c.name;
+		surname = c.surname;
+		street = c.street;
+		city = c.city;
+		zip = c.zip;
+		setChanged();
+		notifyObservers();
+	}
+
 }

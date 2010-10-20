@@ -44,9 +44,11 @@ import javax.swing.table.TableRowSorter;
 import view.book_master.BookMasterTableModelBook;
 import view.book_master.BookMasterTableModelCustomer;
 import view.book_master.BookMasterTableModelLoan;
+import view.customer.CustomerEdit;
 import view.customer.CustomerNew;
 import application.LibraryApp;
 import domain.Book;
+import domain.Customer;
 import domain.Library;
 import domain.Loan;
 
@@ -60,6 +62,7 @@ public class BookMaster implements Observer {
 	private BookMasterTableModelBook tblBooksModel;
 	private BookMasterTableModelLoan tblLoansModel;
 	private List<BookDetail> bookDetailFrames = new ArrayList<BookDetail>();
+	private List<CustomerEdit> customerDetailFrames = new ArrayList<CustomerEdit>();
 	private JCheckBox chckbxAvailibleOnly;
 	private JScrollPane scrollTblBooks;
 	private JLabel lblBooksAmountNum;
@@ -88,14 +91,14 @@ public class BookMaster implements Observer {
 	/**
 	 * Launch the application.
 	 */
-	// public static void main(String[] args) throws Exception {
-	// UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-	// EventQueue.invokeLater(new Runnable() {
-	// public void run() {
-	// new BookMaster(LibraryApp.inst());
-	// }
-	// });
-	// }
+	public static void main(String[] args) throws Exception {
+		UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				new BookMaster(LibraryApp.inst());
+			}
+		});
+	}
 
 	/**
 	 * Create the application.
@@ -453,6 +456,14 @@ public class BookMaster implements Observer {
 		btnShowSelectedCustomers = new JButton("Selektierte Anzeigen");
 		btnShowSelectedCustomers.setEnabled(false);
 		btnShowSelectedCustomers.setMnemonic('a');
+		btnShowSelectedCustomers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				List<Customer> customers = getSelectedCustomers();
+				for (Customer b : customers) {
+					createCustomerDetailFrame(b);
+				}
+			}
+		});
 
 		JButton btnNewClient = new JButton("Neuer Kunde Erfassen");
 		btnNewClient.addActionListener(new ActionListener() {
@@ -507,6 +518,17 @@ public class BookMaster implements Observer {
 		pnlCustomerLoan.add(scrollTblCustomers, BorderLayout.CENTER);
 
 		initTblCustomers();
+		tblCustomers.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent mouseEvent) {
+				if (mouseEvent.getClickCount() == 2 && mouseEvent.getButton() == MouseEvent.BUTTON1) {
+					Customer c = getSelectedCustomer();
+					if (c != null) {
+						createCustomerDetailFrame(c);
+					}
+				}
+			}
+		});
 		scrollTblCustomers.setViewportView(tblCustomers);
 	}
 
@@ -514,6 +536,14 @@ public class BookMaster implements Observer {
 		List<Book> lst = new ArrayList<Book>();
 		for (int row : tblBooks.getSelectedRows()) {
 			lst.add(getBookOfRow(row));
+		}
+		return lst;
+	}
+
+	protected List<Customer> getSelectedCustomers() {
+		List<Customer> lst = new ArrayList<Customer>();
+		for (int row : tblCustomers.getSelectedRows()) {
+			lst.add(getCustomerOfRow(row));
 		}
 		return lst;
 	}
@@ -548,6 +578,22 @@ public class BookMaster implements Observer {
 		if (!bookDetailOpen) {
 			BookDetail bd = new BookDetail(library, b);
 			bookDetailFrames.add(bd);
+			bd.addObserver(this);
+		}
+	}
+
+	protected void createCustomerDetailFrame(Customer c) {
+		boolean detailOpen = false;
+		for (CustomerEdit bd : customerDetailFrames) {
+			if (bd.getCustomer().equals(c)) {
+				detailOpen = true;
+				bd.toFront();
+				break;
+			}
+		}
+		if (!detailOpen) {
+			CustomerEdit bd = new CustomerEdit(library, c);
+			customerDetailFrames.add(bd);
 			bd.addObserver(this);
 		}
 	}
@@ -716,9 +762,22 @@ public class BookMaster implements Observer {
 		return null;
 	}
 
+	protected Customer getSelectedCustomer() {
+		int row = tblCustomers.getSelectedRow();
+		if (row != -1) {
+			return getCustomerOfRow(row);
+		}
+		return null;
+	}
+
 	protected Book getBookOfRow(int row) {
 		row = tblBooks.convertRowIndexToModel(row);
 		return (Book) tblBooks.getModel().getValueAt(row, -1);
+	}
+
+	protected Customer getCustomerOfRow(int row) {
+		row = tblCustomers.convertRowIndexToModel(row);
+		return (Customer) tblCustomers.getModel().getValueAt(row, -1);
 	}
 
 	@Override
@@ -727,6 +786,12 @@ public class BookMaster implements Observer {
 			BookDetail bd = (BookDetail) observable;
 			if (!bd.getFrame().isValid()) {
 				bookDetailFrames.remove(bd);
+			}
+		}
+		if (observable instanceof CustomerEdit) {
+			CustomerEdit bd = (CustomerEdit) observable;
+			if (!bd.getFrame().isValid()) {
+				customerDetailFrames.remove(bd);
 			}
 		} else if (observable instanceof Library) {
 			// update books

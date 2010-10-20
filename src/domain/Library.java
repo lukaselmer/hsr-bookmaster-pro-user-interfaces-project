@@ -234,6 +234,12 @@ public class Library extends Observable {
 		return c;
 	}
 
+	public void updateCustomer(Customer customer, Customer c) {
+		customer.updateValues(c);
+		setChanged();
+		notifyObservers();
+	}
+
 	public void removeCopy(Copy copy) {
 		// TODO implement this
 	}

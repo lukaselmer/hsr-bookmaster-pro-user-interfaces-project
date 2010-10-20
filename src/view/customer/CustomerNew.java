@@ -45,4 +45,21 @@ public class CustomerNew extends CustomerForm {
 	public CustomerNew(Library library) {
 		super(library);
 	}
+
+	@Override
+	protected String getWindowTitle() {
+		return "Neuer Kunde";
+	}
+
+	@Override
+	protected String getSaveButtonTitle() {
+		return "Kunde Erstellen";
+	}
+
+	@Override
+	protected void saveCustomer(Customer c) {
+		library.addCustomer(c);
+		JOptionPane.showMessageDialog(frmCustomerForm, "Kunde wurde erfolgreich erstellt und der Kundentabelle hinzugefügt.",
+				"Hinweis", JOptionPane.INFORMATION_MESSAGE);
+	}
 }
