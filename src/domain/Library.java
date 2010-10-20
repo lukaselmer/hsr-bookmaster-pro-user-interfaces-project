@@ -234,4 +234,8 @@ public class Library extends Observable {
 		return c;
 	}
 
+	public void removeCopy(Copy copy) {
+		// TODO implement this
+	}
+
 }
