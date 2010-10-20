@@ -1,45 +1,31 @@
 package view.customer;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Frame;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.text.ParseException;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 
 import validators.CustomerValidator;
 import validators.FormValidator;
 import application.LibraryApp;
 
-import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.view.ValidationComponentUtils;
-import com.jgoodies.validation.view.ValidationResultViewFactory;
 
 import domain.Customer;
 import domain.Library;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 
 public class NewCustomer {
 
@@ -53,7 +39,7 @@ public class NewCustomer {
 	private JButton btnSave;
 	// private JDialog popup;
 	// private JLabel popupMessage;
-	private FormValidator<Customer> objectValidator;
+	private FormValidator<Customer> formValidator;
 
 	/**
 	 * Launch the application.
@@ -171,7 +157,7 @@ public class NewCustomer {
 		btnSave = new JButton("Kunde Erstellen");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Customer c = objectValidator.validateForm(null);
+				Customer c = formValidator.validateForm(null);
 				if (c == null) {
 					throw new RuntimeException("Bad state");
 				}
@@ -184,7 +170,7 @@ public class NewCustomer {
 		btnSave.setEnabled(false);
 
 		JTextField[] fields = { txtName, txtCity, txtStreet, txtSurname, txtZip };
-		objectValidator = new FormValidator<Customer>(frmNeuerKunde, fields, new CustomerValidator(), btnSave) {
+		formValidator = new FormValidator<Customer>(frmNeuerKunde, fields, new CustomerValidator(), btnSave) {
 			@Override
 			public Customer createObject() {
 				Integer zip = null;
