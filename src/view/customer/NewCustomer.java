@@ -16,6 +16,7 @@ import java.text.ParseException;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -27,14 +28,18 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 
+import validator.ObjectValidator;
 import validators.CustomerValidator;
 import application.LibraryApp;
 
 import com.jgoodies.validation.ValidationResult;
 import com.jgoodies.validation.view.ValidationComponentUtils;
+import com.jgoodies.validation.view.ValidationResultViewFactory;
 
 import domain.Customer;
 import domain.Library;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class NewCustomer {
 
@@ -46,8 +51,9 @@ public class NewCustomer {
 	private JTextField txtZip;
 	private JTextField txtCity;
 	private JButton btnSave;
-	private JDialog popup;
-	private JLabel popupMessage;
+	// private JDialog popup;
+	// private JLabel popupMessage;
+	private ObjectValidator<Customer> objectValidator;
 
 	/**
 	 * Launch the application.
@@ -104,15 +110,6 @@ public class NewCustomer {
 		frmNeuerKunde.setBounds(100, 100, 450, 256);
 		frmNeuerKunde.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmNeuerKunde.setResizable(false);
-
-		popup = new JDialog(frmNeuerKunde);
-		popupMessage = new JLabel("");
-		popup.getContentPane().setLayout(new FlowLayout());
-		popup.setUndecorated(true);
-		popup.getContentPane().setBackground(Color.ORANGE);
-		// popup.getContentPane().add(image);
-		popup.getContentPane().add(popupMessage);
-		popup.setFocusableWindowState(false);
 
 		JPanel panel_1 = new JPanel();
 		frmNeuerKunde.getContentPane().add(panel_1, BorderLayout.NORTH);
@@ -171,20 +168,10 @@ public class NewCustomer {
 		txtCity.setName("Kunde.Stadt");
 		ValidationComponentUtils.setMandatoryBackground(txtCity);
 
-		JTextField[] fields = { txtName, txtCity, txtStreet, txtSurname, txtZip };
-		for (final JTextField f : fields) {
-			f.addKeyListener(new KeyAdapter() {
-				@Override
-				public void keyReleased(KeyEvent e) {
-					validateForm(f);
-				}
-			});
-		}
-
 		btnSave = new JButton("Kunde Erstellen");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Customer c = validateForm(null);
+				Customer c = objectValidator.validateForm(null);
 				if (c == null) {
 					throw new RuntimeException("Bad state");
 				}
@@ -195,6 +182,19 @@ public class NewCustomer {
 			}
 		});
 		btnSave.setEnabled(false);
+
+		JTextField[] fields = { txtName, txtCity, txtStreet, txtSurname, txtZip };
+		objectValidator = new ObjectValidator<Customer>(frmNeuerKunde, fields, new CustomerValidator(), btnSave) {
+			@Override
+			public Customer createObject() {
+				int zip = 0;
+				try {
+					zip = Integer.parseInt(txtZip.getText());
+				} catch (NumberFormatException ex) {
+				}
+				return new Customer(txtName.getText(), txtSurname.getText(), txtStreet.getText(), txtCity.getText(), zip);
+			}
+		};
 
 		JButton btnCancel = new JButton("Abbrechen");
 		btnCancel.addActionListener(new ActionListener() {
@@ -263,45 +263,5 @@ public class NewCustomer {
 						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE).addComponent(btnSave).addComponent(btnCancel))
 						.addContainerGap(58, Short.MAX_VALUE)));
 		panel.setLayout(gl_panel);
-	}
-
-	private Customer validateForm(JTextField f) {
-		Customer c = createCustomer();
-		ValidationResult customerValidation = new CustomerValidator().validate(c);
-		btnSave.setToolTipText(customerValidation.hasErrors() ? "<html>" + customerValidation.getMessagesText().replaceAll("\n", "<br/>")
-				+ "</html>" : null);
-		btnSave.setEnabled(!customerValidation.hasErrors());
-		if (f != null) {
-			ValidationResult fieldValidation = customerValidation.subResult(f.getName());
-			if (fieldValidation.hasErrors()) {
-				ValidationComponentUtils.setErrorBackground(f);
-				String message = fieldValidation.getMessagesText().replaceFirst(f.getName() + " ", "");
-				f.setToolTipText(message);
-
-				popupMessage.setText(message);
-				popup.setSize(0, 0);
-				popup.setLocationRelativeTo(f);
-				Point point = popup.getLocation();
-				Dimension cDim = f.getSize();
-				popup.setLocation(point.x - (int) cDim.getWidth() / 2, point.y + (int) cDim.getHeight() / 2);
-				popup.pack();
-				popup.setVisible(true);
-			} else {
-				f.setBackground(Color.WHITE);
-				f.setToolTipText(null);
-				popup.setVisible(false);
-				popupMessage.setText("");
-			}
-		}
-		return customerValidation.hasErrors() ? null : c;
-	}
-
-	private Customer createCustomer() {
-		int zip = 0;
-		try {
-			zip = Integer.parseInt(txtZip.getText());
-		} catch (NumberFormatException ex) {
-		}
-		return new Customer(txtName.getText(), txtSurname.getText(), txtStreet.getText(), txtCity.getText(), zip);
 	}
 }
