@@ -174,13 +174,13 @@ public class BookMaster implements Observer {
 										.addComponent(lblExemplarAmountNum).addComponent(lblExemplarAmount).addComponent(lblBooksAmount))));
 		pnlInventoryStatistics.setLayout(gl_pnlInventoryStatistics);
 
-		JPanel panel = new JPanel();
-		pnlBooks.add(panel, BorderLayout.CENTER);
-		panel.setLayout(new BorderLayout(0, 0));
+		JPanel pnlBookInventory = new JPanel();
+		pnlBooks.add(pnlBookInventory, BorderLayout.CENTER);
+		pnlBookInventory.setLayout(new BorderLayout(0, 0));
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "Buch Inventar", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel.add(panel_1, BorderLayout.NORTH);
+		pnlBookInventory.add(panel_1, BorderLayout.NORTH);
 
 		JLabel lblBookTableDescription = new JLabel("Alle Bücher in der Bibliothek sind in der  unterstehenden Tabelle ersichtlich");
 
@@ -264,7 +264,7 @@ public class BookMaster implements Observer {
 		panel_1.setLayout(gl_panel_1);
 
 		scrollTblBooks = new JScrollPane();
-		panel.add(scrollTblBooks, BorderLayout.CENTER);
+		pnlBookInventory.add(scrollTblBooks, BorderLayout.CENTER);
 
 		initTblBooks();
 		tblBooks.addMouseListener(new MouseAdapter() {
@@ -320,13 +320,13 @@ public class BookMaster implements Observer {
 										.addComponent(lblOverdueAmountNum))));
 		pnlLoanStatistics.setLayout(gl_pnlLoanStatistics);
 
-		JPanel panel_2 = new JPanel();
-		pnlLoans.add(panel_2, BorderLayout.CENTER);
-		panel_2.setLayout(new BorderLayout(0, 0));
+		JPanel pnlLoan = new JPanel();
+		pnlLoans.add(pnlLoan, BorderLayout.CENTER);
+		pnlLoan.setLayout(new BorderLayout(0, 0));
 
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new TitledBorder(null, "Erfasste Ausleihen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_2.add(panel_3, BorderLayout.NORTH);
+		pnlLoan.add(panel_3, BorderLayout.NORTH);
 
 		JLabel lblSearchLoans = new JLabel("Suche:");
 		lblSearchLoans.setDisplayedMnemonic('s');
@@ -396,7 +396,7 @@ public class BookMaster implements Observer {
 		panel_3.setLayout(gl_panel_3);
 
 		scrollTblLoans = new JScrollPane();
-		panel_2.add(scrollTblLoans, BorderLayout.CENTER);
+		pnlLoan.add(scrollTblLoans, BorderLayout.CENTER);
 
 		initTblLoans();
 		scrollTblLoans.setViewportView(tblLoans);
@@ -428,13 +428,13 @@ public class BookMaster implements Observer {
 										.addComponent(lblCustomersAmountNum))));
 		pnlCustomersStatistics.setLayout(gl_pnlCustomersStatistics);
 
-		JPanel panel_2 = new JPanel();
-		pnlCustomers.add(panel_2, BorderLayout.CENTER);
-		panel_2.setLayout(new BorderLayout(0, 0));
+		JPanel pnlCustomerLoan = new JPanel();
+		pnlCustomers.add(pnlCustomerLoan, BorderLayout.CENTER);
+		pnlCustomerLoan.setLayout(new BorderLayout(0, 0));
 
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new TitledBorder(null, "Erfasste Ausleihen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_2.add(panel_3, BorderLayout.NORTH);
+		pnlCustomerLoan.add(panel_3, BorderLayout.NORTH);
 
 		JLabel lblSearchCustomers = new JLabel("Suche:");
 		lblSearchCustomers.setDisplayedMnemonic('s');
@@ -504,7 +504,7 @@ public class BookMaster implements Observer {
 		panel_3.setLayout(gl_panel_3);
 
 		scrollTblCustomers = new JScrollPane();
-		panel_2.add(scrollTblCustomers, BorderLayout.CENTER);
+		pnlCustomerLoan.add(scrollTblCustomers, BorderLayout.CENTER);
 
 		initTblCustomers();
 		scrollTblCustomers.setViewportView(tblCustomers);
