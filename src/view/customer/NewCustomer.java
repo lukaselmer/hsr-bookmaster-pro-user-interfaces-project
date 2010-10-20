@@ -140,19 +140,19 @@ public class NewCustomer {
 		lblName.setLabelFor(txtName);
 		txtName.setColumns(10);
 		txtName.setName("Kunde.Vorname");
-		ValidationComponentUtils.setMandatoryBackground(txtName);
+		ValidationComponentUtils.setMandatory(txtName, true);
 
 		txtSurname = new JTextField();
 		lblSurname.setLabelFor(txtSurname);
 		txtSurname.setColumns(10);
 		txtSurname.setName("Kunde.Nachname");
-		ValidationComponentUtils.setMandatoryBackground(txtSurname);
+		ValidationComponentUtils.setMandatory(txtSurname, true);
 
 		txtStreet = new JTextField();
 		lblStreet.setLabelFor(txtStreet);
 		txtStreet.setColumns(10);
 		txtStreet.setName("Kunde.Strasse");
-		ValidationComponentUtils.setMandatoryBackground(txtStreet);
+		ValidationComponentUtils.setMandatory(txtStreet, true);
 
 		// MaskFormatter formatter = new MaskFormatter("####");
 		// txtZip = new JFormattedTextField(formatter);
@@ -160,13 +160,13 @@ public class NewCustomer {
 		lblZip.setLabelFor(txtZip);
 		txtZip.setColumns(10);
 		txtZip.setName("Kunde.PLZ");
-		ValidationComponentUtils.setMandatoryBackground(txtZip);
+		ValidationComponentUtils.setMandatory(txtZip, true);
 
 		txtCity = new JTextField();
 		lblCity.setLabelFor(txtCity);
 		txtCity.setColumns(10);
 		txtCity.setName("Kunde.Stadt");
-		ValidationComponentUtils.setMandatoryBackground(txtCity);
+		ValidationComponentUtils.setMandatory(txtCity, true);
 
 		btnSave = new JButton("Kunde Erstellen");
 		btnSave.addActionListener(new ActionListener() {
@@ -187,7 +187,7 @@ public class NewCustomer {
 		objectValidator = new ObjectValidator<Customer>(frmNeuerKunde, fields, new CustomerValidator(), btnSave) {
 			@Override
 			public Customer createObject() {
-				int zip = 0;
+				Integer zip = null;
 				try {
 					zip = Integer.parseInt(txtZip.getText());
 				} catch (NumberFormatException ex) {
