@@ -2,8 +2,12 @@ package view.customer;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -13,12 +17,14 @@ import java.text.ParseException;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 
 import validators.CustomerValidator;
@@ -258,7 +264,28 @@ public class NewCustomer {
 			ValidationResult fieldValidation = customerValidation.subResult(f.getName());
 			if (fieldValidation.hasErrors()) {
 				ValidationComponentUtils.setErrorBackground(f);
-				f.setToolTipText(fieldValidation.getMessagesText().replaceFirst(f.getName() + " ", ""));
+				String message = fieldValidation.getMessagesText().replaceFirst(f.getName() + " ", "");
+				f.setToolTipText(message);
+				//Object parent = f.getParent();
+		        
+				JDialog popup = new JDialog(frmNeuerKunde);
+				
+				popup.getContentPane().setLayout(new FlowLayout());
+		        popup.setUndecorated(true);
+		        popup.getContentPane().setBackground(Color.YELLOW);
+		        //popup.getContentPane().add(image);
+		        popup.getContentPane().add(new JLabel(message));
+		        popup.setFocusableWindowState(false);
+
+	            popup.setSize(0, 0);
+	            popup.setLocationRelativeTo(f);
+	            Point point = popup.getLocation();
+	            Dimension cDim = f.getSize();
+	            popup.setLocation(point.x-(int)cDim.getWidth()/2,
+	                point.y+(int)cDim.getHeight()/2);
+	            popup.pack();
+	            popup.setVisible(true);
+
 				
 			} else {
 				f.setBackground(Color.WHITE);
