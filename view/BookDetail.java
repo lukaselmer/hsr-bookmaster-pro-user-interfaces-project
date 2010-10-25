@@ -227,7 +227,9 @@ public class BookDetail extends Observable {
                        setForeground(list.getForeground());
                    }
                       
-                   setText(value.);
+                   Copy c = (Copy) value;
+                   setText(c.getInventoryNumber() + ": " + (c.isLent() ? "Ausgeliehen bis " + Loan.getFormattedDate(c.getCurrentLoan().getDueDate()) + " (noch "
+                		   + c.getCurrentLoan().getDaysOfExpectedLeftLoanDuration() + " Tage)" : "Verfügbar"));
 
                    setEnabled(list.isEnabled());
                    setFont(list.getFont());
@@ -241,19 +243,13 @@ public class BookDetail extends Observable {
                                border = DefaultLookup.getBorder(this, ui, "List.focusCellHighlightBorder");
                            }
                        } else {
-                           border = getNoFocusBorder();
+                           border = getBorder();
                        }
                    setBorder(border);
 
                    return this;
                    }
 		});
-		
-//		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-//			Copy c = (Copy) value;
-//			return new JLabel(c.getInventoryNumber() + ": " + (c.isLent() ? "Ausgeliehen bis " + Loan.getFormattedDate(c.getCurrentLoan().getDueDate()) + " (noch "
-//					+ c.getCurrentLoan().getDaysOfExpectedLeftLoanDuration() + " Tage)" : "Verfügbar"));
-//		}
 
 		lstBooks.setModel(new AbstractListModel() {
 			private static final long serialVersionUID = -7689939655782098398L;
@@ -287,7 +283,7 @@ public class BookDetail extends Observable {
 		JButton btnAddCopy = new JButton("Exemplar Hinzufügen");
 		btnAddCopy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-								
+				library.createAndAddCopy(book);			
 			}
 		});
 
