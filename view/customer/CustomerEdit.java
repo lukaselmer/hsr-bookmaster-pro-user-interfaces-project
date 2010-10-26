@@ -53,7 +53,7 @@ public class CustomerEdit extends CustomerForm implements SubFrame<Customer> {
 
 	@Override
 	protected void saveCustomer(Customer c) {
-		library.updateCustomer(customer, c);
+		customer.updateValues(c);
 		JOptionPane.showMessageDialog(frmCustomerForm, "Kunde wurde erfolgreich gespeichert.", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
 	}
 
