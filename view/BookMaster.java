@@ -62,7 +62,7 @@ public class BookMaster implements Observer {
 	private static final int INDEX_OF_BOOKS_TAB = 0, INDEX_OF_LOANS_TAB = 1, INDEX_OF_CUSTOMERS_TAB = 2;
 	private JFrame frmBookmaster;
 	private JTable tblBooks;
-	private JTextField txtSearchBooks;
+	private JTextField txtFilterBooks;
 	private Library library;
 	private BookMasterTableModelBook tblBooksModel;
 	private BookMasterTableModelLoan tblLoansModel;
@@ -72,7 +72,7 @@ public class BookMaster implements Observer {
 	private JScrollPane scrollTblBooks;
 	private JLabel lblBooksAmountNum;
 	private JLabel lblExemplarAmountNum;
-	private JTextField txtSearchLoans;
+	private JTextField txtFilterLoans;
 	private JTable tblLoans;
 	private JPanel pnlBooks;
 	private JPanel pnlLoans;
@@ -84,7 +84,7 @@ public class BookMaster implements Observer {
 	private JLabel lblOverdueAmountNum;
 	private JPanel pnlCustomers;
 	private JLabel lblCustomersAmountNum;
-	private JTextField txtSearchCustomers;
+	private JTextField txtFilterCustomers;
 	private JScrollPane scrollTblCustomers;
 	private JTable tblCustomers;
 	private BookMasterTableModelCustomer tblCustomersModel;
@@ -192,26 +192,26 @@ public class BookMaster implements Observer {
 
 		JLabel lblBookTableDescription = new JLabel("Alle Bücher in der Bibliothek sind in der  unterstehenden Tabelle ersichtlich");
 
-		txtSearchBooks = new JTextField();
-		txtSearchBooks.setToolTipText("Suchen nach Exemplar-IDs, Buchtitel, Regal, Author oder Verlag");
-		txtSearchBooks.addKeyListener(new KeyAdapter() {
+		txtFilterBooks = new JTextField();
+		txtFilterBooks.setToolTipText("Filtern nach Exemplar-IDs, Buchtitel, Regal, Author oder Verlag");
+		txtFilterBooks.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				searchAndUpdateBooks();
+				filterAndUpdateBooks();
 			}
 		});
-		txtSearchBooks.setColumns(10);
+		txtFilterBooks.setColumns(10);
 
-		JLabel lblSearchBooks = new JLabel("Suche:");
-		lblSearchBooks.setDisplayedMnemonic('s');
-		lblSearchBooks.setLabelFor(txtSearchBooks);
-		lblSearchBooks.setToolTipText("Suchen nach Exemplar-IDs, Buchtitel, Regal, Author oder Verlag");
+		JLabel lblFilterBooks = new JLabel("Filter:");
+		lblFilterBooks.setDisplayedMnemonic('s');
+		lblFilterBooks.setLabelFor(txtFilterBooks);
+		lblFilterBooks.setToolTipText("Filtern nach Exemplar-IDs, Buchtitel, Regal, Author oder Verlag");
 
 		chckbxAvailibleOnly = new JCheckBox("Nur Verfügbare");
 		chckbxAvailibleOnly.setMnemonic('v');
 		chckbxAvailibleOnly.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
-				searchAndUpdateBooks();
+				filterAndUpdateBooks();
 			}
 		});
 
@@ -247,8 +247,8 @@ public class BookMaster implements Observer {
 										.createParallelGroup(Alignment.LEADING)
 										.addComponent(lblBookTableDescription)
 										.addGroup(
-												gl_panel_1.createSequentialGroup().addComponent(lblSearchBooks).addGap(12)
-														.addComponent(txtSearchBooks, GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+												gl_panel_1.createSequentialGroup().addComponent(lblFilterBooks).addGap(12)
+														.addComponent(txtFilterBooks, GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
 														.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(chckbxAvailibleOnly)
 														.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnShowSelectedBooks)
 														.addGap(12).addComponent(btnAddNewBook))).addGap(6)));
@@ -265,9 +265,9 @@ public class BookMaster implements Observer {
 														gl_panel_1
 																.createSequentialGroup()
 																.addGap(1)
-																.addComponent(txtSearchBooks, GroupLayout.PREFERRED_SIZE,
+																.addComponent(txtFilterBooks, GroupLayout.PREFERRED_SIZE,
 																		GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-												.addComponent(lblSearchBooks).addComponent(chckbxAvailibleOnly)
+												.addComponent(lblFilterBooks).addComponent(chckbxAvailibleOnly)
 												.addComponent(btnShowSelectedBooks).addComponent(btnAddNewBook))));
 		panel_1.setLayout(gl_panel_1);
 
@@ -336,25 +336,25 @@ public class BookMaster implements Observer {
 		panel_3.setBorder(new TitledBorder(null, "Erfasste Ausleihen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		pnlLoan.add(panel_3, BorderLayout.NORTH);
 
-		JLabel lblSearchLoans = new JLabel("Suche:");
-		lblSearchLoans.setDisplayedMnemonic('s');
-		lblSearchLoans.setToolTipText("Suchen nach Status, Exemplar-ID, Buchtitel, Ausgeliehen Bis oder Ausgeliehen An");
+		JLabel lblFilterLoans = new JLabel("Filter:");
+		lblFilterLoans.setDisplayedMnemonic('s');
+		lblFilterLoans.setToolTipText("Filtern nach Status, Exemplar-ID, Buchtitel, Ausgeliehen Bis oder Ausgeliehen An");
 
-		txtSearchLoans = new JTextField();
-		txtSearchLoans.setToolTipText("Suchen nach Status, Exemplar-ID, Buchtitel, Ausgeliehen Bis oder Ausgeliehen An");
-		lblSearchLoans.setLabelFor(txtSearchLoans);
-		txtSearchLoans.addKeyListener(new KeyAdapter() {
+		txtFilterLoans = new JTextField();
+		txtFilterLoans.setToolTipText("Filtern nach Status, Exemplar-ID, Buchtitel, Ausgeliehen Bis oder Ausgeliehen An");
+		lblFilterLoans.setLabelFor(txtFilterLoans);
+		txtFilterLoans.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				searchAndUpdateLoans();
+				filterAndUpdateLoans();
 			}
 		});
-		txtSearchLoans.setColumns(10);
+		txtFilterLoans.setColumns(10);
 
 		chckbxOverduesOnly = new JCheckBox("Nur Überfällige");
 		chckbxOverduesOnly.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
-				searchAndUpdateLoans();
+				filterAndUpdateLoans();
 			}
 		});
 
@@ -375,8 +375,8 @@ public class BookMaster implements Observer {
 								gl_panel_3
 										.createParallelGroup(Alignment.LEADING)
 										.addGroup(
-												gl_panel_3.createSequentialGroup().addComponent(lblSearchLoans).addGap(12)
-														.addComponent(txtSearchLoans, GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
+												gl_panel_3.createSequentialGroup().addComponent(lblFilterLoans).addGap(12)
+														.addComponent(txtFilterLoans, GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
 														.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(chckbxOverduesOnly)
 														.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnShowSelectedLoans)
 														.addGap(12).addComponent(btnNeueAusleiheErfassen).addGap(6))
@@ -395,10 +395,10 @@ public class BookMaster implements Observer {
 												gl_panel_3
 														.createSequentialGroup()
 														.addGap(1)
-														.addComponent(txtSearchLoans, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+														.addComponent(txtFilterLoans, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 																GroupLayout.PREFERRED_SIZE))
 										.addGroup(
-												gl_panel_3.createParallelGroup(Alignment.BASELINE).addComponent(lblSearchLoans)
+												gl_panel_3.createParallelGroup(Alignment.BASELINE).addComponent(lblFilterLoans)
 														.addComponent(chckbxOverduesOnly).addComponent(btnShowSelectedLoans)
 														.addComponent(btnNeueAusleiheErfassen)))));
 		panel_3.setLayout(gl_panel_3);
@@ -444,19 +444,19 @@ public class BookMaster implements Observer {
 		panel_3.setBorder(new TitledBorder(null, "Erfasste Ausleihen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		pnlCustomerLoan.add(panel_3, BorderLayout.NORTH);
 
-		JLabel lblSearchCustomers = new JLabel("Suche:");
-		lblSearchCustomers.setDisplayedMnemonic('s');
-		lblSearchCustomers.setToolTipText("Suchen nach Vorname, Nachname, Strasse, Stadt oder PLZ");
+		JLabel lblFilterCustomers = new JLabel("Filter:");
+		lblFilterCustomers.setDisplayedMnemonic('s');
+		lblFilterCustomers.setToolTipText("Filtern nach Vorname, Nachname, Strasse, Stadt oder PLZ");
 
-		txtSearchCustomers = new JTextField();
-		lblSearchCustomers.setLabelFor(txtSearchCustomers);
-		txtSearchCustomers.addKeyListener(new KeyAdapter() {
+		txtFilterCustomers = new JTextField();
+		lblFilterCustomers.setLabelFor(txtFilterCustomers);
+		txtFilterCustomers.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				searchAndUpdateCustomers();
+				filterAndUpdateCustomers();
 			}
 		});
-		txtSearchCustomers.setColumns(10);
+		txtFilterCustomers.setColumns(10);
 
 		btnShowSelectedCustomers = new JButton("Selektierte Anzeigen");
 		btnShowSelectedCustomers.setEnabled(false);
@@ -493,8 +493,8 @@ public class BookMaster implements Observer {
 								gl_panel_3
 										.createParallelGroup(Alignment.LEADING)
 										.addGroup(
-												gl_panel_3.createSequentialGroup().addComponent(lblSearchCustomers).addGap(12)
-														.addComponent(txtSearchCustomers, GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
+												gl_panel_3.createSequentialGroup().addComponent(lblFilterCustomers).addGap(12)
+														.addComponent(txtFilterCustomers, GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
 														.addGap(12).addComponent(btnShowSelectedCustomers).addGap(12)
 														.addComponent(btnNewClient).addGap(6))
 										.addGroup(
@@ -512,10 +512,10 @@ public class BookMaster implements Observer {
 												gl_panel_3
 														.createSequentialGroup()
 														.addGap(1)
-														.addComponent(txtSearchCustomers, GroupLayout.PREFERRED_SIZE,
+														.addComponent(txtFilterCustomers, GroupLayout.PREFERRED_SIZE,
 																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 										.addGroup(
-												gl_panel_3.createParallelGroup(Alignment.BASELINE).addComponent(lblSearchCustomers)
+												gl_panel_3.createParallelGroup(Alignment.BASELINE).addComponent(lblFilterCustomers)
 														.addComponent(btnShowSelectedCustomers).addComponent(btnNewClient)))));
 		panel_3.setLayout(gl_panel_3);
 
@@ -553,20 +553,20 @@ public class BookMaster implements Observer {
 		return lst;
 	}
 
-	protected void searchAndUpdateBooks() {
-		tblBooksModel.updateBooks(library.searchBooks(txtSearchBooks.getText(), chckbxAvailibleOnly.isSelected()));
+	protected void filterAndUpdateBooks() {
+		tblBooksModel.updateBooks(library.filterBooks(txtFilterBooks.getText(), chckbxAvailibleOnly.isSelected()));
 		tblBooks.updateUI();
 		scrollTblBooks.updateUI();
 	}
 
-	protected void searchAndUpdateLoans() {
-		tblLoansModel.updateLoans(library.searchLoans(txtSearchLoans.getText(), chckbxOverduesOnly.isSelected()));
+	protected void filterAndUpdateLoans() {
+		tblLoansModel.updateLoans(library.filterLoans(txtFilterLoans.getText(), chckbxOverduesOnly.isSelected()));
 		tblLoans.updateUI();
 		scrollTblLoans.updateUI();
 	}
 
-	protected void searchAndUpdateCustomers() {
-		tblCustomersModel.updateCustomers(library.searchCustomers(txtSearchCustomers.getText()));
+	protected void filterAndUpdateCustomers() {
+		tblCustomersModel.updateCustomers(library.filterCustomers(txtFilterCustomers.getText()));
 		tblCustomers.updateUI();
 		scrollTblCustomers.updateUI();
 	}
@@ -801,13 +801,13 @@ public class BookMaster implements Observer {
 	public void update(Observable observable, Object o) {
 		if (observable instanceof Library) {
 			// update books
-			searchAndUpdateBooks();
+			filterAndUpdateBooks();
 			updateBooksStatistics();
 			// update loans
-			searchAndUpdateLoans();
+			filterAndUpdateLoans();
 			updateLoansStatistics();
 			// update customers
-			searchAndUpdateCustomers();
+			filterAndUpdateCustomers();
 			updateCustomersStatistics();
 		} else {
 			throw new RuntimeException("Unexpected observed object: " + observable.getClass());
