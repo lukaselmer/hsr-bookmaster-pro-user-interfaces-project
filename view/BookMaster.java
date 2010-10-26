@@ -11,6 +11,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,6 +50,7 @@ import view.book_master.BookMasterTableModelCustomer;
 import view.book_master.BookMasterTableModelLoan;
 import view.customer.CustomerEdit;
 import view.customer.CustomerNew;
+import view.customer.SubFrame;
 import application.LibraryApp;
 import domain.Book;
 import domain.Customer;
@@ -61,8 +66,8 @@ public class BookMaster implements Observer {
 	private Library library;
 	private BookMasterTableModelBook tblBooksModel;
 	private BookMasterTableModelLoan tblLoansModel;
-	private List<BookDetail> bookDetailFrames = new ArrayList<BookDetail>();
-	private List<CustomerEdit> customerDetailFrames = new ArrayList<CustomerEdit>();
+	private List<SubFrame<Book>> bookDetailFrames = new ArrayList<SubFrame<Book>>();
+	private List<SubFrame<Customer>> customerDetailFrames = new ArrayList<SubFrame<Customer>>();
 	private JCheckBox chckbxAvailibleOnly;
 	private JScrollPane scrollTblBooks;
 	private JLabel lblBooksAmountNum;
@@ -217,7 +222,7 @@ public class BookMaster implements Observer {
 			public void actionPerformed(ActionEvent arg0) {
 				List<Book> books = getSelectedBooks();
 				for (Book b : books) {
-					createBookDetailFrame(b);
+					createOrShowBookDetailFrame(b);
 				}
 			}
 		});
@@ -276,7 +281,7 @@ public class BookMaster implements Observer {
 				if (mouseEvent.getClickCount() == 2 && mouseEvent.getButton() == MouseEvent.BUTTON1) {
 					Book b = getSelectedBook();
 					if (b != null) {
-						createBookDetailFrame(b);
+						createOrShowBookDetailFrame(b);
 					}
 				}
 			}
@@ -460,7 +465,7 @@ public class BookMaster implements Observer {
 			public void actionPerformed(ActionEvent arg0) {
 				List<Customer> customers = getSelectedCustomers();
 				for (Customer b : customers) {
-					createCustomerDetailFrame(b);
+					createOrShowCustomerDetailFrame(b);
 				}
 			}
 		});
@@ -524,7 +529,7 @@ public class BookMaster implements Observer {
 				if (mouseEvent.getClickCount() == 2 && mouseEvent.getButton() == MouseEvent.BUTTON1) {
 					Customer c = getSelectedCustomer();
 					if (c != null) {
-						createCustomerDetailFrame(c);
+						createOrShowCustomerDetailFrame(c);
 					}
 				}
 			}
@@ -566,35 +571,47 @@ public class BookMaster implements Observer {
 		scrollTblCustomers.updateUI();
 	}
 
-	protected void createBookDetailFrame(Book b) {
-		boolean bookDetailOpen = false;
-		for (BookDetail bd : bookDetailFrames) {
-			if (bd.getBook().equals(b)) {
-				bookDetailOpen = true;
-				bd.toFront();
-				break;
-			}
-		}
-		if (!bookDetailOpen) {
-			BookDetail bd = new BookDetail(library, b);
-			bookDetailFrames.add(bd);
-			bd.addObserver(this);
-		}
+	protected void createOrShowBookDetailFrame(Book b) {
+		createOrShowSubFrame(bookDetailFrames, b, BookDetail.class);
 	}
 
-	protected void createCustomerDetailFrame(Customer c) {
-		boolean detailOpen = false;
-		for (CustomerEdit bd : customerDetailFrames) {
-			if (bd.getCustomer().equals(c)) {
-				detailOpen = true;
-				bd.toFront();
-				break;
+	protected void createOrShowCustomerDetailFrame(Customer c) {
+		createOrShowSubFrame(customerDetailFrames, c, CustomerEdit.class);
+	}
+
+	protected <T> void createOrShowSubFrame(final List<SubFrame<T>> list, T object, Class<? extends SubFrame<T>> cls) {
+		try {
+			Constructor<? extends SubFrame<T>> constructor = cls.getConstructor(Library.class, object.getClass());
+			boolean detailOpen = false;
+			for (SubFrame<T> bd : list) {
+				if (bd.getObject().equals(object)) {
+					detailOpen = true;
+					bd.toFront();
+					break;
+				}
 			}
-		}
-		if (!detailOpen) {
-			CustomerEdit bd = new CustomerEdit(library, c);
-			customerDetailFrames.add(bd);
-			bd.addObserver(this);
+			if (!detailOpen) {
+				final SubFrame<T> bd = constructor.newInstance(library, object);
+				list.add(bd);
+				bd.getFrame().addWindowListener(new WindowAdapter() {
+					@Override
+					public void windowClosed(WindowEvent arg0) {
+						list.remove(bd);
+					}
+				});
+			}
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -782,18 +799,7 @@ public class BookMaster implements Observer {
 
 	@Override
 	public void update(Observable observable, Object o) {
-		if (observable instanceof BookDetail) {
-			BookDetail bd = (BookDetail) observable;
-			if (!bd.getFrame().isValid()) {
-				bookDetailFrames.remove(bd);
-			}
-		}
-		if (observable instanceof CustomerEdit) {
-			CustomerEdit bd = (CustomerEdit) observable;
-			if (!bd.getFrame().isValid()) {
-				customerDetailFrames.remove(bd);
-			}
-		} else if (observable instanceof Library) {
+		if (observable instanceof Library) {
 			// update books
 			searchAndUpdateBooks();
 			updateBooksStatistics();
@@ -803,14 +809,8 @@ public class BookMaster implements Observer {
 			// update customers
 			searchAndUpdateCustomers();
 			updateCustomersStatistics();
-			/*
-			 * int index = tabbedPane.getSelectedIndex(); switch (index) { case
-			 * INDEX_OF_BOOKS_TAB: break; case INDEX_OF_LOANS_TAB: break; case
-			 * INDEX_OF_CUSTOMERS_TAB: break; default: throw new
-			 * RuntimeException("Invalid Tab ID: " + index); }
-			 */
 		} else {
-			throw new RuntimeException("Unexpected observed object!");
+			throw new RuntimeException("Unexpected observed object: " + observable.getClass());
 		}
 	}
 

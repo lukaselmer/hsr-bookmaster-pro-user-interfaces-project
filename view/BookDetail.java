@@ -30,6 +30,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import sun.swing.DefaultLookup;
+import view.customer.SubFrame;
 
 import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
 
@@ -44,7 +45,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class BookDetail extends Observable {
+public class BookDetail implements SubFrame<Book> {
 
 	private JFrame frmBuchDetailansicht;
 	private JTextField txtTitle;
@@ -98,13 +99,6 @@ public class BookDetail extends Observable {
 	 */
 	private void initialize() {
 		frmBuchDetailansicht = new JFrame();
-		frmBuchDetailansicht.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosed(WindowEvent arg0) {
-				setChanged();
-				notifyObservers();
-			}
-		});
 		frmBuchDetailansicht.setTitle("Buch Detailansicht");
 		frmBuchDetailansicht.setBounds(100, 100, 450, 300);
 		frmBuchDetailansicht.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -323,5 +317,10 @@ public class BookDetail extends Observable {
 	public void toFront() {
 		getFrame().setState(JFrame.NORMAL);
 		getFrame().toFront();
+	}
+
+	@Override
+	public Book getObject() {
+		return getBook();
 	}
 }
