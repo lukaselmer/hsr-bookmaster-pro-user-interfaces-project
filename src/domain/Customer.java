@@ -1,8 +1,9 @@
 package domain;
 
 import java.util.Observable;
+import java.util.Observer;
 
-public class Customer extends Observable {
+public class Customer extends Observable implements Observer {
 
 	private String name, surname, street, city;
 	private Integer zip;
@@ -93,6 +94,12 @@ public class Customer extends Observable {
 		street = c.street;
 		city = c.city;
 		zip = c.zip;
+		setChanged();
+		notifyObservers();
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
 		setChanged();
 		notifyObservers();
 	}

@@ -1,8 +1,9 @@
 package domain;
 
 import java.util.Observable;
+import java.util.Observer;
 
-public class Book extends Observable {
+public class Book extends Observable implements Observer {
 
 	private String name, author, publisher;
 	private Shelf shelf;
@@ -54,5 +55,11 @@ public class Book extends Observable {
 	@Override
 	public String toString() {
 		return name + ", " + author + ", " + publisher;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		setChanged();
+		notifyObservers();
 	}
 }
