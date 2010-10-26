@@ -1,50 +1,35 @@
 package view.customer;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.util.Observable;
-import java.util.Observer;
 
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.CellRendererPane;
-import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
+import javax.swing.border.TitledBorder;
 
-import sun.swing.DefaultLookup;
 import validators.CustomerValidator;
 import validators.FormValidator;
 import application.LibraryApp;
 
-import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.validation.view.ValidationComponentUtils;
 
-import domain.Copy;
 import domain.Customer;
 import domain.Library;
 
-import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
-
-public abstract class CustomerForm extends Observable {
+public abstract class CustomerForm {
 
 	protected JFrame frmCustomerForm;
 	protected Library library;
@@ -118,13 +103,6 @@ public abstract class CustomerForm extends Observable {
 		frmCustomerForm.setBounds(100, 100, 450, 256);
 		frmCustomerForm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmCustomerForm.setResizable(false);
-		frmCustomerForm.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosed(WindowEvent arg0) {
-				setChanged();
-				notifyObservers();
-			}
-		});
 
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, getWindowTitle(), TitledBorder.LEADING, TitledBorder.TOP, null, null));

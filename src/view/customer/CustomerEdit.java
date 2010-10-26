@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.EventQueue;
 import java.util.Random;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
@@ -12,7 +13,7 @@ import domain.Library;
 
 import application.LibraryApp;
 
-public class CustomerEdit extends CustomerForm {
+public class CustomerEdit extends CustomerForm implements SubFrame<Customer> {
 	private Customer customer;
 
 	public static void main(String[] args) {
@@ -60,7 +61,12 @@ public class CustomerEdit extends CustomerForm {
 		return customer;
 	}
 
-	public Component getFrame() {
+	public JFrame getFrame() {
 		return frmCustomerForm;
+	}
+
+	@Override
+	public Customer getObject() {
+		return getCustomer();
 	}
 }
