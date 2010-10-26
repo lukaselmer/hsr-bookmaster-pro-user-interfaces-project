@@ -67,7 +67,7 @@ public class Library extends Observable implements Observer {
 		return null;
 	}
 
-	public List<Book> searchBooks(String searchString, boolean searchAvailibles) {
+	public List<Book> filterBooks(String searchString, boolean searchAvailibles) {
 		List<Book> foundBooks = new ArrayList<Book>();
 		for (Book b : books) {
 			if ((b.getName() + " " + b.getAuthor() + " " + b.getPublisher()).toLowerCase().contains(searchString.toLowerCase())) {
@@ -201,7 +201,7 @@ public class Library extends Observable implements Observer {
 		return retLoans;
 	}
 
-	public List<Loan> searchLoans(String searchString, boolean searchOverduesOnly) {
+	public List<Loan> filterLoans(String searchString, boolean searchOverduesOnly) {
 		List<Loan> foundClients = new ArrayList<Loan>();
 		for (Loan l : getCurrentLoans(searchOverduesOnly)) {
 			if ((Loan.getFormattedDate(l.getDueDate()) + " " + l.getBook().getName() + " " + l.getCustomer() + " "
@@ -213,7 +213,7 @@ public class Library extends Observable implements Observer {
 		return foundClients;
 	}
 
-	public List<Customer> searchCustomers(String searchString) {
+	public List<Customer> filterCustomers(String searchString) {
 		List<Customer> foundCustomers = new ArrayList<Customer>();
 		for (Customer c : getCustomers()) {
 			if ((c.toString()).toLowerCase().contains(searchString.toLowerCase())) {
