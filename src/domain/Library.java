@@ -242,5 +242,7 @@ public class Library extends Observable {
 
 	public void removeCopy(Copy copy) {
 		copies.remove(copy);
+		setChanged();
+		notifyObservers();
 	}
 }
