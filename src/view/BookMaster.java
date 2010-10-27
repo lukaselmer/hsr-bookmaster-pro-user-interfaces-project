@@ -30,21 +30,26 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import sun.misc.Compare;
+import sun.misc.Sort;
 import view.book_master.BookMasterTableModelBook;
 import view.book_master.BookMasterTableModelCustomer;
 import view.book_master.BookMasterTableModelLoan;
@@ -61,10 +66,10 @@ public class BookMaster implements Observer {
 
 	private static final int INDEX_OF_BOOKS_TAB = 0, INDEX_OF_LOANS_TAB = 1, INDEX_OF_CUSTOMERS_TAB = 2;
 	private JFrame frmBookmaster;
-	private JTable tblBooks;
+	private JList tblBooks;
 	private JTextField txtFilterBooks;
 	private Library library;
-	private BookMasterTableModelBook tblBooksModel;
+	// private BookMasterTableModelBook tblBooksModel;
 	private BookMasterTableModelLoan tblLoansModel;
 	private List<SubFrame<Book>> bookDetailFrames = new ArrayList<SubFrame<Book>>();
 	private List<SubFrame<Customer>> customerDetailFrames = new ArrayList<SubFrame<Customer>>();
@@ -92,6 +97,7 @@ public class BookMaster implements Observer {
 	private JButton btnShowSelectedBooks;
 	private JButton btnShowSelectedLoans;
 	private JButton btnShowSelectedCustomers;
+	private ListModel tblBooksModel;
 
 	/**
 	 * Launch the application.
@@ -539,7 +545,7 @@ public class BookMaster implements Observer {
 
 	protected List<Book> getSelectedBooks() {
 		List<Book> lst = new ArrayList<Book>();
-		for (int row : tblBooks.getSelectedRows()) {
+		for (int row : tblBooks.getSelectedIndices()) {
 			lst.add(getBookOfRow(row));
 		}
 		return lst;
@@ -554,9 +560,12 @@ public class BookMaster implements Observer {
 	}
 
 	protected void filterAndUpdateBooks() {
-		tblBooksModel.updateBooks(library.filterBooks(txtFilterBooks.getText(), chckbxAvailibleOnly.isSelected()));
-		tblBooks.updateUI();
-		scrollTblBooks.updateUI();
+		/*
+		 * tblBooksModel.updateBooks(library.filterBooks(txtFilterBooks.getText()
+		 * , chckbxAvailibleOnly.isSelected())); tblBooks.updateUI();
+		 * scrollTblBooks.updateUI();
+		 */
+		// TODO: implement this
 	}
 
 	protected void filterAndUpdateLoans() {
@@ -616,39 +625,50 @@ public class BookMaster implements Observer {
 	}
 
 	private void initTblBooks() {
-		tblBooks = new JTable() {
-			private static final long serialVersionUID = -6660470510160948438L;
+		tblBooks = new JList();
+		// tblBooks.setColumnSelectionAllowed(false);
+		// tblBooks.setRowSelectionAllowed(true);
+		tblBooksModel = new ListModel() {
 
-			public Component prepareRenderer(javax.swing.table.TableCellRenderer renderer, int row, int column) {
-				Component c = super.prepareRenderer(renderer, row, column);
-				if (!isCellSelected(row, column)) {
-					Color col = colorForRow(row);
-					c.setBackground(col != null ? col : UIManager.getColor("Table.background"));
-					c.setForeground(UIManager.getColor("Table.foreground"));
-				} else {
-					c.setBackground(UIManager.getColor("Table.selectionBackground"));
-					c.setForeground(UIManager.getColor("Table.selectionForeground"));
-				}
-				return c;
+			@Override
+			public void removeListDataListener(ListDataListener l) {
+				// TODO Auto-generated method stub
+
 			}
 
-			private Color colorForRow(int row) {
-				Book b = (Book) getModel().getValueAt(convertRowIndexToModel(row), -1);
-				return library.getAvailibleCopiesOfBook(b).size() == 0 ? Color.ORANGE : null;
-			};
-		};
-		tblBooks.setColumnSelectionAllowed(false);
-		tblBooks.setRowSelectionAllowed(true);
-		tblBooksModel = new BookMasterTableModelBook(library);
-		tblBooks.setModel(tblBooksModel);
-		tblBooks.getColumn("" + BookMasterTableModelBook.ColumnName.STATUS).setMaxWidth(90);
-		tblBooks.getColumn("" + BookMasterTableModelBook.ColumnName.STATUS).setMinWidth(90);
-		tblBooks.getColumn("" + BookMasterTableModelBook.ColumnName.STATUS).setResizable(false);
-		tblBooks.getColumn("" + BookMasterTableModelBook.ColumnName.SHELF).setMaxWidth(40);
-		tblBooks.getColumn("" + BookMasterTableModelBook.ColumnName.SHELF).setMinWidth(40);
-		tblBooks.getColumn("" + BookMasterTableModelBook.ColumnName.SHELF).setResizable(false);
+			@Override
+			public int getSize() {
+				return library.getBooks().size();
+			}
 
-		TableRowSorter<BookMasterTableModelBook> rowSorter = new TableRowSorter<BookMasterTableModelBook>(tblBooksModel);
+			@Override
+			public Object getElementAt(int index) {
+				return library.getBooks().get(index);
+			}
+
+			@Override
+			public void addListDataListener(ListDataListener l) {
+				// TODO Auto-generated method stub
+
+			}
+		};
+		tblBooks.setModel(tblBooksModel);
+		/*
+		 * tblBooks.getColumn("" +
+		 * BookMasterTableModelBook.ColumnName.STATUS).setMaxWidth(90);
+		 * tblBooks.getColumn("" +
+		 * BookMasterTableModelBook.ColumnName.STATUS).setMinWidth(90);
+		 * tblBooks.getColumn("" +
+		 * BookMasterTableModelBook.ColumnName.STATUS).setResizable(false);
+		 * tblBooks.getColumn("" +
+		 * BookMasterTableModelBook.ColumnName.SHELF).setMaxWidth(40);
+		 * tblBooks.getColumn("" +
+		 * BookMasterTableModelBook.ColumnName.SHELF).setMinWidth(40);
+		 * tblBooks.getColumn("" +
+		 * BookMasterTableModelBook.ColumnName.SHELF).setResizable(false);
+		 */
+
+		/*TableRowSorter<BookMasterTableModelBook> rowSorter = new TableRowSorter<BookMasterTableModelBook>(tblBooksModel);
 		rowSorter.setComparator(0, new Comparator<String>() {
 			@Override
 			public int compare(String s1, String s2) {
@@ -673,12 +693,12 @@ public class BookMaster implements Observer {
 				return 0;
 			}
 		});
-		tblBooks.setRowSorter(rowSorter);
+		tblBooks.setRowSorter(rowSorter);*/
 
 		tblBooks.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				btnShowSelectedBooks.setEnabled(tblBooks.getSelectedRowCount() > 0);
+				btnShowSelectedBooks.setEnabled(tblBooks.getSelectedIndices().length > 0);
 			}
 		});
 	}
@@ -772,7 +792,7 @@ public class BookMaster implements Observer {
 	}
 
 	protected Book getSelectedBook() {
-		int row = tblBooks.getSelectedRow();
+		int row = tblBooks.getSelectedIndex();
 		if (row != -1) {
 			return getBookOfRow(row);
 		}
@@ -788,8 +808,8 @@ public class BookMaster implements Observer {
 	}
 
 	protected Book getBookOfRow(int row) {
-		row = tblBooks.convertRowIndexToModel(row);
-		return (Book) tblBooks.getModel().getValueAt(row, -1);
+		//row = tblBooks.(row);
+		return (Book) tblBooks.getModel().getElementAt(row);
 	}
 
 	protected Customer getCustomerOfRow(int row) {

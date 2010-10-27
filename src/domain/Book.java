@@ -54,7 +54,7 @@ public class Book extends Observable implements Observer {
 
 	@Override
 	public String toString() {
-		return name + ", " + author + ", " + publisher;
+		return name + " - " + author;
 	}
 
 	@Override
