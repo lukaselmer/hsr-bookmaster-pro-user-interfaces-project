@@ -203,7 +203,7 @@ public class BookMaster implements Observer {
 		txtFilterBooks.setColumns(10);
 
 		JLabel lblFilterBooks = new JLabel("Filter:");
-		lblFilterBooks.setDisplayedMnemonic('s');
+		lblFilterBooks.setDisplayedMnemonic('f');
 		lblFilterBooks.setLabelFor(txtFilterBooks);
 		lblFilterBooks.setToolTipText("Filtern nach Exemplar-IDs, Buchtitel, Regal, Author oder Verlag");
 
@@ -337,7 +337,7 @@ public class BookMaster implements Observer {
 		pnlLoan.add(panel_3, BorderLayout.NORTH);
 
 		JLabel lblFilterLoans = new JLabel("Filter:");
-		lblFilterLoans.setDisplayedMnemonic('s');
+		lblFilterLoans.setDisplayedMnemonic('f');
 		lblFilterLoans.setToolTipText("Filtern nach Status, Exemplar-ID, Buchtitel, Ausgeliehen Bis oder Ausgeliehen An");
 
 		txtFilterLoans = new JTextField();
@@ -445,7 +445,7 @@ public class BookMaster implements Observer {
 		pnlCustomerLoan.add(panel_3, BorderLayout.NORTH);
 
 		JLabel lblFilterCustomers = new JLabel("Filter:");
-		lblFilterCustomers.setDisplayedMnemonic('s');
+		lblFilterCustomers.setDisplayedMnemonic('f');
 		lblFilterCustomers.setToolTipText("Filtern nach Vorname, Nachname, Strasse, Stadt oder PLZ");
 
 		txtFilterCustomers = new JTextField();
