@@ -15,8 +15,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -38,6 +36,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
@@ -62,38 +61,38 @@ import domain.Loan;
 public class BookMaster implements Observer {
 
 	private static final int INDEX_OF_BOOKS_TAB = 0, INDEX_OF_LOANS_TAB = 1, INDEX_OF_CUSTOMERS_TAB = 2;
-	private JFrame frmBookmaster;
-	private JTable tblBooks;
-	private JTextField txtFilterBooks;
-	private Library library;
-	private BookMasterTableModelBook tblBooksModel;
-	private BookMasterTableModelLoan tblLoansModel;
 	private List<SubFrame<Book>> bookDetailFrames = new ArrayList<SubFrame<Book>>();
 	private List<SubFrame<Customer>> customerDetailFrames = new ArrayList<SubFrame<Customer>>();
+	private JButton btnShowSelectedBooks;
+	private JButton btnShowSelectedCustomers;
+	private JButton btnShowSelectedLoans;
 	private JCheckBox chckbxAvailibleOnly;
-	private JScrollPane scrollTblBooks;
-	private JLabel lblBooksAmountNum;
-	private JLabel lblExemplarAmountNum;
-	private JTextField txtFilterLoans;
-	private JTable tblLoans;
-	private JPanel pnlBooks;
-	private JPanel pnlLoans;
-	private JTabbedPane tabbedPane;
 	private JCheckBox chckbxOverduesOnly;
-	private JScrollPane scrollTblLoans;
-	private JLabel lblLoansAmountNum;
+	private JFrame frmBookmaster;
+	private JLabel lblBooksAmountNum;
 	private JLabel lblCurrentlyLoanedNum;
-	private JLabel lblOverdueAmountNum;
-	private JPanel pnlCustomers;
 	private JLabel lblCustomersAmountNum;
-	private JTextField txtFilterCustomers;
+	private JLabel lblExemplarAmountNum;
+	private JLabel lblLoansAmountNum;
+	private JLabel lblOverdueAmountNum;
+	private Library library;
+	protected CustomerNew newCustomerFrame;
+	private JPanel pnlBooks;
+	private JPanel pnlCustomers;
+	private JPanel pnlLoans;
+	private JScrollPane scrollTblBooks;
 	private JScrollPane scrollTblCustomers;
+	private JScrollPane scrollTblLoans;
+	private JTabbedPane tabbedPane;
+	private JTable tblBooks;
+	private BookMasterTableModelBook tblBooksModel;
 	private JTable tblCustomers;
 	private BookMasterTableModelCustomer tblCustomersModel;
-	protected CustomerNew newCustomerFrame;
-	private JButton btnShowSelectedBooks;
-	private JButton btnShowSelectedLoans;
-	private JButton btnShowSelectedCustomers;
+	private JTable tblLoans;
+	private BookMasterTableModelLoan tblLoansModel;
+	private JTextField txtFilterBooks;
+	private JTextField txtFilterCustomers;
+	private JTextField txtFilterLoans;
 
 	/**
 	 * Launch the application.
@@ -101,6 +100,7 @@ public class BookMaster implements Observer {
 	public static void main(String[] args) throws Exception {
 		UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				new BookMaster(LibraryApp.inst());
 			}
@@ -140,7 +140,7 @@ public class BookMaster implements Observer {
 		frmBookmaster.getContentPane().setLayout(new BorderLayout(0, 0));
 		frmBookmaster.setMinimumSize(new Dimension(650, 400));
 
-		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		frmBookmaster.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 
 		initBooksPanel();
@@ -212,8 +212,8 @@ public class BookMaster implements Observer {
 		chckbxAvailibleOnly = new JCheckBox("Nur Verfügbare");
 		chckbxAvailibleOnly.setMnemonic('v');
 		chckbxAvailibleOnly.addChangeListener(new ChangeListener() {
+			@Override
 			public void stateChanged(ChangeEvent e) {
-				
 				filterAndUpdateBooks();
 			}
 		});
@@ -222,6 +222,7 @@ public class BookMaster implements Observer {
 		btnShowSelectedBooks.setEnabled(false);
 		btnShowSelectedBooks.setMnemonic('a');
 		btnShowSelectedBooks.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				List<Book> books = getSelectedBooks();
 				for (Book b : books) {
@@ -233,6 +234,7 @@ public class BookMaster implements Observer {
 		JButton btnAddNewBook = new JButton("Neuer Buchtitel Erfassen");
 		btnAddNewBook.setMnemonic('n');
 		btnAddNewBook.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO implement this
 				for (int i = 0; i < 200; ++i) {
@@ -356,6 +358,7 @@ public class BookMaster implements Observer {
 
 		chckbxOverduesOnly = new JCheckBox("Nur Überfällige");
 		chckbxOverduesOnly.addChangeListener(new ChangeListener() {
+			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				filterAndUpdateLoans();
 			}
@@ -465,6 +468,7 @@ public class BookMaster implements Observer {
 		btnShowSelectedCustomers.setEnabled(false);
 		btnShowSelectedCustomers.setMnemonic('a');
 		btnShowSelectedCustomers.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				List<Customer> customers = getSelectedCustomers();
 				for (Customer b : customers) {
@@ -476,6 +480,7 @@ public class BookMaster implements Observer {
 		JButton btnNewClient = new JButton("Neuer Kunde Erfassen");
 		btnNewClient.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (newCustomerFrame != null && newCustomerFrame.isValid()) {
 					newCustomerFrame.toFront();
@@ -622,6 +627,7 @@ public class BookMaster implements Observer {
 		tblBooks = new JTable() {
 			private static final long serialVersionUID = -6660470510160948438L;
 
+			@Override
 			public Component prepareRenderer(javax.swing.table.TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
 				if (!isCellSelected(row, column)) {
@@ -660,8 +666,8 @@ public class BookMaster implements Observer {
 					s1 = s1.substring(3, 13);
 					s2 = s2.substring(3, 13);
 					try {
-						Date d1 = SimpleDateFormat.getDateInstance().parse(s1);
-						Date d2 = SimpleDateFormat.getDateInstance().parse(s2);
+						Date d1 = DateFormat.getDateInstance().parse(s1);
+						Date d2 = DateFormat.getDateInstance().parse(s2);
 						return d1.compareTo(d2);
 					} catch (ParseException e) {
 						e.printStackTrace();
@@ -685,12 +691,14 @@ public class BookMaster implements Observer {
 				btnShowSelectedBooks.setEnabled(tblBooks.getSelectedRowCount() > 0);
 			}
 		});
+		tblBooks.getRowSorter().toggleSortOrder(2);
 	}
 
 	private void initTblLoans() {
 		tblLoans = new JTable() {
 			private static final long serialVersionUID = -2284571437513151450L;
 
+			@Override
 			public Component prepareRenderer(javax.swing.table.TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
 				if (!isCellSelected(row, column)) {
@@ -739,8 +747,8 @@ public class BookMaster implements Observer {
 			@Override
 			public int compare(String s1, String s2) {
 				try {
-					Date d1 = SimpleDateFormat.getDateInstance().parse(s1);
-					Date d2 = SimpleDateFormat.getDateInstance().parse(s2);
+					Date d1 = DateFormat.getDateInstance().parse(s1);
+					Date d2 = DateFormat.getDateInstance().parse(s2);
 					return d1.compareTo(d2);
 				} catch (ParseException e) {
 					e.printStackTrace();
@@ -757,6 +765,7 @@ public class BookMaster implements Observer {
 				btnShowSelectedLoans.setEnabled(tblLoans.getSelectedRowCount() > 0);
 			}
 		});
+		tblLoans.getRowSorter().toggleSortOrder(2);
 	}
 
 	private void initTblCustomers() {
@@ -773,6 +782,7 @@ public class BookMaster implements Observer {
 				btnShowSelectedCustomers.setEnabled(tblCustomers.getSelectedRowCount() > 0);
 			}
 		});
+		tblCustomers.getRowSorter().toggleSortOrder(1);
 	}
 
 	protected Book getSelectedBook() {
