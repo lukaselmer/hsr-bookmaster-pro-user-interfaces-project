@@ -2,14 +2,16 @@ package view.book_master;
 
 import java.util.List;
 
-import javax.swing.table.AbstractTableModel;
+import view.BookMasterTableModel;
 
 import domain.Customer;
 import domain.Library;
 
-public class BookMasterTableModelCustomer extends AbstractTableModel {
+public class BookMasterTableModelCustomer extends BookMasterTableModel<Customer> {
 
-	public enum ColumnName {
+	private static final long serialVersionUID = 8466707343843649023L;
+
+	public enum ColumnName implements AbstractColumnName {
 		NAME("Vorname"), SURNAME("Nachname"), STREET("Strasse"), CITY("Stadt"), ZIP("PLZ");
 		private String name;
 
@@ -23,29 +25,13 @@ public class BookMasterTableModelCustomer extends AbstractTableModel {
 		}
 	}
 
-	private static final long serialVersionUID = 8466707343843649023L;
-	ColumnName[] columnNames = ColumnName.values();
-	Library library;
-	List<Customer> currentCustomers;
-
 	public BookMasterTableModelCustomer(Library library) {
-		this.library = library;
-		currentCustomers = library.getCustomers();
-	}
-
-	@Override
-	public int getColumnCount() {
-		return columnNames.length;
-	}
-
-	@Override
-	public int getRowCount() {
-		return currentCustomers.size();
+		super(library);
 	}
 
 	@Override
 	public Object getValueAt(int row, int col) {
-		Customer c = currentCustomers.get(row);
+		Customer c = currentObjects.get(row);
 		if (col == -1) {
 			return c;
 		} else if (getColumnName(col).equals(ColumnName.NAME.toString())) {
@@ -64,12 +50,12 @@ public class BookMasterTableModelCustomer extends AbstractTableModel {
 	}
 
 	@Override
-	public String getColumnName(int column) {
-		return "" + columnNames[column];
+	protected List<Customer> getInitialObjects() {
+		return library.getCustomers();
 	}
 
-	public void updateCustomers(List<Customer> newCustomers) {
-		currentCustomers = newCustomers;
-		fireTableDataChanged();
+	@Override
+	protected AbstractColumnName[] getColumnNames() {
+		return ColumnName.values();
 	}
 }

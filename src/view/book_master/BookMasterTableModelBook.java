@@ -2,15 +2,17 @@ package view.book_master;
 
 import java.util.List;
 
-import javax.swing.table.AbstractTableModel;
+import view.BookMasterTableModel;
 
 import domain.Book;
 import domain.Library;
 import domain.Loan;
 
-public class BookMasterTableModelBook extends AbstractTableModel {
-	
-	public enum ColumnName {
+public class BookMasterTableModelBook extends BookMasterTableModel<Book> {
+
+	private static final long serialVersionUID = -9213162719594224055L;
+
+	public enum ColumnName implements AbstractColumnName {
 		STATUS("Verfügbar"), SHELF("Regal"), TITLE("Titel"), AUTHOR("Author"), PUBLISHER("Verlag");
 		private String name;
 
@@ -24,29 +26,23 @@ public class BookMasterTableModelBook extends AbstractTableModel {
 		}
 	}
 
-	private static final long serialVersionUID = 8466707343843649023L;
-	ColumnName[] columnNames = ColumnName.values();
-	Library library;
-	List<Book> currentBooks;
-
 	public BookMasterTableModelBook(Library library) {
-		this.library = library;
-		currentBooks = library.getBooks();
+		super(library);
 	}
 
 	@Override
-	public int getColumnCount() {
-		return columnNames.length;
+	protected List<Book> getInitialObjects() {
+		return library.getBooks();
 	}
 
 	@Override
-	public int getRowCount() {
-		return currentBooks.size();
+	protected AbstractColumnName[] getColumnNames() {
+		return ColumnName.values();
 	}
 
 	@Override
 	public Object getValueAt(int row, int col) {
-		Book b = currentBooks.get(row);
+		Book b = currentObjects.get(row);
 		if (col == -1) {
 			return b;
 		} else if (getColumnName(col).equals(ColumnName.TITLE.toString())) {
@@ -71,15 +67,5 @@ public class BookMasterTableModelBook extends AbstractTableModel {
 		} else {
 			throw new RuntimeException("Undefined column name!");
 		}
-	}
-
-	@Override
-	public String getColumnName(int column) {
-		return "" + columnNames[column];
-	}
-
-	public void updateBooks(List<Book> newBooks) {
-		currentBooks = newBooks;
-		fireTableDataChanged();
 	}
 }

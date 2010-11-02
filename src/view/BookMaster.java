@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -210,7 +212,8 @@ public class BookMaster implements Observer {
 		chckbxAvailibleOnly = new JCheckBox("Nur Verfügbare");
 		chckbxAvailibleOnly.setMnemonic('v');
 		chckbxAvailibleOnly.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
+			public void stateChanged(ChangeEvent e) {
+				
 				filterAndUpdateBooks();
 			}
 		});
@@ -554,19 +557,19 @@ public class BookMaster implements Observer {
 	}
 
 	protected void filterAndUpdateBooks() {
-		tblBooksModel.updateBooks(library.filterBooks(txtFilterBooks.getText(), chckbxAvailibleOnly.isSelected()));
+		tblBooksModel.updateObjects(library.filterBooks(txtFilterBooks.getText(), chckbxAvailibleOnly.isSelected()));
 		tblBooks.updateUI();
 		scrollTblBooks.updateUI();
 	}
 
 	protected void filterAndUpdateLoans() {
-		tblLoansModel.updateLoans(library.filterLoans(txtFilterLoans.getText(), chckbxOverduesOnly.isSelected()));
+		tblLoansModel.updateObjects(library.filterLoans(txtFilterLoans.getText(), chckbxOverduesOnly.isSelected()));
 		tblLoans.updateUI();
 		scrollTblLoans.updateUI();
 	}
 
 	protected void filterAndUpdateCustomers() {
-		tblCustomersModel.updateCustomers(library.filterCustomers(txtFilterCustomers.getText()));
+		tblCustomersModel.updateObjects(library.filterCustomers(txtFilterCustomers.getText()));
 		tblCustomers.updateUI();
 		scrollTblCustomers.updateUI();
 	}
@@ -637,6 +640,7 @@ public class BookMaster implements Observer {
 				return library.getAvailibleCopiesOfBook(b).size() == 0 ? Color.ORANGE : null;
 			};
 		};
+
 		tblBooks.setColumnSelectionAllowed(false);
 		tblBooks.setRowSelectionAllowed(true);
 		tblBooksModel = new BookMasterTableModelBook(library);

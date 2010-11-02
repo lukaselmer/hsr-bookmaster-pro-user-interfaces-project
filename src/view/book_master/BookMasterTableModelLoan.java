@@ -2,16 +2,18 @@ package view.book_master;
 
 import java.util.List;
 
-import javax.swing.table.AbstractTableModel;
+import view.BookMasterTableModel;
 
 import domain.Book;
 import domain.Copy;
 import domain.Library;
 import domain.Loan;
 
-public class BookMasterTableModelLoan extends AbstractTableModel {
+public class BookMasterTableModelLoan extends BookMasterTableModel<Loan> {
 
-	public enum ColumnName {
+	private static final long serialVersionUID = -2039525012989574974L;
+
+	public enum ColumnName implements AbstractColumnName {
 		STATUS("Status"), ID("Exemplar-ID"), TITLE("Titel"), LOAN_UNTIL("Ausgeliehen Bis"), LOAN_TO("Ausgeliehen An");
 		private String name;
 
@@ -25,29 +27,23 @@ public class BookMasterTableModelLoan extends AbstractTableModel {
 		}
 	}
 
-	private static final long serialVersionUID = 8466707343843649023L;
-	ColumnName[] columnNames = ColumnName.values();
-	Library library;
-	List<Loan> currentLoans;
-
 	public BookMasterTableModelLoan(Library library) {
-		this.library = library;
-		currentLoans = library.getCurrentLoans();
+		super(library);
 	}
 
 	@Override
-	public int getColumnCount() {
-		return columnNames.length;
+	protected List<Loan> getInitialObjects() {
+		return library.getCurrentLoans();
 	}
 
 	@Override
-	public int getRowCount() {
-		return currentLoans.size();
+	protected AbstractColumnName[] getColumnNames() {
+		return ColumnName.values();
 	}
 
 	@Override
 	public Object getValueAt(int row, int col) {
-		Loan l = currentLoans.get(row);
+		Loan l = currentObjects.get(row);
 		Copy c = l.getCopy();
 		Book b = c.getBook();
 		if (col == -1) {
@@ -67,13 +63,4 @@ public class BookMasterTableModelLoan extends AbstractTableModel {
 		}
 	}
 
-	@Override
-	public String getColumnName(int column) {
-		return "" + columnNames[column];
-	}
-
-	public void updateLoans(List<Loan> newLoans) {
-		currentLoans = newLoans;
-		fireTableDataChanged();
-	}
 }
