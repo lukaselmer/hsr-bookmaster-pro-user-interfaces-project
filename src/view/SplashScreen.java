@@ -2,82 +2,152 @@ package view;
 
 import application.LibraryApp;
 
-import com.jgoodies.animation.*;
-import com.jgoodies.animation.animations.*;
-import com.jgoodies.animation.components.*;
+import com.jgoodies.animation.Animation;
+import com.jgoodies.animation.AnimationAdapter;
+import com.jgoodies.animation.AnimationEvent;
+import com.jgoodies.animation.AnimationListener;
+import com.jgoodies.animation.Animations;
+import com.jgoodies.animation.Animator;
+import com.jgoodies.animation.animations.FanAnimation;
+import com.jgoodies.animation.animations.GlyphAnimation;
+import com.jgoodies.animation.components.FanComponent;
+import com.jgoodies.animation.components.GlyphLabel;
+
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.*;
 
 public class SplashScreen {
-	public SplashScreen() {
-		win = new JWindow();
+
+	private static final long serialVersionUID = 8914198159717627458L;
+
+	final static int DURATION = 5200;
+	final static int FRAME_RATE = 50;
+	private static final int GLYPH_DELAY = 60;
+
+	private JWindow winMain;
+	private FanComponent fan;
+	private boolean bookMasterCreated;
+	private GlyphLabel glyphLabel;
+	private Animator fanAnimator;
+
+	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
+		} catch (Exception e) {
+		}
+		new SplashScreen();
 	}
 
-	final static int DURATION = 30000;
-	final static int FRAME_RATE = 30;
-
-	int duration;
-
-	BasicTextLabel label;
-	JWindow win;
-
-	FanComponent fan;
+	public SplashScreen() {
+		try {
+			showSplashScreen();
+		} catch (Exception ex) {
+			initBookMaster();
+		}
+	}
 
 	public void showSplashScreen() {
-		JPanel content = (JPanel) win.getContentPane();
-		content.setLayout(new BorderLayout());
-		content.setBackground(Color.WHITE);
-		// content.setBorder(BorderFactory.createLineBorder(Color., 10));
+		winMain = new JWindow();
+		winMain.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				initBookMaster();
+			}
+		});
+		JPanel pnlMainContent = (JPanel) winMain.getContentPane();
+		pnlMainContent.setLayout(new BorderLayout());
+		pnlMainContent.setBackground(Color.WHITE);
 
 		int width = 500;
 		int height = 400;
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = (screen.width - width) / 2;
 		int y = (screen.height - height) / 2;
-		win.setBounds(x, y, width, height);
+		winMain.setBounds(x, y, width, height);
 
-		label = new BasicTextLabel("");
-		label.setBackground(Color.WHITE);
-		label.setFont(new Font("Tahoma", Font.BOLD, 18));
-		label.setPreferredSize(new Dimension(100, 100));
-		content.add(label, BorderLayout.NORTH);
+		glyphLabel = new GlyphLabel("Willkommen Bei BookMasterPro", DURATION, GLYPH_DELAY);
+		glyphLabel.setForeground(Color.DARK_GRAY);
+		glyphLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
+		glyphLabel.setPreferredSize(new Dimension(300, 100));
+		pnlMainContent.add(glyphLabel, BorderLayout.NORTH);
 
 		fan = new FanComponent(10, Color.GREEN);
-		content.add(fan, BorderLayout.CENTER);
+		pnlMainContent.add(fan, BorderLayout.CENTER);
 
-		win.setVisible(true);
+		winMain.setVisible(true);
 
 		FanAnimation a4 = FanAnimation.defaultFan(fan, 40500);
-		final Animator ani2 = new Animator(a4, 1000);
-		ani2.start();
+		fanAnimator = new Animator(a4, 1000);
+		fanAnimator.start();
 
 		Animation animation = createAnimation();
-
-		AnimationListener al = new AnimationListener() {
+		animation.addAnimationListener(new AnimationListener() {
 			public void animationStarted(AnimationEvent e) {
 			}
 
 			public void animationStopped(AnimationEvent e) {
-				ani2.stop();
-				win.dispose();
-				new BookMaster(LibraryApp.inst());
+				initBookMaster();
 			}
-		};
-		animation.addAnimationListener(al);
+		});
 
-		Animator ani1 = new Animator(animation, 1000);
+		Animator ani1 = new Animator(animation, 30);
 		ani1.start();
 	}
 
+	protected synchronized void initBookMaster() {
+		try {
+			fanAnimator.stop();
+		} catch (Throwable t) {
+			// pass
+		}
+		try {
+			winMain.dispose();
+		} catch (Throwable t) {
+			// pass
+		}
+		if (!bookMasterCreated) {
+			new BookMaster(LibraryApp.inst());
+			bookMasterCreated = true;
+		}
+	}
+
 	private Animation createAnimation() {
-		Animation a1 = BasicTextAnimation.defaultFade(label, 2500, "Willkommen Bei BookMaster", Color.orange);
-		Animation allSeq = Animations.sequential(new Animation[] { Animations.pause(500), a1, Animations.pause(500), });
+		GlyphAnimation a1 = new GlyphAnimation(glyphLabel, DURATION, GLYPH_DELAY, glyphLabel.getText());
+		a1.addAnimationListener(new StartStopHandler());
+		Animation allSeq = Animations.sequential(new Animation[] { Animations.pause(100), a1 });
 		return allSeq;
 	}
 
-	public static void main(String[] args) throws Exception {
-		UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-		new SplashScreen().showSplashScreen();
+	private class StartStopHandler extends AnimationAdapter {
+
+		private String text;
+
+		public void animationStarted(AnimationEvent e) {
+			text = glyphLabel.getText();
+		}
+
+		public void animationStopped(AnimationEvent e) {
+			glyphLabel.setText(text);
+		}
 	}
+
 }
