@@ -16,8 +16,10 @@ import com.jgoodies.animation.components.GlyphLabel;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.lang.reflect.Method;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 public class SplashScreen {
 
@@ -93,12 +95,19 @@ public class SplashScreen {
 		fan = new FanComponent(10, Color.GREEN);
 		pnlMainContent.add(fan, BorderLayout.CENTER);
 
+		JLabel label = new JLabel("Intro überspringen");
+		Font f = label.getFont();
+		label.setFont(new Font(f.getName(), Font.BOLD, f.getSize()));
+		label.setBorder(new EmptyBorder(2, 5, 2, 5));
+        label.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+		pnlMainContent.add(label, BorderLayout.SOUTH);
+		
 		winMain.setVisible(true);
 
 		FanAnimation a4 = FanAnimation.defaultFan(fan, 40500);
 		fanAnimator = new Animator(a4, 1000);
 		fanAnimator.start();
-
+		
 		Animation animation = createAnimation();
 		animation.addAnimationListener(new AnimationListener() {
 			public void animationStarted(AnimationEvent e) {
