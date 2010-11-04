@@ -85,13 +85,14 @@ public class Loan extends Observable {
 
 	public int getDaysOfLoanDuration() {
 		GregorianCalendar d = (returnDate == null) ? new GregorianCalendar() : returnDate;
-		return (int) (d.getTimeInMillis() - pickupDate.getTimeInMillis()) / 1000 / 60 / 60 / 24;
+		long diff = d.getTimeInMillis() - pickupDate.getTimeInMillis();
+		return (int) (diff / 1000 / 60 / 60 / 24);
 	}
 
 	public int getDaysOfExpectedLeftLoanDuration() {
 		int days = DAYS_TO_RETURN_BOOK - getDaysOfLoanDuration();
-		if (days < 0)
-			return -1;
+		// if (days < 0)
+		// return -1;
 		return days;
 	}
 

@@ -84,6 +84,8 @@ public class LibraryApp {
 		//
 		// for (Loan l : library.getOverdueLoans())
 		// System.out.println(l.getDaysOverdue());
+		// for (Loan l : library.getLoans())
+		// System.out.println(l.getDaysOfExpectedLeftLoanDuration());
 	}
 
 	private static void createBooksAndLoans(Library library) throws IllegalLoanOperationException {
