@@ -143,9 +143,13 @@ public class Library extends Observable implements Observer {
 	}
 
 	public List<Loan> getCustomerLoans(Customer customer) {
+		return getCustomerLoans(customer, true);
+	}
+
+	public List<Loan> getCustomerLoans(Customer customer, boolean lentOnly) {
 		List<Loan> lentCopies = new ArrayList<Loan>();
 		for (Loan l : loans) {
-			if (l.getCustomer().equals(customer)) {
+			if (l.getCustomer().equals(customer) && (!lentOnly || l.isLent())) {
 				lentCopies.add(l);
 			}
 		}

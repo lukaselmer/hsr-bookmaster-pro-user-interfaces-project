@@ -2,7 +2,11 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.ComponentOrientation;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.TextField;
 import java.util.Random;
 
 import javax.swing.GroupLayout;
@@ -15,8 +19,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
 import com.sun.xml.internal.ws.api.pipe.NextAction;
 
 import application.LibraryApp;
@@ -31,16 +38,33 @@ import javax.swing.JTable;
 import sun.misc.Compare;
 import sun.misc.Sort;
 import view.loan_detail.LoanDetailTableModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JSeparator;
+import java.awt.FlowLayout;
+import javax.swing.BoxLayout;
+import java.awt.Component;
+import javax.swing.Box;
+
+import org.jdesktop.swingx.JXTitledSeparator;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class LoanDetail {
 
-	private JFrame frmAusleiheDetail;
-	private JTextField txtReturnDate;
-	private JTextField txtCopyID;
-	private JTextField txtIdentifier;
+	private JFrame frmLoanDetail;
 	private Library library;
 	private Customer customer;
-	private JTable table;
+	private JPanel pnlCustomer;
+	private JLabel lblCustomer;
+	private JPanel pnlLoans;
+	private JTable tblLoans;
+	private JPanel pnlLendNewCopy;
+	private JLabel lblNumber;
+	private LoanDetailTableModel loanTableModel;
+	private JComboBox cmbCustomer;
+	private JTextField txtCopyId;
+	private JXTitledSeparator customerSeparator;
 
 	/**
 	 * Launch the application.
@@ -67,30 +91,12 @@ public class LoanDetail {
 		this.library = library;
 		this.customer = customer;
 		initialize();
-		frmAusleiheDetail.setLocationByPlatform(true);
-		frmAusleiheDetail.setVisible(true);
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frmAusleiheDetail = new JFrame();
-		frmAusleiheDetail.setTitle("Ausleihe Detail");
-		frmAusleiheDetail.setBounds(100, 100, 450, 400);
-		frmAusleiheDetail.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frmAusleiheDetail.getContentPane().setLayout(new BorderLayout(0, 0));
-
-		JPanel pnlLoanInformation = new JPanel();
-		pnlLoanInformation.setBorder(new TitledBorder(null, "Ausleihe Informationen", TitledBorder.LEADING, TitledBorder.TOP, null,
-				new Color(0, 0, 0)));
-		frmAusleiheDetail.getContentPane().add(pnlLoanInformation, BorderLayout.NORTH);
-
-		JLabel lblIdentifier = new JLabel("Kennung:");
-
-		JLabel lblCustomer = new JLabel("Kunde:");
-
-		JLabel lblReturnDate = new JLabel("Zurück am:");
+		frmLoanDetail.setLocationByPlatform(true);
+		frmLoanDetail.getContentPane().setLayout(new BorderLayout(0, 0));
+		frmLoanDetail.setVisible(true);
+		frmLoanDetail.setMinimumSize(new Dimension(400, 300));
+        CellConstraints cc = new CellConstraints();
+		
 		Object[] customers = library.getCustomers().toArray();
 		Sort.quicksort(customers, new Compare() {
 			
@@ -100,131 +106,86 @@ public class LoanDetail {
 				return s1.toString().compareTo(s2.toString());
 			}
 		});
-		JComboBox cmbCustomer = new JComboBox(customers);
+		loanTableModel = new LoanDetailTableModel(library, customer);
+		
+		FormLayout layoutCustomer = new FormLayout("5dlu, right:pref, 5dlu, pref, 5dlu, pref:grow, 5dlu", "3dlu, pref, 10dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu");
+		pnlCustomer = new JPanel(layoutCustomer);
+		frmLoanDetail.getContentPane().add(pnlCustomer, BorderLayout.NORTH);
+		
+		
+		pnlCustomer.add(ViewUtil.getSeparator("Kunden Information"), cc.xyw(2, 2, 5));
+		
+		lblCustomer = new JLabel("Kunde:");
+		pnlCustomer.add(lblCustomer, cc.xy(2, 4));
+		
+		
+		cmbCustomer = new JComboBox(customers);
+		cmbCustomer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				updateCustomerInformation();
+			}
+		});
+		
 		cmbCustomer.setSelectedItem(customer);
-		
-		txtReturnDate = new JTextField();
-		txtReturnDate.setEditable(false);
-		txtReturnDate.setColumns(10);
-
-		txtIdentifier = new JTextField("" + library.getCustomers().indexOf(customer));
-		txtIdentifier.setEditable(false);
-		txtIdentifier.setColumns(10);
-		GroupLayout gl_pnlLoanInformation = new GroupLayout(pnlLoanInformation);
-		gl_pnlLoanInformation.setHorizontalGroup(
-			gl_pnlLoanInformation.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_pnlLoanInformation.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_pnlLoanInformation.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblReturnDate)
-						.addComponent(lblIdentifier)
-						.addComponent(lblCustomer))
-					.addGap(23)
-					.addGroup(gl_pnlLoanInformation.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_pnlLoanInformation.createParallelGroup(Alignment.LEADING)
-							.addComponent(cmbCustomer, Alignment.TRAILING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(txtReturnDate, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE))
-						.addComponent(txtIdentifier, GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE))
-					.addContainerGap())
-		);
-		gl_pnlLoanInformation.setVerticalGroup(
-			gl_pnlLoanInformation.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_pnlLoanInformation.createSequentialGroup()
-					.addGroup(gl_pnlLoanInformation.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblIdentifier)
-						.addComponent(txtIdentifier, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_pnlLoanInformation.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblCustomer)
-						.addComponent(cmbCustomer, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_pnlLoanInformation.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblReturnDate)
-						.addComponent(txtReturnDate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		);
-		pnlLoanInformation.setLayout(gl_pnlLoanInformation);
-
-		JPanel pnlLoanAndLoanInformation = new JPanel();
-		frmAusleiheDetail.getContentPane().add(pnlLoanAndLoanInformation, BorderLayout.CENTER);
-		pnlLoanAndLoanInformation.setLayout(new BorderLayout(0, 0));
-
-		JPanel pnlLoanNewCopy = new JPanel();
-		pnlLoanNewCopy.setBorder(new TitledBorder(null, "Neues Exemplar ausleihen", TitledBorder.LEADING, TitledBorder.TOP, null,
-				new Color(0, 0, 0)));
-		pnlLoanAndLoanInformation.add(pnlLoanNewCopy, BorderLayout.NORTH);
-
-		JLabel lblCopyID = new JLabel("Exemplar-ID:");
-
-		txtCopyID = new JTextField();
-		txtCopyID.setColumns(10);
-
-		JButton btnExemplarAusleihen = new JButton("Exemplar Ausleihen");
-		GroupLayout gl_pnlLoanNewCopy = new GroupLayout(pnlLoanNewCopy);
-		gl_pnlLoanNewCopy.setHorizontalGroup(
-			gl_pnlLoanNewCopy.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_pnlLoanNewCopy.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblCopyID)
-					.addGap(18)
-					.addComponent(txtCopyID, GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
-					.addGap(12)
-					.addComponent(btnExemplarAusleihen, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
-		);
-		gl_pnlLoanNewCopy.setVerticalGroup(
-			gl_pnlLoanNewCopy.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_pnlLoanNewCopy.createSequentialGroup()
-					.addGroup(gl_pnlLoanNewCopy.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblCopyID)
-						.addComponent(btnExemplarAusleihen)
-						.addComponent(txtCopyID, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		);
-		pnlLoanNewCopy.setLayout(gl_pnlLoanNewCopy);
-		
-		JPanel pnlLoanInformationTable = new JPanel();
-		pnlLoanAndLoanInformation.add(pnlLoanInformationTable, BorderLayout.CENTER);
-		pnlLoanInformationTable.setLayout(new BorderLayout(0, 0));
-		
-		JPanel pnlNumberOfLoans = new JPanel();
-		pnlNumberOfLoans.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Ausleihen von " + customer.getName() + " " + customer.getSurname(), TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		pnlLoanInformationTable.add(pnlNumberOfLoans, BorderLayout.NORTH);
+		pnlCustomer.add(cmbCustomer, cc.xyw(4, 4, 3));
 		
 		JLabel lblNumberOfLoans = new JLabel("Anzahl Ausleihen:");
+		pnlCustomer.add(lblNumberOfLoans, cc.xy(2, 6));
 		
-		JLabel lblNumber = new JLabel("" + library.getCustomerLoans(customer).size());
-		GroupLayout gl_pnlNumberOfLoans = new GroupLayout(pnlNumberOfLoans);
-		gl_pnlNumberOfLoans.setHorizontalGroup(
-			gl_pnlNumberOfLoans.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_pnlNumberOfLoans.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblNumberOfLoans)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblNumber)
-					.addContainerGap(284, Short.MAX_VALUE))
-		);
-		gl_pnlNumberOfLoans.setVerticalGroup(
-			gl_pnlNumberOfLoans.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_pnlNumberOfLoans.createSequentialGroup()
-					.addGroup(gl_pnlNumberOfLoans.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNumberOfLoans)
-						.addComponent(lblNumber))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		);
-		pnlNumberOfLoans.setLayout(gl_pnlNumberOfLoans);
+		lblNumber = new JLabel();
+		pnlCustomer.add(lblNumber, cc.xy(4, 6));
+		
+		customerSeparator = ViewUtil.getSeparator("");
+		pnlCustomer.add(customerSeparator, cc.xyw(2, 8, 5));
 		
 		JScrollPane scrollPane = new JScrollPane();
-		pnlLoanInformationTable.add(scrollPane, BorderLayout.CENTER);
+		frmLoanDetail.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		
-		table = new JTable();
-		scrollPane.setViewportView(table);
-		LoanDetailTableModel tblLoansModel = new LoanDetailTableModel(library, customer);
-		table.setModel(tblLoansModel);
-		table.getColumn("" + LoanDetailTableModel.ColumnName.INVENTORY_NUMBER).setMaxWidth(75);
-		table.getColumn("" + LoanDetailTableModel.ColumnName.INVENTORY_NUMBER).setMinWidth(75);
-		table.getColumn("" + LoanDetailTableModel.ColumnName.INVENTORY_NUMBER).setResizable(false);
-		table.getColumn("" + LoanDetailTableModel.ColumnName.TITLE).setMinWidth(180);
+		tblLoans = new JTable();
+		tblLoans.setColumnSelectionAllowed(false);
+		tblLoans.setRowSelectionAllowed(true);
+		scrollPane.setViewportView(tblLoans);
+		tblLoans.setModel(loanTableModel);
+		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.INVENTORY_NUMBER).setMinWidth(80);
+		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.INVENTORY_NUMBER).setMaxWidth(80);
 		
+		FormLayout newLoanLayout = new FormLayout("5dlu, pref, 5dlu, pref:grow, 5dlu, pref, 5dlu", "5dlu, pref, 5dlu, pref, 5dlu");
+		JPanel pnlNewLoan = new JPanel(newLoanLayout);
+		frmLoanDetail.getContentPane().add(pnlNewLoan, BorderLayout.SOUTH);
+		
+		pnlNewLoan.add(ViewUtil.getSeparator("Exemplar ausleihen"), cc.xyw(2, 2, 5));
+		
+		JLabel lblCopyId = new JLabel("Exemplar-ID:");
+		pnlNewLoan.add(lblCopyId, cc.xy(2, 4));
+		
+		txtCopyId = new JTextField();
+		pnlNewLoan.add(txtCopyId, cc.xy(4, 4));
+		
+		JButton btnLendNewCopy = new JButton("Exemplar ausleihen");
+		btnLendNewCopy.setEnabled(false);
+		pnlNewLoan.add(btnLendNewCopy, cc.xy(6, 4));
+		
+		updateCustomerInformation();
+	}	
+
+	protected void updateCustomerInformation() {
+		if (cmbCustomer != null && lblNumber != null) {
+			customer = (Customer) cmbCustomer.getSelectedItem();
+			lblNumber.setText("" + library.getCustomerLoans(customer).size());
+			customerSeparator.setTitle("Ausleihen von " + customer.getName() + " " + customer.getSurname());
+			loanTableModel.updateLoans(library.getCustomerLoans(customer));
+			txtCopyId.setEnabled(library.getCustomerLoans(customer).size() < 3);
+			txtCopyId.setText("" + (txtCopyId.isEnabled() ? "" : "Maximale Anzahl Ausleihen erreicht"));
+		}
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmLoanDetail = new JFrame();
+		frmLoanDetail.setTitle("Ausleihe Detail");
+		frmLoanDetail.setBounds(100, 100, 500, 300);
+		frmLoanDetail.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 }

@@ -32,6 +32,8 @@ import javax.swing.event.ListSelectionListener;
 import sun.swing.DefaultLookup;
 import view.customer.SubFrame;
 
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
 import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
 
 import application.LibraryApp;
@@ -44,6 +46,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTable;
 
 public class BookDetail implements SubFrame<Book> {
 
@@ -53,6 +56,7 @@ public class BookDetail implements SubFrame<Book> {
 	private JTextField txtPublisher;
 	private Library library;
 	private Book book;
+	private JTable tblCopies;
 
 	/**
 	 * Launch the application.
@@ -104,214 +108,74 @@ public class BookDetail implements SubFrame<Book> {
 		frmBuchDetailansicht.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmBuchDetailansicht.getContentPane().setLayout(new BorderLayout(0, 0));
 
-		JPanel pnlBookInformation = new JPanel();
-		pnlBookInformation.setBorder(new TitledBorder(null, "Buch Informationen:", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(
-				0, 0, 0)));
+		CellConstraints cc = new CellConstraints();
+		
+		FormLayout bookInformationLayout = new FormLayout("5dlu, pref, 5dlu, pref:grow, 5dlu", "3dlu, pref, 10dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu");
+		JPanel pnlBookInformation = new JPanel(bookInformationLayout);
 		frmBuchDetailansicht.getContentPane().add(pnlBookInformation, BorderLayout.NORTH);
+		
+		pnlBookInformation.add(ViewUtil.getSeparator("Buch Information"), cc.xyw(2, 2, 3));
 
 		JLabel lblTitel = new JLabel("Titel:");
+		pnlBookInformation.add(lblTitel, cc.xy(2, 4));
 
 		JLabel lblAuthor = new JLabel("Author:");
+		pnlBookInformation.add(lblAuthor, cc.xy(2, 6));
 
 		JLabel lblPublisher = new JLabel("Verlag:");
+		pnlBookInformation.add(lblPublisher, cc.xy(2, 8));
 
 		JLabel lblShelf = new JLabel("Regal:");
+		pnlBookInformation.add(lblShelf, cc.xy(2, 10));
 
 		txtTitle = new JTextField(book.getName());
 		txtTitle.setEditable(false);
 		txtTitle.setColumns(10);
+		pnlBookInformation.add(txtTitle, cc.xy(4, 4));
 
 		txtAuthor = new JTextField(book.getAuthor());
 		txtAuthor.setEditable(false);
 		txtAuthor.setColumns(10);
+		pnlBookInformation.add(txtAuthor, cc.xy(4, 6));
 
 		txtPublisher = new JTextField(book.getPublisher());
 		txtPublisher.setEditable(false);
 		txtPublisher.setColumns(10);
+		pnlBookInformation.add(txtPublisher, cc.xy(4, 8));
 
 		book.getShelf();
 		JComboBox cmbShelf = new JComboBox(Shelf.values());
+		cmbShelf.setEnabled(false);
 		cmbShelf.setSelectedItem(book.getShelf());
-		GroupLayout gl_pnlBookInformation = new GroupLayout(pnlBookInformation);
-		gl_pnlBookInformation.setHorizontalGroup(gl_pnlBookInformation.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_pnlBookInformation
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								gl_pnlBookInformation
-										.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblPublisher)
-										.addComponent(lblShelf)
-										.addGroup(
-												gl_pnlBookInformation.createSequentialGroup().addPreferredGap(ComponentPlacement.RELATED)
-														.addComponent(lblTitel)).addComponent(lblAuthor))
-						.addGap(21)
-						.addGroup(
-								gl_pnlBookInformation.createParallelGroup(Alignment.LEADING)
-										.addComponent(txtTitle, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
-										.addComponent(txtAuthor, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
-										.addComponent(txtPublisher, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
-										.addComponent(cmbShelf, 0, 339, Short.MAX_VALUE)).addContainerGap()));
-		gl_pnlBookInformation.setVerticalGroup(gl_pnlBookInformation.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_pnlBookInformation
-						.createSequentialGroup()
-						.addGroup(
-								gl_pnlBookInformation
-										.createParallelGroup(Alignment.BASELINE)
-										.addComponent(txtTitle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE).addComponent(lblTitel))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								gl_pnlBookInformation
-										.createParallelGroup(Alignment.BASELINE)
-										.addComponent(txtAuthor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE).addComponent(lblAuthor))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								gl_pnlBookInformation
-										.createParallelGroup(Alignment.BASELINE)
-										.addComponent(lblPublisher)
-										.addComponent(txtPublisher, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								gl_pnlBookInformation
-										.createParallelGroup(Alignment.BASELINE)
-										.addComponent(lblShelf)
-										.addComponent(cmbShelf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)).addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-		pnlBookInformation.setLayout(gl_pnlBookInformation);
-
+		pnlBookInformation.add(cmbShelf, cc.xy(4, 10));
+		
 		JPanel pnlCopies = new JPanel();
-		pnlCopies
-				.setBorder(new TitledBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING,
-						TitledBorder.TOP, null, new Color(0, 0, 0)), "Exemplare", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(
-						0, 0, 0)));
 		frmBuchDetailansicht.getContentPane().add(pnlCopies, BorderLayout.CENTER);
-
-		JLabel lblQuantity = new JLabel("Anzahl: ");
+		pnlCopies.setLayout(new BorderLayout(0, 0));
 		
-		final JList lstBooks = new JList();
-		lstBooks.setCellRenderer(new DefaultListCellRenderer() {
-			private static final long serialVersionUID = -1013815157902496423L;
-			@Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus){
-                       setComponentOrientation(list.getComponentOrientation());
-
-                       Color bg = null;
-                       Color fg = null;
-
-                       JList.DropLocation dropLocation = list.getDropLocation();
-                       if (dropLocation != null
-                               && !dropLocation.isInsert()
-                               && dropLocation.getIndex() == index) {
-
-                           bg = DefaultLookup.getColor(this, ui, "List.dropCellBackground");
-                           fg = DefaultLookup.getColor(this, ui, "List.dropCellForeground");
-
-                           isSelected = true;
-                       }
-
-                   if (isSelected) {
-                           setBackground(bg == null ? list.getSelectionBackground() : bg);
-                       setForeground(fg == null ? list.getSelectionForeground() : fg);
-                   }
-                   else {
-                       setBackground(list.getBackground());
-                       setForeground(list.getForeground());
-                   }
-                      
-                   Copy c = (Copy) value;
-                   setText(c.getInventoryNumber() + ": " + (c.isLent() ? "Ausgeliehen bis " + Loan.getFormattedDate(c.getCurrentLoan().getDueDate()) + " (noch "
-                		   + c.getCurrentLoan().getDaysOfExpectedLeftLoanDuration() + " Tage)" : "Verfügbar"));
-
-                   setEnabled(list.isEnabled());
-                   setFont(list.getFont());
-                      
-                       Border border = null;
-                       if (cellHasFocus) {
-                           if (isSelected) {
-                               border = DefaultLookup.getBorder(this, ui, "List.focusSelectedCellHighlightBorder");
-                           }
-                           if (border == null) {
-                               border = DefaultLookup.getBorder(this, ui, "List.focusCellHighlightBorder");
-                           }
-                       } else {
-                           border = getBorder();
-                       }
-                   setBorder(border);
-
-                   return this;
-                   }
-		});
-
-		lstBooks.setModel(new AbstractListModel() {
-			private static final long serialVersionUID = -7689939655782098398L;
-
-			public int getSize() {
-				return library.getCopiesOfBook(book).size();
-			}
-
-			public Object getElementAt(int index) {
-				return library.getCopiesOfBook(book).get(index);			
-			}
-		});
-
-		final JButton btnRemoveSelected = new JButton("Ausgewählte Entfernen");
-		btnRemoveSelected.setEnabled(false);
-		btnRemoveSelected.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				for (int i = 0; i < lstBooks.getSelectedValues().length; i++){
-					library.removeCopy((Copy) lstBooks.getSelectedValues()[i]);
-				}
-			}
-		});
+		FormLayout copyInformationLayout = new FormLayout("5dlu, pref, 5dlu, pref, pref:grow, pref, 5dlu, pref, 5dlu", "5dlu, pref, 5dlu, pref, 5dlu");
+		JPanel pnlCopyInformation = new JPanel(copyInformationLayout);
+		pnlCopies.add(pnlCopyInformation, BorderLayout.NORTH);
 		
-		lstBooks.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent arg0) {
-				btnRemoveSelected.setEnabled(lstBooks.getSelectedValues().length > 0);
-			}
-		});
-
+		pnlCopyInformation.add(ViewUtil.getSeparator("Exemplar"), cc.xyw(2, 2, 7));
+		
+		JLabel lblNumberOfCopies = new JLabel("Anzahl Exemplare:");
+		pnlCopyInformation.add(lblNumberOfCopies, cc.xy(2, 4));
+		
+		JLabel lblNumber = new JLabel("" + library.getCopiesOfBook(book).size());
+		pnlCopyInformation.add(lblNumber, cc.xy(4, 4));
+		
+		JButton btnRemoveSelected = new JButton("Ausgewählte Entfernen");
+		pnlCopyInformation.add(btnRemoveSelected, cc.xy(6, 4));
+		
 		JButton btnAddCopy = new JButton("Exemplar Hinzufügen");
-		btnAddCopy.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				library.createAndAddCopy(book);			
-			}
-		});
-
-		JScrollPane scrBooks = new JScrollPane();
-
-		JLabel lblQuantityNumber = new JLabel("" + library.getCopiesOfBook(book).size());
-		GroupLayout gl_pnlCopies = new GroupLayout(pnlCopies);
-		gl_pnlCopies.setHorizontalGroup(gl_pnlCopies.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_pnlCopies
-						.createSequentialGroup()
-						.addGroup(
-								gl_pnlCopies
-										.createParallelGroup(Alignment.LEADING)
-										.addGroup(
-												gl_pnlCopies.createSequentialGroup().addContainerGap().addComponent(lblQuantity)
-														.addPreferredGap(ComponentPlacement.RELATED).addComponent(lblQuantityNumber)
-														.addPreferredGap(ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-														.addComponent(btnRemoveSelected).addPreferredGap(ComponentPlacement.RELATED)
-														.addComponent(btnAddCopy))
-										.addGroup(
-												gl_pnlCopies.createSequentialGroup().addGap(10)
-														.addComponent(scrBooks, GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)))
-						.addContainerGap()));
-		gl_pnlCopies.setVerticalGroup(gl_pnlCopies.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_pnlCopies
-						.createSequentialGroup()
-						.addGroup(
-								gl_pnlCopies.createParallelGroup(Alignment.BASELINE).addComponent(btnRemoveSelected)
-										.addComponent(btnAddCopy).addComponent(lblQuantityNumber).addComponent(lblQuantity))
-						.addPreferredGap(ComponentPlacement.RELATED).addComponent(scrBooks, GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-						.addGap(1)));
-
-		scrBooks.setViewportView(lstBooks);
-		pnlCopies.setLayout(gl_pnlCopies);
+		pnlCopyInformation.add(btnAddCopy, cc.xy(8, 4));
+		
+		JScrollPane scrCopies = new JScrollPane();
+		pnlCopies.add(scrCopies, BorderLayout.CENTER);
+		
+		tblCopies = new JTable();
+		scrCopies.setViewportView(tblCopies);
 	}
 
 	public void toFront() {

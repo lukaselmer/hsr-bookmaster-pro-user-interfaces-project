@@ -71,4 +71,9 @@ public class LoanDetailTableModel extends AbstractTableModel {
 		return "" + columnNames[col];	
 	}
 	
+	public void updateLoans(List<Loan> newLoans) {
+		currentLoans = newLoans;
+		fireTableDataChanged();
+	}
+	
 }
