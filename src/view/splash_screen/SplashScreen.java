@@ -16,7 +16,6 @@ import com.jgoodies.animation.components.GlyphLabel;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.lang.reflect.Method;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

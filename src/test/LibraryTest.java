@@ -7,6 +7,7 @@ import domain.Customer;
 import domain.Library;
 import domain.Loan;
 import domain.Book;
+import domain.Shelf;
 
 public class LibraryTest extends TestCase {
 
@@ -18,9 +19,12 @@ public class LibraryTest extends TestCase {
 		library = new Library();
 
 		// Books
-		Book b1 = library.createAndAddBook("Design Pattern");
-		Book b2 = library.createAndAddBook("Refactoring");
-		Book b3 = library.createAndAddBook("Clean Code");
+		// Book b1 = library.createAndAddBook("Design Pattern");
+		// Book b2 = library.createAndAddBook("Refactoring");
+		// Book b3 = library.createAndAddBook("Clean Code");
+		Book b1 = library.addBook(new Book("Design Pattern", "Terence Parr", "The Pragmatic Programmers", Shelf.A1));
+		Book b2 = library.addBook(new Book("Refactoring", "Terence Parr", "The Pragmatic Programmers", Shelf.A1));
+		Book b3 = library.addBook(new Book("Clean Code", "Terence Parr", "The Pragmatic Programmers", Shelf.A1));
 
 		// Books
 		library.createAndAddCopy(b1);

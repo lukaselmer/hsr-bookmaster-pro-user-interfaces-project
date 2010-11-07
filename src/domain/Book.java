@@ -8,8 +8,24 @@ public class Book extends Observable implements Observer {
 	private String name, author, publisher;
 	private Shelf shelf;
 
-	public Book(String name) {
+//	public Book(String name) {
+//		this(name, null, null, null);
+//	}
+
+	public Book(String name, String author, String publisher, Shelf shelf) {
 		this.name = name;
+		this.author = author;
+		this.publisher = publisher;
+		this.shelf = shelf;
+	}
+
+	public void updateValues(Book b) {
+		this.name = b.name;
+		this.author = b.author;
+		this.publisher = b.publisher;
+		this.shelf = b.shelf;
+		setChanged();
+		notifyObservers();
 	}
 
 	public String getName() {

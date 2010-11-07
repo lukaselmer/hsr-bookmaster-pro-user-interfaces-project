@@ -40,8 +40,16 @@ public class Library extends Observable implements Observer {
 	// return c;
 	// }
 
-	public Book createAndAddBook(String name) {
-		Book b = new Book(name);
+	// public Book createAndAddBook(String name) {
+	// Book b = new Book(name);
+	// books.add(b);
+	// b.addObserver(this);
+	// setChanged();
+	// notifyObservers();
+	// return b;
+	// }
+
+	public Book addBook(Book b) {
 		books.add(b);
 		b.addObserver(this);
 		setChanged();

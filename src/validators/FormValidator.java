@@ -1,14 +1,14 @@
 package validators;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Point;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -22,8 +22,6 @@ import com.jgoodies.validation.Validator;
 import com.jgoodies.validation.view.ValidationComponentUtils;
 import com.jgoodies.validation.view.ValidationResultViewFactory;
 
-import domain.Customer;
-
 public abstract class FormValidator<T> {
 
 	protected JDialog popup;
@@ -31,13 +29,16 @@ public abstract class FormValidator<T> {
 	private JTextField[] fields;
 	protected Validator<T> validator;
 	private JComponent btnSave;
+	//private JFrame frame;
+	private JComponent currentComponent;
 
-	public FormValidator(JFrame frmNeuerKunde, JTextField[] fields, Validator<T> validator, JButton btnSave) {
+	public FormValidator(JFrame frame, JTextField[] fields, Validator<T> validator, JButton btnSave) {
 		this.validator = validator;
 		this.fields = fields;
 		this.btnSave = btnSave;
 
-		popup = new JDialog(frmNeuerKunde);
+		//this.frame = frame;
+		popup = new JDialog(frame);
 		popupMessage = new JLabel("");
 		popup.getContentPane().setLayout(new FlowLayout());
 		popup.setUndecorated(true);
@@ -46,6 +47,18 @@ public abstract class FormValidator<T> {
 		popup.getContentPane().add(image);
 		popup.getContentPane().add(popupMessage);
 		popup.setFocusableWindowState(false);
+
+		frame.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				updatePopupPosition();
+			}
+
+			@Override
+			public void componentMoved(ComponentEvent e) {
+				updatePopupPosition();
+			}
+		});
 
 		for (final JTextField f : fields) {
 			f.addKeyListener(new KeyAdapter() {
@@ -57,6 +70,7 @@ public abstract class FormValidator<T> {
 			f.addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusLost(FocusEvent e) {
+					validateForm(f);
 					hidePopup();
 				}
 
@@ -68,6 +82,15 @@ public abstract class FormValidator<T> {
 			if (ValidationComponentUtils.isMandatory(f) && f.getText().length() == 0) {
 				ValidationComponentUtils.setMandatoryBackground(f);
 				f.setToolTipText("Muss ausgefüllt werden");
+			}
+		}
+	}
+
+	protected void updatePopupPosition() {
+		synchronized (popup) {
+			if (currentComponent != null) {
+				Point l = currentComponent.getLocationOnScreen();
+				popup.setLocation((int) l.getX(), (int) l.getY() + currentComponent.getHeight() + 2);
 			}
 		}
 	}
@@ -100,19 +123,21 @@ public abstract class FormValidator<T> {
 	}
 
 	protected void hidePopup() {
-		popup.setVisible(false);
-		popupMessage.setText("");
+		synchronized (popup) {
+			currentComponent = null;
+			popup.setVisible(false);
+			popupMessage.setText("");
+		}
 	}
 
 	protected void showPopup(JComponent f, String message) {
-		popupMessage.setText(message);
-		popup.setSize(0, 0);
-		popup.setLocationRelativeTo(f);
-		Point point = popup.getLocation();
-		Dimension cDim = f.getSize();
-		popup.setLocation(point.x - (int) cDim.getWidth() / 2, (point.y + (int) cDim.getHeight() / 2) + 2);
-		popup.pack();
-		popup.setVisible(true);
+		synchronized (popup) {
+			this.currentComponent = f;
+			popupMessage.setText(message);
+			popup.pack();
+			updatePopupPosition();
+			popup.setVisible(true);
+		}
 	}
 
 	/**

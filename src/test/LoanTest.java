@@ -17,7 +17,7 @@ public class LoanTest extends TestCase {
 
 	private Loan createSampleLoan() {
 		Customer customer = new Customer("Keller", "Peter");
-		Book title = new Book("Design Pattern");
+		Book title = new Book("Design Pattern", "Terence Parr", "The Pragmatic Programmers", Shelf.A1);
 		Copy copy = new Copy(title);
 		Loan loan = new Loan(customer, copy);
 		return loan;
@@ -34,7 +34,7 @@ public class LoanTest extends TestCase {
 
 	public void testDurationCalculation() throws IllegalLoanOperationException {
 		Loan l = createSampleLoan();
-		assertEquals(-1, l.getDaysOfLoanDuration());
+		assertEquals(0, l.getDaysOfLoanDuration());
 
 		GregorianCalendar returnDate = (GregorianCalendar) l.getPickupDate().clone();
 		returnDate.add(GregorianCalendar.DAY_OF_YEAR, 12);

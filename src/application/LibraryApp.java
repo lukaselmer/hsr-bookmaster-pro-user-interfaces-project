@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.GregorianCalendar;
 import java.util.Random;
 
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -16,14 +14,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import view.book_master.BookMaster;
-
+import domain.Book;
 import domain.Copy;
 import domain.Customer;
 import domain.IllegalLoanOperationException;
 import domain.Library;
 import domain.Loan;
-import domain.Book;
 import domain.Shelf;
 
 public class LibraryApp {
@@ -39,16 +35,12 @@ public class LibraryApp {
 		try {
 			initLibrary(library);
 		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalLoanOperationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return library;
@@ -123,12 +115,11 @@ public class LibraryApp {
 		NodeList titles = doc2.getElementsByTagName("title");
 		for (int i = 0; i < titles.getLength(); i++) {
 			Node title = titles.item(i);
-			Book b = library.createAndAddBook(getTextContentOf(title, "name"));
-			b.setAuthor(getTextContentOf(title, "author"));
-			b.setPublisher(getTextContentOf(title, "publisher"));
 			Random r = new Random();
 			Shelf[] vals = Shelf.values();
-			b.setShelf(vals[r.nextInt(vals.length)]);
+			Book b = new Book(getTextContentOf(title, "name"), getTextContentOf(title, "author"), getTextContentOf(title, "publisher"),
+					vals[r.nextInt(vals.length)]);
+			library.addBook(b);
 		}
 	}
 
@@ -137,8 +128,7 @@ public class LibraryApp {
 		NodeList customers = doc.getElementsByTagName("customer");
 		for (int i = 0; i < customers.getLength(); i++) {
 			Node customer = customers.item(i);
-
-			Customer c = library.addCustomer(new Customer(getTextContentOf(customer, "name"), getTextContentOf(customer, "surname"),
+			/* Customer c = */library.addCustomer(new Customer(getTextContentOf(customer, "name"), getTextContentOf(customer, "surname"),
 					getTextContentOf(customer, "street"), getTextContentOf(customer, "city"), Integer.parseInt(getTextContentOf(customer,
 							"zip"))));
 		}

@@ -1,12 +1,13 @@
 package view.customer;
 
-import java.awt.Component;
 import java.awt.EventQueue;
 import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+
+import view.book_master.SubFrame;
 
 import domain.Customer;
 import domain.Library;

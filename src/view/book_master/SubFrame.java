@@ -1,6 +1,4 @@
-package view.customer;
-
-import java.awt.Window;
+package view.book_master;
 
 import javax.swing.JFrame;
 

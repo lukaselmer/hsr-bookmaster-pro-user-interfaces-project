@@ -3,7 +3,6 @@ package view.book_master;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -14,7 +13,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
@@ -25,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -50,9 +49,10 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import view.BookDetail;
+import view.book.BookEdit;
+import view.book.BookNew;
 import view.customer.CustomerEdit;
 import view.customer.CustomerNew;
-import view.customer.SubFrame;
 import application.LibraryApp;
 import domain.Book;
 import domain.Customer;
@@ -78,6 +78,7 @@ public class BookMaster implements Observer {
 	private JLabel lblOverdueAmountNum;
 	private Library library;
 	protected CustomerNew newCustomerFrame;
+	protected BookNew newBookFrame;
 	private JPanel pnlBooks;
 	private JPanel pnlCustomers;
 	private JPanel pnlLoans;
@@ -120,11 +121,20 @@ public class BookMaster implements Observer {
 		updateBooksStatistics();
 		updateLoansStatistics();
 		updateCustomersStatistics();
+		// updateTableObjects();
 		frmBookmaster.setLocationByPlatform(true);
 		frmBookmaster.setVisible(true);
 		// TEMP!!! DEBUG!!!
 		// tabbedPane.setSelectedIndex(1);
 	}
+
+	// private void updateTableObjects() {
+	// tblBooksModel.updateObjects(library.filterBooks(txtFilterBooks.getText(),
+	// chckbxAvailibleOnly.isSelected()));
+	// tblLoansModel.updateObjects(library.filterLoans(txtFilterLoans.getText(),
+	// chckbxOverduesOnly.isSelected()));
+	// tblCustomersModel.updateObjects(library.filterCustomers(txtFilterCustomers.getText()));
+	// }
 
 	public BookMaster inst() {
 		return this;
@@ -248,9 +258,20 @@ public class BookMaster implements Observer {
 		btnAddNewBook.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO implement this
-				for (int i = 0; i < 200; ++i) {
-					library.createAndAddBook("bububu");
+				new BookEdit(library, library.getBooks().get((new Random()).nextInt(library.getBooks().size())));
+				if (newBookFrame != null && newBookFrame.isValid()) {
+					newBookFrame.toFront();
+				} else {
+					newBookFrame = new BookNew(library);
+					newBookFrame.getFrame().addWindowListener(new WindowAdapter() {
+						@Override
+						public void windowClosed(WindowEvent arg0) {
+							Book b = newBookFrame.getSavedObject();
+							newBookFrame = null;
+							if (b != null)
+								createOrShowBookDetailFrame(b);
+						}
+					});
 				}
 			}
 		});
@@ -491,7 +512,6 @@ public class BookMaster implements Observer {
 
 		JButton btnNewClient = new JButton("Neuer Kunde Erfassen");
 		btnNewClient.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (newCustomerFrame != null && newCustomerFrame.isValid()) {

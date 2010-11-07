@@ -7,7 +7,7 @@ import domain.Shelf;
 public class BookTest extends TestCase {
 
 	public void testBookCreation() {
-		Book b = new Book("The Definitive ANTLR Reference");
+		Book b = new Book("The Definitive ANTLR Reference", "Terence Parr", "The Pragmatic Programmers", Shelf.A1);
 		b.setName("The Definitive ANTLR Reference");
 		b.setAuthor("Terence Parr");
 		b.setPublisher("The Pragmatic Programmers");

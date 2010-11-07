@@ -1,4 +1,4 @@
-package view.customer;
+package view.book;
 
 import java.awt.EventQueue;
 
@@ -6,17 +6,17 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import application.LibraryApp;
-import domain.Customer;
+import domain.Book;
 import domain.Library;
 
-public class CustomerNew extends CustomerForm {
+public class BookNew extends BookForm {
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-					new CustomerNew(LibraryApp.inst());
+					new BookNew(LibraryApp.inst());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -24,24 +24,24 @@ public class CustomerNew extends CustomerForm {
 		});
 	}
 
-	public CustomerNew(Library library) {
+	public BookNew(Library library) {
 		super(library);
 	}
 
 	@Override
 	protected String getWindowTitle() {
-		return "Neuer Kunde";
+		return "Neuer Buchtitel";
 	}
 
 	@Override
 	protected String getSaveButtonTitle() {
-		return "Kunde Erstellen";
+		return "Buchtitel Erfassen";
 	}
 
 	@Override
-	protected void saveCustomer(Customer c) {
-		library.addCustomer(c);
-		JOptionPane.showMessageDialog(frmCustomerForm, "Kunde wurde erfolgreich erstellt und der Kundentabelle hinzugefügt.",
-				"Hinweis", JOptionPane.INFORMATION_MESSAGE);
+	protected void saveBook(Book b) {
+		library.addBook(b);
+		JOptionPane.showMessageDialog(frmBookForm, "Buchtitel wurde erfolgreich erstellt und der Buchtiteltabelle hinzugefügt.", "Hinweis",
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 }

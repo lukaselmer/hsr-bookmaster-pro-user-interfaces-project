@@ -3,11 +3,12 @@ package test;
 import junit.framework.TestCase;
 import domain.Copy;
 import domain.Book;
+import domain.Shelf;
 
 public class CopyTest extends TestCase {
 
 	public void testBook() {
-		Book t = new Book("Design Pattern");
+		Book t = new Book("Design Pattern", "Terence Parr", "The Pragmatic Programmers", Shelf.A1);
 		Copy c1 = new Copy(t);
 		assertEquals(Copy.nextInventoryNumber - 1, c1.getInventoryNumber());
 		Copy c2 = new Copy(t);

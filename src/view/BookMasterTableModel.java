@@ -21,7 +21,7 @@ public abstract class BookMasterTableModel<T> extends AbstractTableModel {
 
 	public BookMasterTableModel(Library library) {
 		this.library = library;
-		currentObjects = getInitialObjects();
+		currentObjects = new ArrayList<T>(getInitialObjects());
 		columnNames = getColumnNames();
 	}
 
@@ -31,8 +31,7 @@ public abstract class BookMasterTableModel<T> extends AbstractTableModel {
 
 	public void updateObjects(List<T> newObjects) {
 		if (newObjects.equals(currentObjects)) {
-			// objects are the same, no change and return
-			return;
+			return; // objects are the same -> no change and return
 		}
 		currentObjects = newObjects;
 		fireTableDataChanged();
