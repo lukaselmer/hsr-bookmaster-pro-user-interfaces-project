@@ -1,8 +1,9 @@
-package view;
+package view.book_master;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
@@ -30,6 +32,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -46,9 +49,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import view.book_master.BookMasterTableModelBook;
-import view.book_master.BookMasterTableModelCustomer;
-import view.book_master.BookMasterTableModelLoan;
+import view.BookDetail;
 import view.customer.CustomerEdit;
 import view.customer.CustomerNew;
 import view.customer.SubFrame;
@@ -136,7 +137,18 @@ public class BookMaster implements Observer {
 		frmBookmaster = new JFrame();
 		frmBookmaster.setTitle("BookMaster");
 		frmBookmaster.setBounds(100, 100, 950, 600);
-		frmBookmaster.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmBookmaster.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frmBookmaster.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				if (JOptionPane.showConfirmDialog(frmBookmaster, "Sind Sie sicher? Alle Unterfenster werden geschlossen.",
+						"BookMasterPro Schliessen", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+					frmBookmaster.setVisible(false);
+					frmBookmaster.dispose();
+					System.exit(0);
+				}
+			}
+		});
 		frmBookmaster.getContentPane().setLayout(new BorderLayout(0, 0));
 		frmBookmaster.setMinimumSize(new Dimension(650, 400));
 

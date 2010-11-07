@@ -16,7 +16,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import view.BookMaster;
+import view.book_master.BookMaster;
 
 import domain.Copy;
 import domain.Customer;
