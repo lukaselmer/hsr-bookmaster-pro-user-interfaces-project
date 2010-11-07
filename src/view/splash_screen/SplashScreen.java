@@ -1,4 +1,4 @@
-package view;
+package view.splash_screen;
 
 import application.LibraryApp;
 
@@ -20,6 +20,8 @@ import java.lang.reflect.Method;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import view.book_master.BookMaster;
 
 public class SplashScreen {
 
