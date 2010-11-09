@@ -13,27 +13,27 @@ public class BookDetailTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 6585199961830637974L;
 
-	public enum ColumnName{
+	public enum ColumnName {
 		INVENTORY_NUMBER("Exemplar-ID"), AVAILABILITY("Verfügbarkeit");
 		private String name;
-		
-		private ColumnName(String name){
+
+		private ColumnName(String name) {
 			this.name = name;
 		}
-		
+
 		@Override
-		public String toString(){
+		public String toString() {
 			return name;
 		}
 	}
-	
+
 	ColumnName[] columnnames = ColumnName.values();
 	Library library;
-	List<Copy> copies;
-	
-	public BookDetailTableModel(Library library, Book book){
+	List<Copy> currentCopies;
+
+	public BookDetailTableModel(Library library, Book book) {
 		this.library = library;
-		copies = library.getCopiesOfBook(book);
+		currentCopies = library.getCopiesOfBook(book);
 	}
 
 	@Override
@@ -43,26 +43,37 @@ public class BookDetailTableModel extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		return copies.size();
+		return currentCopies.size();
 	}
 
 	@Override
 	public Object getValueAt(int row, int col) {
-		Copy c = copies.get(row);
-		if (col == -1){
+		Copy c = currentCopies.get(row);
+		if (col == -1) {
 			return c;
-		} else if (getColumnName(col).equals(ColumnName.INVENTORY_NUMBER.toString())){
+		} else if (getColumnName(col).equals(ColumnName.INVENTORY_NUMBER.toString())) {
 			return c.getInventoryNumber();
-		} else if (getColumnName(col).equals(ColumnName.AVAILABILITY.toString())){
-			return "" + (c.isLent() ? "Ausgeliehen bis " + Loan.getFormattedDate(c.getCurrentLoan().getDueDate()) + (c.getCurrentLoan().getDaysOfExpectedLeftLoanDuration() > 0 ? " (noch " + c.getCurrentLoan().getDaysOfExpectedLeftLoanDuration() + " Tage)" : " (" + -c.getCurrentLoan().getDaysOfExpectedLeftLoanDuration() + " Tage überfällig)") : "Verfügbar");
+		} else if (getColumnName(col).equals(ColumnName.AVAILABILITY.toString())) {
+			return ""
+					+ (c.isLent() ? "Ausgeliehen bis "
+							+ Loan.getFormattedDate(c.getCurrentLoan().getDueDate())
+							+ (c.getCurrentLoan().getDaysOfExpectedLeftLoanDuration() >= 0 ? (c.getCurrentLoan()
+									.getDaysOfExpectedLeftLoanDuration() == 0 ? " (heute)" : " (noch "
+									+ c.getCurrentLoan().getDaysOfExpectedLeftLoanDuration() + " Tage)") : " ("
+									+ -c.getCurrentLoan().getDaysOfExpectedLeftLoanDuration() + " Tage überfällig)") : "Verfügbar");
 		} else {
 			throw new RuntimeException("Undefined column name!");
 		}
 	}
-	
+
 	@Override
-	public String getColumnName(int col){
+	public String getColumnName(int col) {
 		return "" + columnnames[col];
+	}
+	
+	public void updateCopies(List<Copy> newCopies){
+		currentCopies = newCopies;
+		fireTableDataChanged();
 	}
 
 }

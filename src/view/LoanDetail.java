@@ -1,54 +1,37 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
 
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
-
-import com.jgoodies.forms.layout.CellConstraints;
-import com.jgoodies.forms.layout.FormLayout;
-import com.sun.xml.internal.ws.api.pipe.NextAction;
-
-import application.LibraryApp;
-import domain.Copy;
-import domain.Customer;
-import domain.Library;
-import domain.Loan;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
+
+import org.jdesktop.swingx.JXTitledSeparator;
 
 import sun.misc.Compare;
 import sun.misc.Sort;
+import validators.FormValidator;
+import validators.LoanValidator;
 import view.loan_detail.LoanDetailTableModel;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JSeparator;
-import java.awt.FlowLayout;
-import javax.swing.BoxLayout;
-import java.awt.Component;
-import javax.swing.Box;
+import application.LibraryApp;
 
-import org.jdesktop.swingx.JXTitledSeparator;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
+
+import domain.Copy;
+import domain.Customer;
+import domain.Library;
 
 public class LoanDetail {
 
@@ -57,14 +40,13 @@ public class LoanDetail {
 	private Customer customer;
 	private JPanel pnlCustomer;
 	private JLabel lblCustomer;
-	private JPanel pnlLoans;
 	private JTable tblLoans;
-	private JPanel pnlLendNewCopy;
 	private JLabel lblNumber;
 	private LoanDetailTableModel loanTableModel;
 	private JComboBox cmbCustomer;
 	private JTextField txtCopyId;
 	private JXTitledSeparator customerSeparator;
+	protected FormValidator<Copy> formValidator;
 
 	/**
 	 * Launch the application.
@@ -88,11 +70,11 @@ public class LoanDetail {
 	 * Create the application.
 	 */
 	public LoanDetail(Library library, Customer customer) {
-		this.library = library; //
-		this.customer = customer; //
-		initialize(); //
-		frmLoanDetail.setLocationByPlatform(true); //
-		frmLoanDetail.setVisible(true); //
+		this.library = library;
+		this.customer = customer;
+		initialize();
+		frmLoanDetail.setLocationByPlatform(true); 
+		frmLoanDetail.setVisible(true);
 	}
 
 	/**
@@ -147,7 +129,7 @@ public class LoanDetail {
 		customerSeparator = ViewUtil.getSeparator("");
 		pnlCustomer.add(customerSeparator, cc.xyw(2, 8, 5));
 
-		//
+		// JTable
 		JScrollPane scrollPane = new JScrollPane();
 		frmLoanDetail.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		
@@ -158,8 +140,9 @@ public class LoanDetail {
 		scrollPane.setViewportView(tblLoans);
 		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.INVENTORY_NUMBER).setMinWidth(80);
 		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.INVENTORY_NUMBER).setMaxWidth(80);
-
-		FormLayout newLoanLayout = new FormLayout("5dlu, pref, 5dlu, pref:grow, 5dlu, pref, 5dlu", "5dlu, pref, 5dlu, pref, 5dlu");
+		
+		//Panel Loan
+		FormLayout newLoanLayout = new FormLayout("5dlu, pref, 5dlu, pref:grow, 5dlu, pref, 5dlu", "5dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu");
 		JPanel pnlNewLoan = new JPanel(newLoanLayout);
 		frmLoanDetail.getContentPane().add(pnlNewLoan, BorderLayout.SOUTH);
 
@@ -174,6 +157,23 @@ public class LoanDetail {
 		JButton btnLendNewCopy = new JButton("Exemplar ausleihen");
 		btnLendNewCopy.setEnabled(false);
 		pnlNewLoan.add(btnLendNewCopy, cc.xy(6, 4));
+		
+		JLabel lblCopyInformation = new JLabel("Test");
+		pnlNewLoan.add(lblCopyInformation, cc.xy(2, 6));
+		
+		JTextField[] fields = {txtCopyId};
+		formValidator = new FormValidator<Copy>(frmLoanDetail, fields, new LoanValidator(), btnLendNewCopy) {
+			
+			@Override
+			public Copy createObject() {
+				Integer copyId = null;
+				try {
+					copyId = Integer.parseInt(txtCopyId.toString());
+				} catch (NumberFormatException ex){}
+				return null;
+			}
+		};
+		
 
 		updateCustomerInformation();
 	}
