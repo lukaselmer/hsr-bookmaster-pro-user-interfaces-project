@@ -68,4 +68,9 @@ public class BookMasterTableModelBook extends BookMasterTableModel<Book> {
 			throw new RuntimeException("Undefined column name!");
 		}
 	}
+
+	@Override
+	public int getDefaultSortedColumn() {
+		return ColumnName.TITLE.ordinal();
+	}
 }

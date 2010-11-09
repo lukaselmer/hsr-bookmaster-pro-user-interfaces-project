@@ -63,4 +63,8 @@ public class BookMasterTableModelLoan extends BookMasterTableModel<Loan> {
 		}
 	}
 
+	@Override
+	public int getDefaultSortedColumn() {
+		return ColumnName.TITLE.ordinal();
+	}
 }

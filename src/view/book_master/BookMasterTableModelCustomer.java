@@ -12,7 +12,7 @@ public class BookMasterTableModelCustomer extends BookMasterTableModel<Customer>
 	private static final long serialVersionUID = 8466707343843649023L;
 
 	public enum ColumnName implements AbstractColumnName {
-		NAME("Vorname"), SURNAME("Nachname"), STREET("Strasse"), CITY("Stadt"), ZIP("PLZ");
+		SURNAME("Nachname"), NAME("Vorname"), STREET("Strasse"), CITY("Stadt"), ZIP("PLZ");
 		private String name;
 
 		private ColumnName(String name) {
@@ -34,10 +34,10 @@ public class BookMasterTableModelCustomer extends BookMasterTableModel<Customer>
 		Customer c = currentObjects.get(row);
 		if (col == -1) {
 			return c;
-		} else if (getColumnName(col).equals(ColumnName.NAME.toString())) {
-			return c.getName();
 		} else if (getColumnName(col).equals(ColumnName.SURNAME.toString())) {
 			return c.getSurname();
+		} else if (getColumnName(col).equals(ColumnName.NAME.toString())) {
+			return c.getName();
 		} else if (getColumnName(col).equals(ColumnName.STREET.toString())) {
 			return c.getStreet();
 		} else if (getColumnName(col).equals(ColumnName.CITY.toString())) {
@@ -57,5 +57,10 @@ public class BookMasterTableModelCustomer extends BookMasterTableModel<Customer>
 	@Override
 	protected AbstractColumnName[] getColumnNames() {
 		return ColumnName.values();
+	}
+
+	@Override
+	public int getDefaultSortedColumn() {
+		return ColumnName.SURNAME.ordinal();
 	}
 }
