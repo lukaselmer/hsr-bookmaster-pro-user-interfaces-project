@@ -408,9 +408,28 @@ public class BookMaster implements Observer {
 		pnlCustomers.add(pnlCustomerLoan, BorderLayout.CENTER);
 		pnlCustomerLoan.setLayout(new BorderLayout(0, 0));
 
-		JPanel panel_3 = new JPanel();
-		panel_3.setBorder(new TitledBorder(null, "Erfasste Ausleihen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		pnlCustomerLoan.add(panel_3, BorderLayout.NORTH);
+		pnlCustomerLoan.add(getPnlCustomerFilter(), BorderLayout.NORTH);
+
+		scrollTblCustomers = new JScrollPane();
+		pnlCustomerLoan.add(scrollTblCustomers, BorderLayout.CENTER);
+
+		initTblCustomers();
+		tblCustomers.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent mouseEvent) {
+				if (mouseEvent.getClickCount() == 2 && mouseEvent.getButton() == MouseEvent.BUTTON1) {
+					Customer c = getSelectedCustomer();
+					if (c != null) {
+						createOrShowCustomerDetailFrame(c);
+					}
+				}
+			}
+		});
+		scrollTblCustomers.setViewportView(tblCustomers);
+	}
+
+	private Component getPnlCustomerFilter() {
+		JLabel lblAlleAusleighen = new JLabel("Alle Kunden sind in der untenstehenden Tabelle ersichtlich");
 
 		JLabel lblFilterCustomers = new JLabel("Filter:");
 		lblFilterCustomers.setDisplayedMnemonic('f');
@@ -452,58 +471,17 @@ public class BookMaster implements Observer {
 		});
 		btnNewClient.setMnemonic('n');
 
-		JLabel lblAlleAusleighen = new JLabel("Alle Kunden sind in der untenstehenden Tabelle ersichtlich");
-		GroupLayout gl_panel_3 = new GroupLayout(panel_3);
-		gl_panel_3.setHorizontalGroup(gl_panel_3.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_panel_3
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								gl_panel_3
-										.createParallelGroup(Alignment.LEADING)
-										.addGroup(
-												gl_panel_3.createSequentialGroup().addComponent(lblFilterCustomers).addGap(12)
-														.addComponent(txtFilterCustomers, GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
-														.addGap(12).addComponent(btnShowSelectedCustomers).addGap(12)
-														.addComponent(btnNewClient).addGap(6))
-										.addGroup(
-												gl_panel_3.createSequentialGroup().addComponent(lblAlleAusleighen)
-														.addContainerGap(491, Short.MAX_VALUE)))));
-		gl_panel_3.setVerticalGroup(gl_panel_3.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_panel_3
-						.createSequentialGroup()
-						.addComponent(lblAlleAusleighen)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								gl_panel_3
-										.createParallelGroup(Alignment.LEADING, false)
-										.addGroup(
-												gl_panel_3
-														.createSequentialGroup()
-														.addGap(1)
-														.addComponent(txtFilterCustomers, GroupLayout.PREFERRED_SIZE,
-																GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-										.addGroup(
-												gl_panel_3.createParallelGroup(Alignment.BASELINE).addComponent(lblFilterCustomers)
-														.addComponent(btnShowSelectedCustomers).addComponent(btnNewClient)))));
-		panel_3.setLayout(gl_panel_3);
-
-		scrollTblCustomers = new JScrollPane();
-		pnlCustomerLoan.add(scrollTblCustomers, BorderLayout.CENTER);
-
-		initTblCustomers();
-		tblCustomers.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent mouseEvent) {
-				if (mouseEvent.getClickCount() == 2 && mouseEvent.getButton() == MouseEvent.BUTTON1) {
-					Customer c = getSelectedCustomer();
-					if (c != null) {
-						createOrShowCustomerDetailFrame(c);
-					}
-				}
-			}
-		});
-		scrollTblCustomers.setViewportView(tblCustomers);
+		FormLayout layout = new FormLayout("5dlu, pref, 2dlu, pref:grow, 5dlu, pref, 2dlu, pref, 5dlu",
+				"3dlu, pref, 5dlu, pref, 5dlu, pref, 8dlu");
+		JPanel panel = new JPanel(layout);
+		CellConstraints cc = new CellConstraints();
+		panel.add(ViewUtil.getSeparator("Erfasste Kunden"), cc.xyw(2, 2, 7));
+		panel.add(lblAlleAusleighen, cc.xyw(2, 4, 7));
+		panel.add(lblFilterCustomers, cc.xy(2, 6));
+		panel.add(txtFilterCustomers, cc.xy(4, 6));
+		panel.add(btnShowSelectedCustomers, cc.xy(6, 6));
+		panel.add(btnNewClient, cc.xy(8, 6));
+		return panel;
 	}
 
 	private Component getPnlCustomersStatistics() {
