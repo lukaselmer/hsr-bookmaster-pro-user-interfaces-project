@@ -189,10 +189,27 @@ public class BookMaster implements Observer {
 		pnlBooks.add(pnlBookInventory, BorderLayout.CENTER);
 		pnlBookInventory.setLayout(new BorderLayout(0, 0));
 
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(null, "Buch Inventar", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		pnlBookInventory.add(panel_1, BorderLayout.NORTH);
+		pnlBookInventory.add(getPnlBookFilter(), BorderLayout.NORTH);
 
+		scrollTblBooks = new JScrollPane();
+		pnlBookInventory.add(scrollTblBooks, BorderLayout.CENTER);
+
+		initTblBooks();
+		tblBooks.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent mouseEvent) {
+				if (mouseEvent.getClickCount() == 2 && mouseEvent.getButton() == MouseEvent.BUTTON1) {
+					Book b = getSelectedBook();
+					if (b != null) {
+						createOrShowBookDetailFrame(b);
+					}
+				}
+			}
+		});
+		scrollTblBooks.setViewportView(tblBooks);
+	}
+
+	private JPanel getPnlBookFilter() {
 		JLabel lblBookTableDescription = new JLabel("Alle Bücher in der Bibliothek sind in der  unterstehenden Tabelle ersichtlich");
 
 		txtFilterBooks = new JTextField();
@@ -255,56 +272,19 @@ public class BookMaster implements Observer {
 				}
 			}
 		});
-		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-		gl_panel_1.setHorizontalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_panel_1
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								gl_panel_1
-										.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblBookTableDescription)
-										.addGroup(
-												gl_panel_1.createSequentialGroup().addComponent(lblFilterBooks).addGap(12)
-														.addComponent(txtFilterBooks, GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
-														.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(chckbxAvailibleOnly)
-														.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnShowSelectedBooks)
-														.addGap(12).addComponent(btnAddNewBook))).addGap(6)));
-		gl_panel_1
-				.setVerticalGroup(gl_panel_1.createParallelGroup(Alignment.LEADING).addGroup(
-						gl_panel_1
-								.createSequentialGroup()
-								.addComponent(lblBookTableDescription)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addGroup(
-										gl_panel_1
-												.createParallelGroup(Alignment.BASELINE, false)
-												.addGroup(
-														gl_panel_1
-																.createSequentialGroup()
-																.addGap(1)
-																.addComponent(txtFilterBooks, GroupLayout.PREFERRED_SIZE,
-																		GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-												.addComponent(lblFilterBooks).addComponent(chckbxAvailibleOnly)
-												.addComponent(btnShowSelectedBooks).addComponent(btnAddNewBook))));
-		panel_1.setLayout(gl_panel_1);
 
-		scrollTblBooks = new JScrollPane();
-		pnlBookInventory.add(scrollTblBooks, BorderLayout.CENTER);
-
-		initTblBooks();
-		tblBooks.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent mouseEvent) {
-				if (mouseEvent.getClickCount() == 2 && mouseEvent.getButton() == MouseEvent.BUTTON1) {
-					Book b = getSelectedBook();
-					if (b != null) {
-						createOrShowBookDetailFrame(b);
-					}
-				}
-			}
-		});
-		scrollTblBooks.setViewportView(tblBooks);
+		FormLayout layout = new FormLayout("5dlu, pref, 2dlu, pref:grow, 2dlu, pref, 5dlu, pref, 2dlu, pref, 5dlu",
+				"3dlu, pref, 5dlu, pref, 5dlu, pref, 8dlu");
+		JPanel panel = new JPanel(layout);
+		CellConstraints cc = new CellConstraints();
+		panel.add(ViewUtil.getSeparator("Buch Inventar"), cc.xyw(2, 2, 9));
+		panel.add(lblBookTableDescription, cc.xyw(2, 4, 9));
+		panel.add(lblFilterBooks, cc.xy(2, 6));
+		panel.add(txtFilterBooks, cc.xy(4, 6));
+		panel.add(chckbxAvailibleOnly, cc.xy(6, 6));
+		panel.add(btnShowSelectedBooks, cc.xy(8, 6));
+		panel.add(btnAddNewBook, cc.xy(10, 6));
+		return panel;
 	}
 
 	private Component getPnlInventoryStatistics() {
@@ -335,9 +315,21 @@ public class BookMaster implements Observer {
 		pnlLoans.add(pnlLoan, BorderLayout.CENTER);
 		pnlLoan.setLayout(new BorderLayout(0, 0));
 
-		JPanel panel_3 = new JPanel();
-		panel_3.setBorder(new TitledBorder(null, "Erfasste Ausleihen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		pnlLoan.add(panel_3, BorderLayout.NORTH);
+		// JPanel panel_3 = new JPanel();
+		// panel_3.setBorder(new TitledBorder(null, "Erfasste Ausleihen",
+		// TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		// pnlLoan.add(panel_3, BorderLayout.NORTH);
+		pnlLoan.add(getPnlLoanFilter(), BorderLayout.NORTH);
+
+		scrollTblLoans = new JScrollPane();
+		pnlLoan.add(scrollTblLoans, BorderLayout.CENTER);
+
+		initTblLoans();
+		scrollTblLoans.setViewportView(tblLoans);
+	}
+
+	private Component getPnlLoanFilter() {
+		JLabel lblAlleAusleighen = new JLabel("Alle Ausleihen für jeden Kunden sind in der untenstehenden Tabelle ersichtlich");
 
 		JLabel lblFilterLoans = new JLabel("Filter:");
 		lblFilterLoans.setDisplayedMnemonic('f');
@@ -366,52 +358,21 @@ public class BookMaster implements Observer {
 		btnShowSelectedLoans.setEnabled(false);
 		btnShowSelectedLoans.setMnemonic('a');
 
-		JButton btnNeueAusleiheErfassen = new JButton("Neue Ausleihe Erfassen");
-		btnNeueAusleiheErfassen.setMnemonic('n');
+		JButton btnNewLoan = new JButton("Neue Ausleihe Erfassen");
+		btnNewLoan.setMnemonic('n');
 
-		JLabel lblAlleAusleighen = new JLabel("Alle Ausleihen für jeden Kunden sind in der untenstehenden Tabelle ersichtlich");
-		GroupLayout gl_panel_3 = new GroupLayout(panel_3);
-		gl_panel_3.setHorizontalGroup(gl_panel_3.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_panel_3
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								gl_panel_3
-										.createParallelGroup(Alignment.LEADING)
-										.addGroup(
-												gl_panel_3.createSequentialGroup().addComponent(lblFilterLoans).addGap(12)
-														.addComponent(txtFilterLoans, GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
-														.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(chckbxOverduesOnly)
-														.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnShowSelectedLoans)
-														.addGap(12).addComponent(btnNeueAusleiheErfassen).addGap(6))
-										.addGroup(
-												gl_panel_3.createSequentialGroup().addComponent(lblAlleAusleighen)
-														.addContainerGap(491, Short.MAX_VALUE)))));
-		gl_panel_3.setVerticalGroup(gl_panel_3.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_panel_3
-						.createSequentialGroup()
-						.addComponent(lblAlleAusleighen)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								gl_panel_3
-										.createParallelGroup(Alignment.LEADING, false)
-										.addGroup(
-												gl_panel_3
-														.createSequentialGroup()
-														.addGap(1)
-														.addComponent(txtFilterLoans, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-																GroupLayout.PREFERRED_SIZE))
-										.addGroup(
-												gl_panel_3.createParallelGroup(Alignment.BASELINE).addComponent(lblFilterLoans)
-														.addComponent(chckbxOverduesOnly).addComponent(btnShowSelectedLoans)
-														.addComponent(btnNeueAusleiheErfassen)))));
-		panel_3.setLayout(gl_panel_3);
-
-		scrollTblLoans = new JScrollPane();
-		pnlLoan.add(scrollTblLoans, BorderLayout.CENTER);
-
-		initTblLoans();
-		scrollTblLoans.setViewportView(tblLoans);
+		FormLayout layout = new FormLayout("5dlu, pref, 2dlu, pref:grow, 2dlu, pref, 5dlu, pref, 2dlu, pref, 5dlu",
+				"3dlu, pref, 5dlu, pref, 5dlu, pref, 8dlu");
+		JPanel panel = new JPanel(layout);
+		CellConstraints cc = new CellConstraints();
+		panel.add(ViewUtil.getSeparator("Erfasste Ausleihen"), cc.xyw(2, 2, 9));
+		panel.add(lblAlleAusleighen, cc.xyw(2, 4, 9));
+		panel.add(lblFilterLoans, cc.xy(2, 6));
+		panel.add(txtFilterLoans, cc.xy(4, 6));
+		panel.add(chckbxOverduesOnly, cc.xy(6, 6));
+		panel.add(btnShowSelectedLoans, cc.xy(8, 6));
+		panel.add(btnNewLoan, cc.xy(10, 6));
+		return panel;
 	}
 
 	private Component getPnlLoanStatistics() {
