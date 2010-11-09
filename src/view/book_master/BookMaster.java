@@ -183,26 +183,7 @@ public class BookMaster implements Observer {
 		tabbedPane.addTab("Bücher", null, pnlBooks, null);
 		pnlBooks.setLayout(new BorderLayout(0, 0));
 
-		// pnlInventoryStatistics.setBorder(new TitledBorder(null,
-		// "InventarStatistik", TitledBorder.LEADING, TitledBorder.TOP, null,
-		// new Color(0, 0, 0)));
-
-		JLabel lblBooksAmount = new JLabel("Anzahl Bücher:");
-		lblBooksAmountNum = new JLabel("");
-		JLabel lblExemplarAmount = new JLabel("Anzahl Exemplare:");
-		lblExemplarAmountNum = new JLabel("");
-
-		FormLayout layout = new FormLayout("5dlu, pref, 2dlu, pref, 5dlu, pref, 2dlu, pref:grow, 5dlu",
-				"3dlu, pref, 5dlu, pref, 5dlu");
-		JPanel pnlInventoryStatistics = new JPanel(layout);
-		CellConstraints cc = new CellConstraints();
-		pnlInventoryStatistics.add(ViewUtil.getSeparator("Inventar Statistik"), cc.xyw(2, 2, 7));
-		pnlInventoryStatistics.add(lblBooksAmount, cc.xy(2, 4));
-		pnlInventoryStatistics.add(lblBooksAmountNum, cc.xy(4, 4));
-		pnlInventoryStatistics.add(lblExemplarAmount, cc.xy(6, 4));
-		pnlInventoryStatistics.add(lblExemplarAmountNum, cc.xy(8, 4));	
-		
-		pnlBooks.add(pnlInventoryStatistics, BorderLayout.NORTH);
+		pnlBooks.add(getPnlInventoryStatistics(), BorderLayout.NORTH);
 
 		JPanel pnlBookInventory = new JPanel();
 		pnlBooks.add(pnlBookInventory, BorderLayout.CENTER);
@@ -326,58 +307,29 @@ public class BookMaster implements Observer {
 		scrollTblBooks.setViewportView(tblBooks);
 	}
 
+	private Component getPnlInventoryStatistics() {
+		JLabel lblBooksAmount = new JLabel("Anzahl Bücher:");
+		lblBooksAmountNum = new JLabel("");
+		JLabel lblExemplarAmount = new JLabel("Anzahl Exemplare:");
+		lblExemplarAmountNum = new JLabel("");
+
+		FormLayout layout = new FormLayout("5dlu, pref, 2dlu, pref, 5dlu, pref, 2dlu, pref:grow, 5dlu", "3dlu, pref, 5dlu, pref, 5dlu");
+		JPanel pnlInventoryStatistics = new JPanel(layout);
+		CellConstraints cc = new CellConstraints();
+		pnlInventoryStatistics.add(ViewUtil.getSeparator("Inventar Statistik"), cc.xyw(2, 2, 7));
+		pnlInventoryStatistics.add(lblBooksAmount, cc.xy(2, 4));
+		pnlInventoryStatistics.add(lblBooksAmountNum, cc.xy(4, 4));
+		pnlInventoryStatistics.add(lblExemplarAmount, cc.xy(6, 4));
+		pnlInventoryStatistics.add(lblExemplarAmountNum, cc.xy(8, 4));
+		return pnlInventoryStatistics;
+	}
+
 	private void initLoansPanel() {
 		pnlLoans = new JPanel();
 		tabbedPane.addTab("Ausleihen", null, pnlLoans, null);
 		pnlLoans.setLayout(new BorderLayout(0, 0));
 
-		//JPanel pnlLoanStatistics = new JPanel();
-//		pnlLoanStatistics.setBorder(new TitledBorder(null, "Ausleihe Statistik", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0,
-//				0, 0)));
-
-		JLabel lblLoansAmount = new JLabel("Anzahl Ausleihen:");
-		lblLoansAmountNum = new JLabel("0");
-		JLabel lblCurrentlyLoaned = new JLabel("Aktuell Ausgeliehen:");
-		lblCurrentlyLoanedNum = new JLabel("0");
-		JLabel lblOverdueAmount = new JLabel("Überfällige Ausgeliehen:");
-		lblOverdueAmountNum = new JLabel("0");
-		
-		
-		
-
-		FormLayout layout = new FormLayout("5dlu, pref, 2dlu, pref, 5dlu, pref, 2dlu, pref, 5dlu, pref, 2dlu, pref:grow, 5dlu",
-				"3dlu, pref, 5dlu, pref, 5dlu");
-		JPanel pnlLoanStatistics = new JPanel(layout);
-		CellConstraints cc = new CellConstraints();
-		pnlLoanStatistics.add(ViewUtil.getSeparator("Inventar Statistik"), cc.xyw(2, 2, 11));
-		pnlLoanStatistics.add(lblLoansAmount, cc.xy(2, 4));
-		pnlLoanStatistics.add(lblLoansAmountNum, cc.xy(4, 4));
-		pnlLoanStatistics.add(lblCurrentlyLoaned, cc.xy(6, 4));
-		pnlLoanStatistics.add(lblCurrentlyLoanedNum, cc.xy(8, 4));	
-		pnlLoanStatistics.add(lblOverdueAmount, cc.xy(10, 4));
-		pnlLoanStatistics.add(lblOverdueAmountNum, cc.xy(12, 4));	
-		pnlLoans.add(pnlLoanStatistics, BorderLayout.NORTH);
-		
-		
-		
-		
-//		GroupLayout gl_pnlLoanStatistics = new GroupLayout(pnlLoanStatistics);
-//		gl_pnlLoanStatistics.setHorizontalGroup(gl_pnlLoanStatistics.createParallelGroup(Alignment.LEADING).addGroup(
-//				gl_pnlLoanStatistics.createSequentialGroup().addGap(12).addComponent(lblLoansAmount).addGap(7)
-//						.addComponent(lblLoansAmountNum).addGap(21).addComponent(lblCurrentlyLoaned).addGap(7)
-//						.addComponent(lblCurrentlyLoanedNum).addGap(18)
-//						.addComponent(lblOverdueAmount, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE).addGap(7)
-//						.addComponent(lblOverdueAmountNum)));
-//		gl_pnlLoanStatistics.setVerticalGroup(gl_pnlLoanStatistics.createParallelGroup(Alignment.LEADING).addGroup(
-//				gl_pnlLoanStatistics
-//						.createSequentialGroup()
-//						.addGap(5)
-//						.addGroup(
-//								gl_pnlLoanStatistics.createParallelGroup(Alignment.LEADING).addComponent(lblLoansAmount)
-//										.addComponent(lblLoansAmountNum).addComponent(lblCurrentlyLoaned)
-//										.addComponent(lblCurrentlyLoanedNum).addComponent(lblOverdueAmount)
-//										.addComponent(lblOverdueAmountNum))));
-//		pnlLoanStatistics.setLayout(gl_pnlLoanStatistics);
+		pnlLoans.add(getPnlLoanStatistics(), BorderLayout.NORTH);
 
 		JPanel pnlLoan = new JPanel();
 		pnlLoans.add(pnlLoan, BorderLayout.CENTER);
@@ -462,31 +414,34 @@ public class BookMaster implements Observer {
 		scrollTblLoans.setViewportView(tblLoans);
 	}
 
+	private Component getPnlLoanStatistics() {
+		JLabel lblLoansAmount = new JLabel("Anzahl Ausleihen:");
+		lblLoansAmountNum = new JLabel("0");
+		JLabel lblCurrentlyLoaned = new JLabel("Aktuell Ausgeliehen:");
+		lblCurrentlyLoanedNum = new JLabel("0");
+		JLabel lblOverdueAmount = new JLabel("Überfällige Ausgeliehen:");
+		lblOverdueAmountNum = new JLabel("0");
+
+		FormLayout layout = new FormLayout("5dlu, pref, 2dlu, pref, 5dlu, pref, 2dlu, pref, 5dlu, pref, 2dlu, pref:grow, 5dlu",
+				"3dlu, pref, 5dlu, pref, 5dlu");
+		JPanel pnlLoanStatistics = new JPanel(layout);
+		CellConstraints cc = new CellConstraints();
+		pnlLoanStatistics.add(ViewUtil.getSeparator("Ausleihe Statistik"), cc.xyw(2, 2, 11));
+		pnlLoanStatistics.add(lblLoansAmount, cc.xy(2, 4));
+		pnlLoanStatistics.add(lblLoansAmountNum, cc.xy(4, 4));
+		pnlLoanStatistics.add(lblCurrentlyLoaned, cc.xy(6, 4));
+		pnlLoanStatistics.add(lblCurrentlyLoanedNum, cc.xy(8, 4));
+		pnlLoanStatistics.add(lblOverdueAmount, cc.xy(10, 4));
+		pnlLoanStatistics.add(lblOverdueAmountNum, cc.xy(12, 4));
+		return pnlLoanStatistics;
+	}
+
 	private void initCustomersPanel() {
 		pnlCustomers = new JPanel();
 		tabbedPane.addTab("Kunden", null, pnlCustomers, null);
 		pnlCustomers.setLayout(new BorderLayout(0, 0));
 
-		JPanel pnlCustomersStatistics = new JPanel();
-		pnlCustomersStatistics.setBorder(new TitledBorder(null, "Kunden Statistik", TitledBorder.LEADING, TitledBorder.TOP, null,
-				new Color(0, 0, 0)));
-		pnlCustomers.add(pnlCustomersStatistics, BorderLayout.NORTH);
-
-		JLabel lblCustomersAmount = new JLabel("Anzahl Kunden:");
-
-		lblCustomersAmountNum = new JLabel("0");
-		GroupLayout gl_pnlCustomersStatistics = new GroupLayout(pnlCustomersStatistics);
-		gl_pnlCustomersStatistics.setHorizontalGroup(gl_pnlCustomersStatistics.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_pnlCustomersStatistics.createSequentialGroup().addGap(12).addComponent(lblCustomersAmount).addGap(7)
-						.addComponent(lblCustomersAmountNum).addGap(305)));
-		gl_pnlCustomersStatistics.setVerticalGroup(gl_pnlCustomersStatistics.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_pnlCustomersStatistics
-						.createSequentialGroup()
-						.addGap(5)
-						.addGroup(
-								gl_pnlCustomersStatistics.createParallelGroup(Alignment.LEADING).addComponent(lblCustomersAmount)
-										.addComponent(lblCustomersAmountNum))));
-		pnlCustomersStatistics.setLayout(gl_pnlCustomersStatistics);
+		pnlCustomers.add(getPnlCustomersStatistics(), BorderLayout.NORTH);
 
 		JPanel pnlCustomerLoan = new JPanel();
 		pnlCustomers.add(pnlCustomerLoan, BorderLayout.CENTER);
@@ -588,6 +543,19 @@ public class BookMaster implements Observer {
 			}
 		});
 		scrollTblCustomers.setViewportView(tblCustomers);
+	}
+
+	private Component getPnlCustomersStatistics() {
+		JLabel lblCustomersAmount = new JLabel("Anzahl Kunden:");
+		lblCustomersAmountNum = new JLabel("0");
+
+		FormLayout layout = new FormLayout("5dlu, pref, 2dlu, pref:grow, 5dlu", "3dlu, pref, 5dlu, pref, 5dlu");
+		JPanel panel = new JPanel(layout);
+		CellConstraints cc = new CellConstraints();
+		panel.add(ViewUtil.getSeparator("Kunden Statistik"), cc.xyw(2, 2, 3));
+		panel.add(lblCustomersAmount, cc.xy(2, 4));
+		panel.add(lblCustomersAmountNum, cc.xy(4, 4));
+		return panel;
 	}
 
 	protected List<Book> getSelectedBooks() {
