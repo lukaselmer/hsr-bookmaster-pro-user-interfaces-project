@@ -88,85 +88,95 @@ public class LoanDetail {
 	 * Create the application.
 	 */
 	public LoanDetail(Library library, Customer customer) {
-		this.library = library;
-		this.customer = customer;
-		initialize();
-		frmLoanDetail.setLocationByPlatform(true);
+		this.library = library; //
+		this.customer = customer; //
+		initialize(); //
+		frmLoanDetail.setLocationByPlatform(true); //
+		frmLoanDetail.setVisible(true); //
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frmLoanDetail = new JFrame();
+		frmLoanDetail.setTitle("Ausleihe Detail");
+		frmLoanDetail.setBounds(100, 100, 500, 300);
+		frmLoanDetail.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmLoanDetail.getContentPane().setLayout(new BorderLayout(0, 0));
-		frmLoanDetail.setVisible(true);
 		frmLoanDetail.setMinimumSize(new Dimension(400, 300));
-        CellConstraints cc = new CellConstraints();
-		
+
+		CellConstraints cc = new CellConstraints();
+
+		// Panel Customer
+		FormLayout layoutCustomer = new FormLayout("5dlu, pref, 5dlu, pref, 5dlu, pref:grow, 5dlu",
+				"3dlu, pref, 10dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu");
+		pnlCustomer = new JPanel(layoutCustomer);
+		frmLoanDetail.getContentPane().add(pnlCustomer, BorderLayout.NORTH);
+
+		pnlCustomer.add(ViewUtil.getSeparator("Kunden Information"), cc.xyw(2, 2, 5));
+
+		lblCustomer = new JLabel("Kunde:");
+		pnlCustomer.add(lblCustomer, cc.xy(2, 4));
+
 		Object[] customers = library.getCustomers().toArray();
 		Sort.quicksort(customers, new Compare() {
-			
+
 			@Override
 			public int doCompare(Object o1, Object o2) {
-				Customer s1 = (Customer) o1, s2 = (Customer) o2; 
+				Customer s1 = (Customer) o1, s2 = (Customer) o2;
 				return s1.toString().compareTo(s2.toString());
 			}
 		});
-		loanTableModel = new LoanDetailTableModel(library, customer);
-		
-		FormLayout layoutCustomer = new FormLayout("5dlu, right:pref, 5dlu, pref, 5dlu, pref:grow, 5dlu", "3dlu, pref, 10dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu");
-		pnlCustomer = new JPanel(layoutCustomer);
-		frmLoanDetail.getContentPane().add(pnlCustomer, BorderLayout.NORTH);
-		
-		
-		pnlCustomer.add(ViewUtil.getSeparator("Kunden Information"), cc.xyw(2, 2, 5));
-		
-		lblCustomer = new JLabel("Kunde:");
-		pnlCustomer.add(lblCustomer, cc.xy(2, 4));
-		
-		
 		cmbCustomer = new JComboBox(customers);
 		cmbCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				updateCustomerInformation();
 			}
 		});
-		
+
 		cmbCustomer.setSelectedItem(customer);
 		pnlCustomer.add(cmbCustomer, cc.xyw(4, 4, 3));
-		
+
 		JLabel lblNumberOfLoans = new JLabel("Anzahl Ausleihen:");
 		pnlCustomer.add(lblNumberOfLoans, cc.xy(2, 6));
-		
+
 		lblNumber = new JLabel();
 		pnlCustomer.add(lblNumber, cc.xy(4, 6));
-		
+
 		customerSeparator = ViewUtil.getSeparator("");
 		pnlCustomer.add(customerSeparator, cc.xyw(2, 8, 5));
-		
+
+		//
 		JScrollPane scrollPane = new JScrollPane();
 		frmLoanDetail.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		
-		tblLoans = new JTable();
+		loanTableModel = new LoanDetailTableModel(library, customer);
+		tblLoans = new JTable(loanTableModel);
 		tblLoans.setColumnSelectionAllowed(false);
 		tblLoans.setRowSelectionAllowed(true);
 		scrollPane.setViewportView(tblLoans);
-		tblLoans.setModel(loanTableModel);
 		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.INVENTORY_NUMBER).setMinWidth(80);
 		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.INVENTORY_NUMBER).setMaxWidth(80);
-		
+
 		FormLayout newLoanLayout = new FormLayout("5dlu, pref, 5dlu, pref:grow, 5dlu, pref, 5dlu", "5dlu, pref, 5dlu, pref, 5dlu");
 		JPanel pnlNewLoan = new JPanel(newLoanLayout);
 		frmLoanDetail.getContentPane().add(pnlNewLoan, BorderLayout.SOUTH);
-		
+
 		pnlNewLoan.add(ViewUtil.getSeparator("Exemplar ausleihen"), cc.xyw(2, 2, 5));
-		
+
 		JLabel lblCopyId = new JLabel("Exemplar-ID:");
 		pnlNewLoan.add(lblCopyId, cc.xy(2, 4));
-		
+
 		txtCopyId = new JTextField();
 		pnlNewLoan.add(txtCopyId, cc.xy(4, 4));
-		
+
 		JButton btnLendNewCopy = new JButton("Exemplar ausleihen");
 		btnLendNewCopy.setEnabled(false);
 		pnlNewLoan.add(btnLendNewCopy, cc.xy(6, 4));
-		
+
 		updateCustomerInformation();
-	}	
+	}
 
 	protected void updateCustomerInformation() {
 		if (cmbCustomer != null && lblNumber != null) {
@@ -179,13 +189,4 @@ public class LoanDetail {
 		}
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frmLoanDetail = new JFrame();
-		frmLoanDetail.setTitle("Ausleihe Detail");
-		frmLoanDetail.setBounds(100, 100, 500, 300);
-		frmLoanDetail.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	}
 }

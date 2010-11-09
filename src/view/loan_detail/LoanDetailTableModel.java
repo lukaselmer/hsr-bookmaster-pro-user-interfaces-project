@@ -12,6 +12,8 @@ import domain.Loan;
 
 public class LoanDetailTableModel extends AbstractTableModel {
 	
+	private static final long serialVersionUID = 5453188403390577160L;
+	
 	public enum ColumnName{
 		INVENTORY_NUMBER("Exemplar-ID"), TITLE("Titel"), AUTHOR("Author");
 		private String name;
@@ -26,7 +28,6 @@ public class LoanDetailTableModel extends AbstractTableModel {
 		}
 	}
 	
-	private static final long serialVersionUID = 5453188403390577160L;
 	ColumnName[] columnNames = ColumnName.values();
 	Library library;
 	List<Loan> currentLoans;
