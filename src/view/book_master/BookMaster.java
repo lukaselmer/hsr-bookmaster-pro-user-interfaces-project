@@ -723,7 +723,7 @@ public class BookMaster implements Observer {
 				btnShowSelectedBooks.setEnabled(tblBooks.getSelectedRowCount() > 0);
 			}
 		});
-		tblBooks.getRowSorter().toggleSortOrder(2);
+		tblBooks.getRowSorter().toggleSortOrder(tblBooksModel.getDefaultSortedColumn());
 	}
 
 	private void initTblLoans() {
@@ -797,7 +797,7 @@ public class BookMaster implements Observer {
 				btnShowSelectedLoans.setEnabled(tblLoans.getSelectedRowCount() > 0);
 			}
 		});
-		tblLoans.getRowSorter().toggleSortOrder(2);
+		tblLoans.getRowSorter().toggleSortOrder(tblLoansModel.getDefaultSortedColumn());
 	}
 
 	private void initTblCustomers() {
@@ -814,7 +814,7 @@ public class BookMaster implements Observer {
 				btnShowSelectedCustomers.setEnabled(tblCustomers.getSelectedRowCount() > 0);
 			}
 		});
-		tblCustomers.getRowSorter().toggleSortOrder(1);
+		tblCustomers.getRowSorter().toggleSortOrder(tblCustomersModel.getDefaultSortedColumn());
 	}
 
 	protected Book getSelectedBook() {
