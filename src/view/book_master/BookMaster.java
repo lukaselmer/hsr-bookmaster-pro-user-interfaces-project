@@ -258,7 +258,8 @@ public class BookMaster implements Observer {
 		btnAddNewBook.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				new BookEdit(library, library.getBooks().get((new Random()).nextInt(library.getBooks().size())));
+				// new BookEdit(library, library.getBooks().get((new
+				// Random()).nextInt(library.getBooks().size())));
 				if (newBookFrame != null && newBookFrame.isValid()) {
 					newBookFrame.toFront();
 				} else {

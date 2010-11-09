@@ -29,6 +29,8 @@ public abstract class BookMasterTableModel<T> extends AbstractTableModel {
 
 	protected abstract AbstractColumnName[] getColumnNames();
 
+	public abstract int getDefaultSortedColumn();
+
 	public void updateObjects(List<T> newObjects) {
 		if (newObjects.equals(currentObjects)) {
 			return; // objects are the same -> no change and return
@@ -51,5 +53,4 @@ public abstract class BookMasterTableModel<T> extends AbstractTableModel {
 	public String getColumnName(int column) {
 		return "" + columnNames[column];
 	}
-
 }
