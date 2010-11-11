@@ -76,9 +76,9 @@ public class BookMasterTableModelBook extends BookMasterTableModel<Book> {
 
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		return columnIndex == ColumnName.TITLE.ordinal();
+		return columnIndex == ColumnName.SHELF.ordinal();
 	}
-	
+
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
 		return getValueAt(0, columnIndex).getClass();

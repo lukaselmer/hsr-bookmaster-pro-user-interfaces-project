@@ -49,6 +49,7 @@ import javax.swing.table.TableRowSorter;
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
 
 import view.BookDetail;
+import view.BookMasterUiManager;
 import view.ViewUtil;
 import view.book.BookNew;
 import view.customer.CustomerEdit;
@@ -66,8 +67,8 @@ import domain.Shelf;
 
 public class BookMaster implements Observer {
 	private static final int INDEX_OF_BOOKS_TAB = 0, INDEX_OF_LOANS_TAB = 1, INDEX_OF_CUSTOMERS_TAB = 2;
-	private List<SubFrame<Book>> bookDetailFrames = new ArrayList<SubFrame<Book>>();
-	private List<SubFrame<Customer>> customerDetailFrames = new ArrayList<SubFrame<Customer>>();
+//	private List<SubFrame<Book>> bookDetailFrames = new ArrayList<SubFrame<Book>>();
+//	private List<SubFrame<Customer>> customerDetailFrames = new ArrayList<SubFrame<Customer>>();
 	private JButton btnShowSelectedBooks;
 	private JButton btnShowSelectedCustomers;
 	private JButton btnShowSelectedLoans;
@@ -99,6 +100,7 @@ public class BookMaster implements Observer {
 	private JTextField txtFilterBooks;
 	private JTextField txtFilterCustomers;
 	private JTextField txtFilterLoans;
+	private BookMasterUiManager uimanager;
 
 	/**
 	 * Launch the application.
@@ -119,7 +121,8 @@ public class BookMaster implements Observer {
 	 * @param library
 	 */
 	public BookMaster(Library library) {
-		this.library = library;
+		uimanager = new BookMasterUiManager(library);
+		this.library = uimanager.getLibrary();
 		initialize();
 		library.addObserver(this);
 		updateBooksStatistics();
@@ -515,47 +518,11 @@ public class BookMaster implements Observer {
 	}
 
 	protected void createOrShowBookDetailFrame(Book b) {
-		createOrShowSubFrame(bookDetailFrames, b, BookDetail.class);
+		uimanager.openWindow(b);
 	}
 
 	protected void createOrShowCustomerDetailFrame(Customer c) {
-		createOrShowSubFrame(customerDetailFrames, c, CustomerEdit.class);
-	}
-
-	protected <T> void createOrShowSubFrame(final List<SubFrame<T>> list, T object, Class<? extends SubFrame<T>> cls) {
-		try {
-			Constructor<? extends SubFrame<T>> constructor = cls.getConstructor(Library.class, object.getClass());
-			boolean detailOpen = false;
-			for (SubFrame<T> bd : list) {
-				if (bd.getObject().equals(object)) {
-					detailOpen = true;
-					bd.toFront();
-					break;
-				}
-			}
-			if (!detailOpen) {
-				final SubFrame<T> bd = constructor.newInstance(library, object);
-				list.add(bd);
-				bd.getFrame().addWindowListener(new WindowAdapter() {
-					@Override
-					public void windowClosed(WindowEvent arg0) {
-						list.remove(bd);
-					}
-				});
-			}
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		}
+		uimanager.openWindow(c);
 	}
 
 	private void initTblBooks() {
