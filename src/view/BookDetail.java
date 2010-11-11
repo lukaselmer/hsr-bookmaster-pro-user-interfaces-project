@@ -31,6 +31,8 @@ import javax.swing.event.ListSelectionListener;
 
 import sun.swing.DefaultLookup;
 import view.book_master.SubFrame;
+import view.book_detail.BookDetailTableModel;
+import view.customer.SubFrame;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
@@ -104,7 +106,7 @@ public class BookDetail implements SubFrame<Book> {
 	private void initialize() {
 		frmBuchDetailansicht = new JFrame();
 		frmBuchDetailansicht.setTitle("Buch Detailansicht");
-		frmBuchDetailansicht.setBounds(100, 100, 450, 300);
+		frmBuchDetailansicht.setBounds(100, 100, 500, 350);
 		frmBuchDetailansicht.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmBuchDetailansicht.getContentPane().setLayout(new BorderLayout(0, 0));
 
@@ -143,11 +145,9 @@ public class BookDetail implements SubFrame<Book> {
 		txtPublisher.setColumns(10);
 		pnlBookInformation.add(txtPublisher, cc.xy(4, 8));
 
-		book.getShelf();
-		JComboBox cmbShelf = new JComboBox(Shelf.values());
-		cmbShelf.setEnabled(false);
-		cmbShelf.setSelectedItem(book.getShelf());
-		pnlBookInformation.add(cmbShelf, cc.xy(4, 10));
+		JTextField txtShelf = new JTextField(book.getShelf().toString());
+		txtShelf.setEditable(false);
+		pnlBookInformation.add(txtShelf, cc.xy(4, 10));
 		
 		JPanel pnlCopies = new JPanel();
 		frmBuchDetailansicht.getContentPane().add(pnlCopies, BorderLayout.CENTER);
@@ -166,6 +166,7 @@ public class BookDetail implements SubFrame<Book> {
 		pnlCopyInformation.add(lblNumber, cc.xy(4, 4));
 		
 		JButton btnRemoveSelected = new JButton("Ausgewählte Entfernen");
+		btnRemoveSelected.setEnabled(false);
 		pnlCopyInformation.add(btnRemoveSelected, cc.xy(6, 4));
 		
 		JButton btnAddCopy = new JButton("Exemplar Hinzufügen");
@@ -174,8 +175,17 @@ public class BookDetail implements SubFrame<Book> {
 		JScrollPane scrCopies = new JScrollPane();
 		pnlCopies.add(scrCopies, BorderLayout.CENTER);
 		
-		tblCopies = new JTable();
+		BookDetailTableModel bookTableModel = new BookDetailTableModel(library, book);
+		tblCopies = new JTable(bookTableModel);
+		tblCopies.getColumn("" + BookDetailTableModel.ColumnName.INVENTORY_NUMBER).setMinWidth(80);
+		tblCopies.getColumn("" + BookDetailTableModel.ColumnName.INVENTORY_NUMBER).setMaxWidth(80);
+		tblCopies.setColumnSelectionAllowed(false);
+		tblCopies.setRowSelectionAllowed(true);
 		scrCopies.setViewportView(tblCopies);
+	}
+	
+	protected void updateBooks(){
+		
 	}
 
 	public void toFront() {

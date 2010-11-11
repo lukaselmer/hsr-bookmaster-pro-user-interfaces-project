@@ -54,13 +54,17 @@ public class BookDetailTableModel extends AbstractTableModel {
 		} else if (getColumnName(col).equals(ColumnName.INVENTORY_NUMBER.toString())) {
 			return c.getInventoryNumber();
 		} else if (getColumnName(col).equals(ColumnName.AVAILABILITY.toString())) {
-			return ""
-					+ (c.isLent() ? "Ausgeliehen bis "
-							+ Loan.getFormattedDate(c.getCurrentLoan().getDueDate())
-							+ (c.getCurrentLoan().getDaysOfExpectedLeftLoanDuration() >= 0 ? (c.getCurrentLoan()
-									.getDaysOfExpectedLeftLoanDuration() == 0 ? " (heute)" : " (noch "
-									+ c.getCurrentLoan().getDaysOfExpectedLeftLoanDuration() + " Tage)") : " ("
-									+ -c.getCurrentLoan().getDaysOfExpectedLeftLoanDuration() + " Tage überfällig)") : "Verfügbar");
+			String s = "";
+			if (c.isLent()){
+				if (c.getCurrentLoan().getDaysOfExpectedLeftLoanDuration() == 0) s = "Ausgeliehen bis " + Loan.getFormattedDate(c.getCurrentLoan().getDueDate()) + " (heute)";
+				else if (c.getCurrentLoan().getDaysOfExpectedLeftLoanDuration() == 1) s = "Ausgeliehen bis " + Loan.getFormattedDate(c.getCurrentLoan().getDueDate()) + " (noch " + c.getCurrentLoan().getDaysOfExpectedLeftLoanDuration() + " Tag)";
+				else if (c.getCurrentLoan().getDaysOfExpectedLeftLoanDuration() > 1) s = "Ausgeliehen bis " + Loan.getFormattedDate(c.getCurrentLoan().getDueDate()) + " (noch " + c.getCurrentLoan().getDaysOfExpectedLeftLoanDuration() + " Tage)";
+				else if (c.getCurrentLoan().getDaysOfExpectedLeftLoanDuration() == -1) s = "Ausgeliehen bis " + Loan.getFormattedDate(c.getCurrentLoan().getDueDate()) + " (" + -c.getCurrentLoan().getDaysOfExpectedLeftLoanDuration() + " Tag überfällig)";
+				else s = "Ausgeliehen bis " + Loan.getFormattedDate(c.getCurrentLoan().getDueDate()) + " (" + -c.getCurrentLoan().getDaysOfExpectedLeftLoanDuration() + " Tage überfällig)";
+			} else {
+				s = "Verfügbar";
+			}
+			return s;
 		} else {
 			throw new RuntimeException("Undefined column name!");
 		}

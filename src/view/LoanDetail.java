@@ -141,6 +141,7 @@ public class LoanDetail {
 		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.INVENTORY_NUMBER).setMinWidth(80);
 		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.INVENTORY_NUMBER).setMaxWidth(80);
 		
+		
 		//Panel Loan
 		FormLayout newLoanLayout = new FormLayout("5dlu, pref, 5dlu, pref:grow, 5dlu, pref, 5dlu", "5dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu");
 		JPanel pnlNewLoan = new JPanel(newLoanLayout);
