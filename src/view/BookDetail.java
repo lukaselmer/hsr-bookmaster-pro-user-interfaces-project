@@ -1,64 +1,57 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.EventQueue;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
-import java.util.Observable;
 import java.util.Random;
 
-import javax.swing.AbstractListModel;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
-import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.RowSorter;
 import javax.swing.UIManager;
-import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableRowSorter;
 
-import sun.swing.DefaultLookup;
-import view.book_master.SubFrame;
+import sun.text.normalizer.UProperty;
+import view.book.BookEdit;
 import view.book_detail.BookDetailTableModel;
-import view.customer.SubFrame;
+import view.book_master.SubFrame;
+import application.LibraryApp;
 
 import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.CellConstraints.Alignment;
 import com.jgoodies.forms.layout.FormLayout;
-import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
 
-import application.LibraryApp;
 import domain.Book;
 import domain.Copy;
 import domain.Library;
-import domain.Loan;
-import domain.Shelf;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JTable;
 
 public class BookDetail implements SubFrame<Book> {
 
-	private JFrame frmBuchDetailansicht;
+	private JFrame frmBookDetailView;
 	private JTextField txtTitle;
 	private JTextField txtAuthor;
 	private JTextField txtPublisher;
 	private Library library;
 	private Book book;
 	private JTable tblCopies;
+	private CellConstraints cc;
+	private JButton btnEditBook;
+	protected BookEdit editBookFrame;
+	private BookDetailTableModel bookTableModel;
 
 	/**
 	 * Launch the application.
@@ -88,12 +81,12 @@ public class BookDetail implements SubFrame<Book> {
 		this.library = l;
 		this.book = book;
 		initialize();
-		frmBuchDetailansicht.setLocationByPlatform(true);
-		frmBuchDetailansicht.setVisible(true);
+		frmBookDetailView.setLocationByPlatform(true);
+		frmBookDetailView.setVisible(true);
 	}
 
 	public JFrame getFrame() {
-		return frmBuchDetailansicht;
+		return frmBookDetailView;
 	}
 
 	public Book getBook() {
@@ -104,17 +97,20 @@ public class BookDetail implements SubFrame<Book> {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmBuchDetailansicht = new JFrame();
-		frmBuchDetailansicht.setTitle("Buch Detailansicht");
-		frmBuchDetailansicht.setBounds(100, 100, 500, 350);
-		frmBuchDetailansicht.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frmBuchDetailansicht.getContentPane().setLayout(new BorderLayout(0, 0));
+		frmBookDetailView = new JFrame();
+		frmBookDetailView.setTitle("Buch Detailansicht");
+		frmBookDetailView.setBounds(100, 100, 500, 350);
+		frmBookDetailView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmBookDetailView.getContentPane().setLayout(new BorderLayout(0, 0));
+		cc = new CellConstraints();
+		initBookPanel();
+		initCopiesPanel();
+	}
 
-		CellConstraints cc = new CellConstraints();
-		
-		FormLayout bookInformationLayout = new FormLayout("5dlu, pref, 5dlu, pref:grow, 5dlu", "3dlu, pref, 10dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu");
+	private void initBookPanel() {
+		FormLayout bookInformationLayout = new FormLayout("5dlu, pref, 5dlu, pref:grow, 5dlu", "3dlu, pref, 10dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu");
 		JPanel pnlBookInformation = new JPanel(bookInformationLayout);
-		frmBuchDetailansicht.getContentPane().add(pnlBookInformation, BorderLayout.NORTH);
+		frmBookDetailView.getContentPane().add(pnlBookInformation, BorderLayout.NORTH);
 		
 		pnlBookInformation.add(ViewUtil.getSeparator("Buch Information"), cc.xyw(2, 2, 3));
 
@@ -149,8 +145,23 @@ public class BookDetail implements SubFrame<Book> {
 		txtShelf.setEditable(false);
 		pnlBookInformation.add(txtShelf, cc.xy(4, 10));
 		
+		btnEditBook = new JButton("Buch bearbeiten");
+		btnEditBook.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (editBookFrame != null && editBookFrame.isValid()){
+					editBookFrame.toFront();
+				} else {
+					editBookFrame = new BookEdit(library, book);
+				}
+			}
+		});
+		pnlBookInformation.add(btnEditBook, cc.xy(4, 12, "right, bottom"));
+		
+	}
+	
+	private void initCopiesPanel() {
 		JPanel pnlCopies = new JPanel();
-		frmBuchDetailansicht.getContentPane().add(pnlCopies, BorderLayout.CENTER);
+		frmBookDetailView.getContentPane().add(pnlCopies, BorderLayout.CENTER);
 		pnlCopies.setLayout(new BorderLayout(0, 0));
 		
 		FormLayout copyInformationLayout = new FormLayout("5dlu, pref, 5dlu, pref, pref:grow, pref, 5dlu, pref, 5dlu", "5dlu, pref, 5dlu, pref, 5dlu");
@@ -165,27 +176,79 @@ public class BookDetail implements SubFrame<Book> {
 		JLabel lblNumber = new JLabel("" + library.getCopiesOfBook(book).size());
 		pnlCopyInformation.add(lblNumber, cc.xy(4, 4));
 		
-		JButton btnRemoveSelected = new JButton("Ausgewählte Entfernen");
+		final JButton btnRemoveSelected = new JButton("Ausgewählte Entfernen");
+		btnRemoveSelected.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				List<Copy> copies = getSelectedCopies();
+				for (Copy c : copies){
+					library.removeCopy(c);
+				}
+				bookTableModel.updateCopies(library.getCopiesOfBook(book));
+			}
+		});
 		btnRemoveSelected.setEnabled(false);
 		pnlCopyInformation.add(btnRemoveSelected, cc.xy(6, 4));
 		
 		JButton btnAddCopy = new JButton("Exemplar Hinzufügen");
+		btnAddCopy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				library.createAndAddCopy(book);
+				bookTableModel.updateCopies(library.getCopiesOfBook(book));
+			}
+		});
 		pnlCopyInformation.add(btnAddCopy, cc.xy(8, 4));
 		
 		JScrollPane scrCopies = new JScrollPane();
 		pnlCopies.add(scrCopies, BorderLayout.CENTER);
-		
-		BookDetailTableModel bookTableModel = new BookDetailTableModel(library, book);
+		bookTableModel = new BookDetailTableModel(library, book);
 		tblCopies = new JTable(bookTableModel);
 		tblCopies.getColumn("" + BookDetailTableModel.ColumnName.INVENTORY_NUMBER).setMinWidth(80);
 		tblCopies.getColumn("" + BookDetailTableModel.ColumnName.INVENTORY_NUMBER).setMaxWidth(80);
 		tblCopies.setColumnSelectionAllowed(false);
 		tblCopies.setRowSelectionAllowed(true);
+		TableRowSorter<BookDetailTableModel> rowSorter = new TableRowSorter<BookDetailTableModel>(bookTableModel);
+		rowSorter.setComparator(1, new Comparator<String>() {
+
+			@Override
+			public int compare(String s1, String s2) {
+				if (s1.startsWith("Ausgeliehen bis ") && s2.startsWith("Ausgeliehen bis ")){
+					s1 = s1.substring(16, 26);
+					s2 = s2.substring(16, 26);
+					try {
+						Date d1 = DateFormat.getDateInstance().parse(s1);
+						Date d2 = DateFormat.getDateInstance().parse(s2);
+						return d1.compareTo(d2);
+					} catch (ParseException e) {
+						e.printStackTrace();
+						}
+				} else if (s1.startsWith("Ausgeliehen bis ") || s2.startsWith("Ausgeliehen bis ")){
+					return s1.startsWith("Ausgeliehen bis ") ? 1 : -1;
+				}
+				return 0;
+			}
+		});
+		tblCopies.setRowSorter(rowSorter);
 		scrCopies.setViewportView(tblCopies);
+		
+		tblCopies.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) {
+				btnRemoveSelected.setEnabled(tblCopies.getSelectedRowCount() > 0);
+			}
+		});
 	}
 	
-	protected void updateBooks(){
-		
+	protected List<Copy> getSelectedCopies(){
+		List<Copy> list = new ArrayList<Copy>();
+		for (int row : tblCopies.getSelectedRows()){
+			list.add(getCopyOfRow(row));
+		}
+		return list;
+	}
+	
+	protected Copy getCopyOfRow(int row){
+		row = tblCopies.convertRowIndexToModel(row);
+		return (Copy) tblCopies.getValueAt(row, -1);
 	}
 
 	public void toFront() {
