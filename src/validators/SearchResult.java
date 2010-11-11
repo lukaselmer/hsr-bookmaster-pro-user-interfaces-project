@@ -2,7 +2,7 @@ package validators;
 
 public class SearchResult<T> {
 	private final T t;
-	private String searchString;
+	private final String searchString;
 
 	public SearchResult(T t, String searchString) {
 		this.t = t;
