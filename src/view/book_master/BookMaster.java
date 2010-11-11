@@ -67,8 +67,6 @@ import domain.Shelf;
 
 public class BookMaster implements Observer {
 	private static final int INDEX_OF_BOOKS_TAB = 0, INDEX_OF_LOANS_TAB = 1, INDEX_OF_CUSTOMERS_TAB = 2;
-//	private List<SubFrame<Book>> bookDetailFrames = new ArrayList<SubFrame<Book>>();
-//	private List<SubFrame<Customer>> customerDetailFrames = new ArrayList<SubFrame<Customer>>();
 	private JButton btnShowSelectedBooks;
 	private JButton btnShowSelectedCustomers;
 	private JButton btnShowSelectedLoans;

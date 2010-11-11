@@ -38,12 +38,12 @@ public abstract class BookForm {
 	protected JTextField txtPublisher;
 	protected JButton btnSave;
 	protected FormValidator<Book> formValidator;
-	private JLabel lblName;
-	private JComboBox cmbShelf;
-	private JButton btnCancel;
-	private JLabel lblAuthor;
-	private JLabel lblPublisher;
-	private JLabel lblShelf;
+	protected JLabel lblName;
+	protected JComboBox cmbShelf;
+	protected JButton btnCancel;
+	protected JLabel lblAuthor;
+	protected JLabel lblPublisher;
+	protected JLabel lblShelf;
 	protected Book savedObject;
 
 	/**

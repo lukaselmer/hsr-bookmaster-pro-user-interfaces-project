@@ -1,6 +1,8 @@
 package view.book;
 
 import java.awt.EventQueue;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
@@ -13,7 +15,7 @@ import domain.Library;
 
 import application.LibraryApp;
 
-public class BookEdit extends BookForm implements SubFrame<Book> {
+public class BookEdit extends BookForm implements SubFrame<Book> { // , Observer
 	private Book book;
 
 	public static void main(String[] args) {
@@ -36,9 +38,9 @@ public class BookEdit extends BookForm implements SubFrame<Book> {
 		txtName.setText(book.getName());
 		txtAuthor.setText(book.getAuthor());
 		txtPublisher.setText(book.getPublisher());
-		// txtCity.setText(book.getCity());
-		// txtZip.setText("" + book.getZip().intValue());
+		cmbShelf.setSelectedItem(book.getShelf());
 		formValidator.validateAll();
+		book.addObserver(book);
 	}
 
 	@Override
@@ -65,4 +67,14 @@ public class BookEdit extends BookForm implements SubFrame<Book> {
 	public Book getObject() {
 		return getBook();
 	}
+
+	// public void update(Observable o, Object obj) {
+	// if (o instanceof Book) {
+	//
+	// int n = JOptionPane.showConfirmDialog(frmBookForm,
+	// "Would you like green eggs and ham?", "An Inane Question",
+	// JOptionPane.YES_NO_OPTION);
+	//
+	// }
+	// }
 }
