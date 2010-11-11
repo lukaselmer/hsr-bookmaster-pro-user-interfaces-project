@@ -22,12 +22,14 @@ import org.jdesktop.swingx.JXTitledSeparator;
 import sun.misc.Compare;
 import sun.misc.Sort;
 import validators.FormValidator;
-import validators.LoanValidator;
+import validators.SearchResult;
+import validators.SearchResultValidator;
 import view.loan_detail.LoanDetailTableModel;
 import application.LibraryApp;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.validation.view.ValidationComponentUtils;
 
 import domain.Copy;
 import domain.Customer;
@@ -46,7 +48,7 @@ public class LoanDetail {
 	private JComboBox cmbCustomer;
 	private JTextField txtCopyId;
 	private JXTitledSeparator customerSeparator;
-	protected FormValidator<Copy> formValidator;
+	protected FormValidator<SearchResult<Copy>> formValidator;
 
 	/**
 	 * Launch the application.
@@ -73,7 +75,7 @@ public class LoanDetail {
 		this.library = library;
 		this.customer = customer;
 		initialize();
-		frmLoanDetail.setLocationByPlatform(true); 
+		frmLoanDetail.setLocationByPlatform(true);
 		frmLoanDetail.setVisible(true);
 	}
 
@@ -132,7 +134,7 @@ public class LoanDetail {
 		// JTable
 		JScrollPane scrollPane = new JScrollPane();
 		frmLoanDetail.getContentPane().add(scrollPane, BorderLayout.CENTER);
-		
+
 		loanTableModel = new LoanDetailTableModel(library, customer);
 		tblLoans = new JTable(loanTableModel);
 		tblLoans.setColumnSelectionAllowed(false);
@@ -140,10 +142,10 @@ public class LoanDetail {
 		scrollPane.setViewportView(tblLoans);
 		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.INVENTORY_NUMBER).setMinWidth(80);
 		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.INVENTORY_NUMBER).setMaxWidth(80);
-		
-		
-		//Panel Loan
-		FormLayout newLoanLayout = new FormLayout("5dlu, pref, 5dlu, pref:grow, 5dlu, pref, 5dlu", "5dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu");
+
+		// Panel Loan
+		FormLayout newLoanLayout = new FormLayout("5dlu, pref, 5dlu, pref:grow, 5dlu, pref, 5dlu",
+				"5dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu");
 		JPanel pnlNewLoan = new JPanel(newLoanLayout);
 		frmLoanDetail.getContentPane().add(pnlNewLoan, BorderLayout.SOUTH);
 
@@ -153,28 +155,36 @@ public class LoanDetail {
 		pnlNewLoan.add(lblCopyId, cc.xy(2, 4));
 
 		txtCopyId = new JTextField();
+		lblCopyId.setDisplayedMnemonic('e');
+		lblCopyId.setLabelFor(txtCopyId);
+		txtCopyId.setName("Exemplar.Exemplar-ID");
+		ValidationComponentUtils.setMandatory(txtCopyId, true);
 		pnlNewLoan.add(txtCopyId, cc.xy(4, 4));
 
 		JButton btnLendNewCopy = new JButton("Exemplar ausleihen");
 		btnLendNewCopy.setEnabled(false);
+		btnLendNewCopy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Copy c = formValidator.validateForm(null).getObject();
+				if (c == null)
+					throw new RuntimeException("Bad state");
+				// TODO: neue Ausleihe erfassen
+			}
+		});
 		pnlNewLoan.add(btnLendNewCopy, cc.xy(6, 4));
-		
+
 		JLabel lblCopyInformation = new JLabel("Test");
 		pnlNewLoan.add(lblCopyInformation, cc.xy(2, 6));
-		
-		JTextField[] fields = {txtCopyId};
-		formValidator = new FormValidator<Copy>(frmLoanDetail, fields, new LoanValidator(), btnLendNewCopy) {
-			
+
+		JTextField[] fields = { txtCopyId };
+		formValidator = new FormValidator<SearchResult<Copy>>(frmLoanDetail, fields, new SearchResultValidator(), btnLendNewCopy) {
 			@Override
-			public Copy createObject() {
-				Integer copyId = null;
-				try {
-					copyId = Integer.parseInt(txtCopyId.toString());
-				} catch (NumberFormatException ex){}
-				return null;
+			public SearchResult<Copy> createObject() {
+				String searchString = txtCopyId.getText();
+				Copy c = library.findByCopyId(searchString);
+				return new SearchResult<Copy>(c, searchString);
 			}
 		};
-		
 
 		updateCustomerInformation();
 	}

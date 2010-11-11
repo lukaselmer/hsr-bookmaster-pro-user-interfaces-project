@@ -262,4 +262,14 @@ public class Library extends Observable implements Observer {
 		setChanged();
 		notifyObservers();
 	}
+
+	public Copy findByCopyId(String searchString) {
+		searchString = searchString.trim();
+		for (Copy c : copies) {
+			if (("" + c.getInventoryNumber()).equals(searchString)) {
+				return c;
+			}
+		}
+		return null;
+	}
 }
