@@ -24,8 +24,10 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -40,8 +42,11 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+
+import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
 
 import view.BookDetail;
 import view.ViewUtil;
@@ -57,9 +62,9 @@ import domain.Book;
 import domain.Customer;
 import domain.Library;
 import domain.Loan;
+import domain.Shelf;
 
 public class BookMaster implements Observer {
-
 	private static final int INDEX_OF_BOOKS_TAB = 0, INDEX_OF_LOANS_TAB = 1, INDEX_OF_CUSTOMERS_TAB = 2;
 	private List<SubFrame<Book>> bookDetailFrames = new ArrayList<SubFrame<Book>>();
 	private List<SubFrame<Customer>> customerDetailFrames = new ArrayList<SubFrame<Customer>>();
@@ -190,17 +195,6 @@ public class BookMaster implements Observer {
 		pnlBookInventory.add(scrollTblBooks, BorderLayout.CENTER);
 
 		initTblBooks();
-		tblBooks.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent mouseEvent) {
-				if (mouseEvent.getClickCount() == 2 && mouseEvent.getButton() == MouseEvent.BUTTON1) {
-					Book b = getSelectedBook();
-					if (b != null) {
-						createOrShowBookDetailFrame(b);
-					}
-				}
-			}
-		});
 		scrollTblBooks.setViewportView(tblBooks);
 	}
 
@@ -510,20 +504,14 @@ public class BookMaster implements Observer {
 
 	protected void filterAndUpdateBooks() {
 		tblBooksModel.updateObjects(library.filterBooks(txtFilterBooks.getText(), chckbxAvailibleOnly.isSelected()));
-		tblBooks.updateUI();
-		scrollTblBooks.updateUI();
 	}
 
 	protected void filterAndUpdateLoans() {
 		tblLoansModel.updateObjects(library.filterLoans(txtFilterLoans.getText(), chckbxOverduesOnly.isSelected()));
-		tblLoans.updateUI();
-		scrollTblLoans.updateUI();
 	}
 
 	protected void filterAndUpdateCustomers() {
 		tblCustomersModel.updateObjects(library.filterCustomers(txtFilterCustomers.getText()));
-		tblCustomers.updateUI();
-		scrollTblCustomers.updateUI();
 	}
 
 	protected void createOrShowBookDetailFrame(Book b) {
@@ -639,6 +627,39 @@ public class BookMaster implements Observer {
 			}
 		});
 		tblBooks.getRowSorter().toggleSortOrder(tblBooksModel.getDefaultSortedColumn());
+
+		tblBooks.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent mouseEvent) {
+				if (mouseEvent.getClickCount() == 2 && mouseEvent.getButton() == MouseEvent.BUTTON1) {
+					Book b = getSelectedBook();
+					if (b != null) {
+						createOrShowBookDetailFrame(b);
+					}
+				}
+			}
+		});
+
+		TableColumn shelfColumn = tblBooks.getColumnModel().getColumn(1);
+		final JComboBox comboBox = new JComboBox(Shelf.values());
+		shelfColumn.setCellEditor(new ComboBoxCellEditor(comboBox) {
+			private static final long serialVersionUID = -3380337751981718537L;
+
+			@Override
+			public boolean stopCellEditing() {
+				Book b = getSelectedBook();
+				if (b == null || comboBox == null)
+					return true;
+				comboBox.getSelectedItem();
+				b.setShelf((Shelf) comboBox.getSelectedItem());
+				return super.stopCellEditing();
+			}
+
+		});
+		// Set up tool tips for the sport cells.
+		// DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+		// renderer.setToolTipText("Anklicken um Regal zu bearbeiten");
+		// shelfColumn.setCellRenderer(renderer);
 	}
 
 	private void initTblLoans() {
@@ -733,6 +754,9 @@ public class BookMaster implements Observer {
 	}
 
 	protected Book getSelectedBook() {
+		if (tblBooks == null) {
+			return null;
+		}
 		int row = tblBooks.getSelectedRow();
 		if (row != -1) {
 			return getBookOfRow(row);
@@ -750,6 +774,7 @@ public class BookMaster implements Observer {
 
 	protected Book getBookOfRow(int row) {
 		row = tblBooks.convertRowIndexToModel(row);
+		tblBooks.getModel().getValueAt(row, -1);
 		return (Book) tblBooks.getModel().getValueAt(row, -1);
 	}
 
@@ -760,6 +785,8 @@ public class BookMaster implements Observer {
 
 	@Override
 	public void update(Observable observable, Object o) {
+		// System.out.println(observable);
+		// XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 		if (observable instanceof Library) {
 			// update books
 			filterAndUpdateBooks();
