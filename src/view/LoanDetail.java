@@ -34,6 +34,8 @@ import com.jgoodies.validation.view.ValidationComponentUtils;
 import domain.Copy;
 import domain.Customer;
 import domain.Library;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class LoanDetail {
 
@@ -49,6 +51,7 @@ public class LoanDetail {
 	private JTextField txtCopyId;
 	private JXTitledSeparator customerSeparator;
 	protected FormValidator<SearchResult<Copy>> formValidator;
+	private JLabel lblCopyInformation;
 
 	/**
 	 * Launch the application.
@@ -145,7 +148,7 @@ public class LoanDetail {
 
 		// Panel Loan
 		FormLayout newLoanLayout = new FormLayout("5dlu, pref, 5dlu, pref:grow, 5dlu, pref, 5dlu",
-				"5dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu");
+				"5dlu, pref, 5dlu, pref, 5dlu, pref, 10dlu");
 		JPanel pnlNewLoan = new JPanel(newLoanLayout);
 		frmLoanDetail.getContentPane().add(pnlNewLoan, BorderLayout.SOUTH);
 
@@ -155,6 +158,7 @@ public class LoanDetail {
 		pnlNewLoan.add(lblCopyId, cc.xy(2, 4));
 
 		txtCopyId = new JTextField();
+
 		lblCopyId.setDisplayedMnemonic('e');
 		lblCopyId.setLabelFor(txtCopyId);
 		txtCopyId.setName("Exemplar.Exemplar-ID");
@@ -173,8 +177,8 @@ public class LoanDetail {
 		});
 		pnlNewLoan.add(btnLendNewCopy, cc.xy(6, 4));
 
-		JLabel lblCopyInformation = new JLabel("Test");
-		pnlNewLoan.add(lblCopyInformation, cc.xy(2, 6));
+		lblCopyInformation = new JLabel(" ");
+		pnlNewLoan.add(lblCopyInformation, cc.xyw(2, 6, 5));
 
 		JTextField[] fields = { txtCopyId };
 		formValidator = new FormValidator<SearchResult<Copy>>(frmLoanDetail, fields, new SearchResultValidator(), btnLendNewCopy) {
@@ -185,6 +189,21 @@ public class LoanDetail {
 				return new SearchResult<Copy>(c, searchString);
 			}
 		};
+		
+		txtCopyId.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				SearchResult<Copy> s = formValidator.validateForm(null);
+				if (s == null){
+					lblCopyInformation.setText(" ");
+				} else {
+					Copy c = s.getObject();
+					if (c == null)
+						throw new RuntimeException("Bad state");
+					lblCopyInformation.setText(c.getBook().getName());	
+				}
+			}
+		});
 
 		updateCustomerInformation();
 	}

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 
 import javax.swing.JButton;
@@ -39,7 +41,7 @@ import domain.Library;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class BookDetail implements SubFrame<Book> {
+public class BookDetail implements SubFrame<Book>, Observer {
 
 	private JFrame frmBookDetailView;
 	private JTextField txtTitle;
@@ -52,6 +54,7 @@ public class BookDetail implements SubFrame<Book> {
 	private JButton btnEditBook;
 	protected BookEdit editBookFrame;
 	private BookDetailTableModel bookTableModel;
+	private JTextField txtShelf;
 
 	/**
 	 * Launch the application.
@@ -83,6 +86,7 @@ public class BookDetail implements SubFrame<Book> {
 		initialize();
 		frmBookDetailView.setLocationByPlatform(true);
 		frmBookDetailView.setVisible(true);
+		book.addObserver(this);
 	}
 
 	public JFrame getFrame() {
@@ -141,7 +145,7 @@ public class BookDetail implements SubFrame<Book> {
 		txtPublisher.setColumns(10);
 		pnlBookInformation.add(txtPublisher, cc.xy(4, 8));
 
-		JTextField txtShelf = new JTextField(book.getShelf().toString());
+		txtShelf = new JTextField(book.getShelf().toString());
 		txtShelf.setEditable(false);
 		pnlBookInformation.add(txtShelf, cc.xy(4, 10));
 		
@@ -259,5 +263,13 @@ public class BookDetail implements SubFrame<Book> {
 	@Override
 	public Book getObject() {
 		return getBook();
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		txtTitle.setText(book.getName());
+		txtAuthor.setText(book.getAuthor());
+		txtPublisher.setText(book.getPublisher());
+		txtShelf.setText(book.getShelf().toString());
 	}
 }
