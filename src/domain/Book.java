@@ -8,9 +8,9 @@ public class Book extends Observable implements Observer {
 	private String name, author, publisher;
 	private Shelf shelf;
 
-//	public Book(String name) {
-//		this(name, null, null, null);
-//	}
+	// public Book(String name) {
+	// this(name, null, null, null);
+	// }
 
 	public Book(String name, String author, String publisher, Shelf shelf) {
 		this.name = name;
@@ -19,12 +19,27 @@ public class Book extends Observable implements Observer {
 		this.shelf = shelf;
 	}
 
+	public Book(Book b) {
+		this(b.name, b.author, b.publisher, b.shelf);
+	}
+
 	public void updateValues(Book b) {
-		this.name = b.name;
-		this.author = b.author;
-		this.publisher = b.publisher;
-		this.shelf = b.shelf;
-		setChanged();
+		if (!this.name.equals(b.name)) {
+			this.name = b.name;
+			setChanged();
+		}
+		if (!this.author.equals(b.author)) {
+			this.author = b.author;
+			setChanged();
+		}
+		if (!this.publisher.equals(b.publisher)) {
+			this.publisher = b.publisher;
+			setChanged();
+		}
+		if (!this.shelf.equals(b.shelf)) {
+			this.shelf = b.shelf;
+			setChanged();
+		}
 		notifyObservers();
 	}
 
@@ -33,8 +48,10 @@ public class Book extends Observable implements Observer {
 	}
 
 	public void setName(String name) {
-		this.name = name;
-		setChanged();
+		if (!this.name.equals(name)) {
+			this.name = name;
+			setChanged();
+		}
 		notifyObservers();
 	}
 
@@ -42,9 +59,11 @@ public class Book extends Observable implements Observer {
 		return author;
 	}
 
-	public void setAuthor(String autor) {
-		this.author = autor;
-		setChanged();
+	public void setAuthor(String author) {
+		if (!this.author.equals(author)) {
+			this.author = author;
+			setChanged();
+		}
 		notifyObservers();
 	}
 
@@ -53,8 +72,10 @@ public class Book extends Observable implements Observer {
 	}
 
 	public void setPublisher(String publisher) {
-		this.publisher = publisher;
-		setChanged();
+		if (!this.publisher.equals(publisher)) {
+			this.publisher = publisher;
+			setChanged();
+		}
 		notifyObservers();
 	}
 
@@ -63,8 +84,10 @@ public class Book extends Observable implements Observer {
 	}
 
 	public void setShelf(Shelf shelf) {
-		this.shelf = shelf;
-		setChanged();
+		if (!this.shelf.equals(shelf)) {
+			this.shelf = shelf;
+			setChanged();
+		}
 		notifyObservers();
 	}
 
@@ -77,5 +100,14 @@ public class Book extends Observable implements Observer {
 	public void update(Observable o, Object arg) {
 		setChanged();
 		notifyObservers();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Book) {
+			Book b = (Book) o;
+			return b.name.equals(name) && b.publisher.equals(publisher) && b.author.equals(author) && b.shelf.equals(shelf);
+		}
+		return super.equals(o);
 	}
 }

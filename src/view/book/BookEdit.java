@@ -15,8 +15,9 @@ import domain.Library;
 
 import application.LibraryApp;
 
-public class BookEdit extends BookForm implements SubFrame<Book> { // , Observer
-	private Book book;
+public class BookEdit extends BookForm implements SubFrame<Book>, Observer {
+	protected final Book book;
+	protected Book originalBook;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -35,12 +36,18 @@ public class BookEdit extends BookForm implements SubFrame<Book> { // , Observer
 	public BookEdit(Library library, Book book) {
 		super(library);
 		this.book = book;
-		txtName.setText(book.getName());
-		txtAuthor.setText(book.getAuthor());
-		txtPublisher.setText(book.getPublisher());
-		cmbShelf.setSelectedItem(book.getShelf());
+		updateForm(book);
+		book.addObserver(this);
+	}
+
+	protected void updateForm(Book b) {
+		this.originalBook = new Book(b);
+		txtName.setText(b.getName());
+		txtAuthor.setText(b.getAuthor());
+		txtPublisher.setText(b.getPublisher());
+		cmbShelf.setSelectedItem(b.getShelf());
 		formValidator.validateAll();
-		book.addObserver(book);
+
 	}
 
 	@Override
@@ -68,13 +75,29 @@ public class BookEdit extends BookForm implements SubFrame<Book> { // , Observer
 		return getBook();
 	}
 
-	// public void update(Observable o, Object obj) {
-	// if (o instanceof Book) {
-	//
-	// int n = JOptionPane.showConfirmDialog(frmBookForm,
-	// "Would you like green eggs and ham?", "An Inane Question",
-	// JOptionPane.YES_NO_OPTION);
-	//
-	// }
-	// }
+	public void update(Observable o, Object obj) {
+		Book bookByDataInForm = formValidator.validateForm(null);
+		Book b = (Book) o;
+		if (bookByDataInForm.equals(b)) {
+			// Updates in the form are equivalent, so no update or notification
+			// is required, but original book should be updated
+			this.originalBook = new Book(b);
+			return;
+		}
+		boolean updateForm = false;
+		if (bookByDataInForm.equals(originalBook)) {
+			// This book has not yet been changed in this window, so override
+			// the current form values with the new values
+			updateForm = true;
+		} else {
+			int n = JOptionPane.showConfirmDialog(frmBookForm,
+					"Der Buchtitel wurde über ein anderes Fenster bearbeitet. Wollen Sie die Änderungen in diesem Fenster überschreiben?",
+					"Buchtitel geändert", JOptionPane.YES_NO_OPTION);
+			updateForm = n == JOptionPane.YES_OPTION;
+		}
+		if (updateForm) {
+			updateForm(book);
+		}
+
+	}
 }
