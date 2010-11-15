@@ -505,14 +505,17 @@ public class BookMaster implements Observer {
 
 	protected void filterAndUpdateBooks() {
 		tblBooksModel.updateObjects(library.filterBooks(txtFilterBooks.getText(), chckbxAvailibleOnly.isSelected()));
+		scrollTblBooks.updateUI();
 	}
 
 	protected void filterAndUpdateLoans() {
 		tblLoansModel.updateObjects(library.filterLoans(txtFilterLoans.getText(), chckbxOverduesOnly.isSelected()));
+		scrollTblLoans.updateUI();
 	}
 
 	protected void filterAndUpdateCustomers() {
 		tblCustomersModel.updateObjects(library.filterCustomers(txtFilterCustomers.getText()));
+		scrollTblCustomers.updateUI();
 	}
 
 	protected void createOrShowBookDetailFrame(Book b) {
