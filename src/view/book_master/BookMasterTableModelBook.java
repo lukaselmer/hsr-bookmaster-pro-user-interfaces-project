@@ -7,6 +7,7 @@ import view.BookMasterTableModel;
 import domain.Book;
 import domain.Library;
 import domain.Loan;
+import domain.Shelf;
 
 public class BookMasterTableModelBook extends BookMasterTableModel<Book> {
 
@@ -42,6 +43,8 @@ public class BookMasterTableModelBook extends BookMasterTableModel<Book> {
 
 	@Override
 	public Object getValueAt(int row, int col) {
+		if (currentObjects.size() == 0)
+			return new Book("", "", "", Shelf.A1);
 		Book b = currentObjects.get(row);
 		if (col == -1) {
 			return b;

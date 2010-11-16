@@ -587,6 +587,7 @@ public class BookMaster implements Observer {
 			}
 		});
 		tblBooks.setRowSorter(rowSorter);
+		tblBooks.getRowSorter().toggleSortOrder(tblBooksModel.getDefaultSortedColumn());
 
 		tblBooks.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
@@ -594,7 +595,6 @@ public class BookMaster implements Observer {
 				btnShowSelectedBooks.setEnabled(tblBooks.getSelectedRowCount() > 0);
 			}
 		});
-		tblBooks.getRowSorter().toggleSortOrder(tblBooksModel.getDefaultSortedColumn());
 
 		tblBooks.addMouseListener(new MouseAdapter() {
 			@Override
