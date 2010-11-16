@@ -62,7 +62,7 @@ public class LoanDetail {
 	private LoanDetailTableModel loanTableModel;
 	private JComboBox cmbCustomer;
 	private JTextField txtCopyId;
-	private JXTitledSeparator customerSeparator;
+	private JXTitledSeparator sprCustomer;
 	protected FormValidator<SearchResult<Copy>> formValidator;
 	private JButton btnLendNewCopy;
 	private JLabel lblTitle;
@@ -179,8 +179,8 @@ public class LoanDetail {
 		"pref, 5dlu, pref, 5dlu");
 		pnlReturnLoan = new JPanel(layout);
 		pnlLoan.add(pnlReturnLoan, BorderLayout.NORTH);
-		customerSeparator = ViewUtil.getSeparator("");
-		pnlReturnLoan.add(customerSeparator, cc.xy(2, 1));
+		sprCustomer = ViewUtil.getSeparator("");
+		pnlReturnLoan.add(sprCustomer, cc.xy(2, 1));
 		btnReturnLoan = new JButton("Ausgewählte Zurückgeben");
 		btnReturnLoan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -356,7 +356,7 @@ public class LoanDetail {
 		if (cmbCustomer != null && lblNumber != null) {
 			customer = (Customer) cmbCustomer.getSelectedItem();
 			lblNumber.setText("" + library.getCustomerLoans(customer).size());
-			customerSeparator.setTitle("Ausleihen von " + customer.getName() + " " + customer.getSurname());
+			sprCustomer.setTitle("Ausleihen von " + customer.getName() + " " + customer.getSurname());
 			updateLoanInformation();
 		}
 	}
@@ -378,5 +378,4 @@ public class LoanDetail {
 	protected Loan getLoanOfRow(int row){
 		return (Loan) tblLoans.getValueAt(row, -1);
 	}
-
 }

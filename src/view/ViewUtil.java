@@ -24,8 +24,15 @@ public class ViewUtil {
 		JTextArea textArea = new JTextArea(text);
 		textArea.setBorder(new JTextField().getBorder());
 		textArea.setEditable(false);
-		textArea.setAutoscrolls(false);
+		textArea.setColumns(10);
 		textArea.setLineWrap(true);
 		return textArea;
+	}
+	
+	public static JTextField getTextField(String text){
+		JTextField textField = new JTextField(text);
+		textField.setEditable(false);
+		textField.setColumns(10);
+		return textField;
 	}
 }
