@@ -3,6 +3,9 @@ package view;
 import java.awt.ComponentOrientation;
 import java.awt.Font;
 
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
 import org.jdesktop.swingx.JXTitledSeparator;
 
 public class ViewUtil {
@@ -15,5 +18,13 @@ public class ViewUtil {
 		separator.setFont(new Font(separator.getFont().getName(), Font.BOLD, separator.getFont().getSize()));
 		separator.setTitle(text);
 		return separator;
+	}
+	
+	public static JTextArea getTextArea(String text) {
+		JTextArea textArea = new JTextArea(text);
+		textArea.setBorder(new JTextField().getBorder());
+		textArea.setEditable(false);
+		textArea.setLineWrap(true);
+		return textArea;
 	}
 }

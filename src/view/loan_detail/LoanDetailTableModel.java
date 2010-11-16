@@ -15,7 +15,7 @@ public class LoanDetailTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 5453188403390577160L;
 	
 	public enum ColumnName{
-		INVENTORY_NUMBER("Exemplar-ID"), TITLE("Titel"), AUTHOR("Author");
+		STATUS("Status"),  LOAN_UNTIL("Ausgeliehen Bis"), INVENTORY_NUMBER("Exemplar-ID"), TITLE("Titel"), AUTHOR("Author");
 		private String name;
 		
 		private ColumnName(String name){
@@ -56,8 +56,12 @@ public class LoanDetailTableModel extends AbstractTableModel {
 		Book b = l.getBook();
 		if (col == -1){
 			return l;
+		} else if (getColumnName(col).equals(ColumnName.STATUS.toString())){
+			return l.isOverdue() ? "Fällig" : "Ok";
 		} else if (getColumnName(col).equals(ColumnName.INVENTORY_NUMBER.toString())){
 			return c.getInventoryNumber();
+		} else if (getColumnName(col).equals(ColumnName.LOAN_UNTIL.toString())){
+			return Loan.getFormattedDate(l.getDueDate());
 		} else if (getColumnName(col).equals(ColumnName.TITLE.toString())){
 			return b.getName();
 		} else if (getColumnName(col).equals(ColumnName.AUTHOR.toString())){
