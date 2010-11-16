@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Insets;
+import java.awt.TextArea;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -54,9 +55,9 @@ import java.awt.Color;
 public class BookDetail implements SubFrame<Book>, Observer {
 
 	private JFrame frmBookDetailView;
-	private JTextArea txtTitle;
-	private JTextArea txtAuthor;
-	private JTextArea txtPublisher;
+	private JTextField txtTitle;
+	private JTextField txtAuthor;
+	private JTextField txtPublisher;
 	private Library library;
 	private Book book;
 	private JTable tblCopies;
@@ -70,6 +71,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	private JLabel lblAuthor;
 	private JLabel lblPublisher;
 	private JLabel lblShelf;
+	private JLabel lblNumber;
 
 	/**
 	 * Launch the application.
@@ -146,20 +148,16 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		lblShelf = new JLabel("Regal:");
 		pnlBookInformation.add(lblShelf, cc.xy(2, 10));
 
-		txtTitle = ViewUtil.getTextArea(book.getName());
-//		txtTitle.setLineWrap(true);
-//		txtTitle.setEditable(false);
-//		txtTitle.setColumns(10);
+		txtTitle = new JTextField(book.getName());
+		txtTitle.setEditable(false);
 		pnlBookInformation.add(txtTitle, cc.xy(4, 4));
 
-		txtAuthor = new JTextArea(book.getAuthor());
+		txtAuthor = new JTextField(book.getAuthor());
 		txtAuthor.setEditable(false);
-		txtAuthor.setColumns(10);
 		pnlBookInformation.add(txtAuthor, cc.xy(4, 6));
 
-		txtPublisher = new JTextArea(book.getPublisher());
+		txtPublisher = new JTextField(book.getPublisher());
 		txtPublisher.setEditable(false);
-		txtPublisher.setColumns(10);
 		pnlBookInformation.add(txtPublisher, cc.xy(4, 8));
 
 		txtShelf = new JTextField(book.getShelf().toString());
@@ -194,7 +192,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		JLabel lblNumberOfCopies = new JLabel("Anzahl Exemplare:");
 		pnlCopyInformation.add(lblNumberOfCopies, cc.xy(2, 4));
 		
-		final JLabel lblNumber = new JLabel("" + library.getCopiesOfBook(book).size());
+		lblNumber = new JLabel("" + library.getCopiesOfBook(book).size());
 		pnlCopyInformation.add(lblNumber, cc.xy(4, 4));
 		
 		final JButton btnRemoveSelected = new JButton("Ausgewählte Entfernen");
@@ -204,8 +202,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 				for (Copy c : copies){
 					library.removeCopy(c);
 				}
-				lblNumber.setText("" + library.getCopiesOfBook(book).size());
-				bookTableModel.updateCopies(library.getCopiesOfBook(book));
+				updateBookInformation();
 			}
 		});
 		btnRemoveSelected.setEnabled(false);
@@ -230,6 +227,14 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		tblCopies.setColumnSelectionAllowed(false);
 		tblCopies.setRowSelectionAllowed(true);
 		TableRowSorter<BookDetailTableModel> rowSorter = new TableRowSorter<BookDetailTableModel>(bookTableModel);
+		rowSorter.setComparator(0, new Comparator<Long>() {
+
+			@Override
+			public int compare(Long l1, Long l2) {
+				return l1.compareTo(l2);
+			}
+			
+		});
 		rowSorter.setComparator(1, new Comparator<String>() {
 
 			@Override
@@ -261,6 +266,11 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		});
 	}
 	
+	protected void updateBookInformation() {
+		lblNumber.setText("" + library.getCopiesOfBook(book).size());
+		bookTableModel.updateCopies(library.getCopiesOfBook(book));
+	}
+
 	protected List<Copy> getSelectedCopies(){
 		List<Copy> list = new ArrayList<Copy>();
 		for (int row : tblCopies.getSelectedRows()){

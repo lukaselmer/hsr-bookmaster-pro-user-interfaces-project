@@ -7,7 +7,11 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -22,6 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableRowSorter;
 
 import org.jdesktop.swingx.JXTitledSeparator;
 
@@ -182,9 +187,8 @@ public class LoanDetail {
 				List<Loan> list = getSelectedLoans();
 				for (Loan l : list){
 					library.getLoans().remove(l);
-					lblNumber.setText("" + library.getCustomerLoans(customer).size());
-					loanTableModel.updateLoans(library.getCustomerLoans(customer));
 				}
+				updateLoanInformation();
 			}
 		});
 		btnReturnLoan.setEnabled(false);
@@ -229,6 +233,29 @@ public class LoanDetail {
 		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.INVENTORY_NUMBER).setMaxWidth(80);	
 		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.LOAN_UNTIL).setMinWidth(100);
 		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.LOAN_UNTIL).setMaxWidth(100);
+		tblLoans.setColumnSelectionAllowed(false);
+		tblLoans.setRowSelectionAllowed(true);
+		TableRowSorter<LoanDetailTableModel> rowSorter = new TableRowSorter<LoanDetailTableModel>(loanTableModel);
+		rowSorter.setComparator(1, new Comparator<String>() {
+
+			@Override
+			public int compare(String s1, String s2) {
+				try {
+					Date d1 = DateFormat.getDateInstance().parse(s1);
+					Date d2 = DateFormat.getDateInstance().parse(s2);
+					return d1.compareTo(d2);
+				} catch (ParseException e) { e.printStackTrace(); }
+				return 0;
+			}
+		});
+		rowSorter.setComparator(2, new Comparator<Long>() {
+			@Override
+			public int compare(Long l1, Long l2) {
+				return l1.compareTo(l2);
+			}
+			
+		});
+		tblLoans.setRowSorter(rowSorter);
 		
 		tblLoans.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			
@@ -258,7 +285,7 @@ public class LoanDetail {
 		ValidationComponentUtils.setMandatory(txtCopyId, true);
 		pnlNewLoan.add(txtCopyId, cc.xy(4, 4));
 
-		btnLendNewCopy = new JButton("Exemplar ausleihen");
+		btnLendNewCopy = new JButton("Exemplar Ausleihen");
 		btnLendNewCopy.setEnabled(false);
 		btnLendNewCopy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -330,12 +357,14 @@ public class LoanDetail {
 			customer = (Customer) cmbCustomer.getSelectedItem();
 			lblNumber.setText("" + library.getCustomerLoans(customer).size());
 			customerSeparator.setTitle("Ausleihen von " + customer.getName() + " " + customer.getSurname());
-			loanTableModel.updateLoans(library.getCustomerLoans(customer));
-			btnLendNewCopy.setEnabled(library.getCurrentLoans().size() < 3);
-			txtCopyId.setEnabled(library.getCustomerLoans(customer).size() < 3);
-
-			txtCopyId.setText("" + (txtCopyId.isEnabled() ? "" : "Maximale Anzahl Ausleihen erreicht"));
+			updateLoanInformation();
 		}
+	}
+	protected void updateLoanInformation(){
+		loanTableModel.updateLoans(library.getCustomerLoans(customer));
+		btnLendNewCopy.setEnabled(library.getCurrentLoans().size() < 3);
+		txtCopyId.setEnabled(library.getCustomerLoans(customer).size() < 3);
+		txtCopyId.setText("" + (txtCopyId.isEnabled() ? "" : "Maximale Anzahl Ausleihen erreicht"));
 	}
 	
 	protected List<Loan> getSelectedLoans(){

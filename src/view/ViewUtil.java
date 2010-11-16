@@ -24,6 +24,7 @@ public class ViewUtil {
 		JTextArea textArea = new JTextArea(text);
 		textArea.setBorder(new JTextField().getBorder());
 		textArea.setEditable(false);
+		textArea.setAutoscrolls(false);
 		textArea.setLineWrap(true);
 		return textArea;
 	}
