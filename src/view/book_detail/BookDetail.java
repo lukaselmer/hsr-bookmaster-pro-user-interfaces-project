@@ -73,6 +73,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	private JScrollPane scrCopies;
 	private BookMasterUiManager uimanager;
 	private JMenuBar menuBar;
+	private JMenuItem mnRemoveSelected;
 
 	/**
 	 * Launch the application.
@@ -155,13 +156,40 @@ public class BookDetail implements SubFrame<Book>, Observer {
 
 		JMenuItem mnEditBook = new JMenuItem("Buch Bearbeiten...");
 		mnEditBook.setMnemonic(KeyEvent.VK_B);
+		mnEditBook.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.ALT_MASK));
 		mnEditBook.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				uimanager.openBookEditWindow(book);
 			}
 		});
+		
+		mnRemoveSelected = new JMenuItem("Selektierte Entfernen");
+		mnRemoveSelected.setEnabled(false);
+		mnRemoveSelected.setMnemonic(KeyEvent.VK_E);
+		mnRemoveSelected.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.ALT_MASK));
+		mnRemoveSelected.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				removeSelectedCopies();
+				updateBookInformation();
+			}
+		});
+		
+		JMenuItem mnAddCopy = new JMenuItem("Exemplar Hinzufügen");
+		mnAddCopy.setMnemonic(KeyEvent.VK_H);
+		mnAddCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.ALT_MASK));
+		mnAddCopy.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addNewCopy();				
+			}
+		});
+		
+
 		mnEdit.add(mnEditBook);
+		mnEdit.add(mnRemoveSelected);
+		mnEdit.add(mnAddCopy);
 	}
 
 	private void initBookPanel() {
@@ -271,6 +299,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
 				btnRemoveSelected.setEnabled(tblCopies.getSelectedRowCount() > 0);
+				mnRemoveSelected.setEnabled(tblCopies.getSelectedRowCount() > 0);
 			}
 		});
 	}
@@ -279,14 +308,11 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		lblNumberOfCopies = new JLabel("Anzahl Exemplare:");
 		lblNumber = new JLabel("" + library.getCopiesOfBook(book).size());
 
-		btnRemoveSelected = new JButton("Ausgewählte Entfernen");
+		btnRemoveSelected = new JButton("Selektierte Entfernen");
 		btnRemoveSelected.setMnemonic('e');
 		btnRemoveSelected.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				List<Copy> copies = getSelectedCopies();
-				for (Copy c : copies) {
-					library.removeCopy(c);
-				}
+				removeSelectedCopies();
 				updateBookInformation();
 			}
 		});
@@ -296,11 +322,23 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		btnAddCopy.setMnemonic('h');
 		btnAddCopy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				library.createAndAddCopy(book);
-				lblNumber.setText("" + library.getCopiesOfBook(book).size());
-				bookTableModel.updateCopies(library.getCopiesOfBook(book));
+				addNewCopy();
 			}
 		});
+	}
+
+	protected void addNewCopy() {
+		library.createAndAddCopy(book);
+		lblNumber.setText("" + library.getCopiesOfBook(book).size());
+		bookTableModel.updateCopies(library.getCopiesOfBook(book));
+	}
+
+	protected void removeSelectedCopies() {
+			List<Copy> copies = getSelectedCopies();
+			for (Copy c : copies) {
+				library.removeCopy(c);
+			}
+			updateBookInformation();
 	}
 
 	protected void updateBookInformation() {
