@@ -63,9 +63,7 @@ public class BookMasterTableModelBook extends BookMasterTableModel<Book> {
 				return availibleCopies == 1 ? "1 Exemplar" : availibleCopies + " Exemplare";
 			} else {
 				if (library.hasNextAvailibleCopyOfBook(b)) {
-					Copy c = library.getNextAvailibleCopyOfBook(b);
-					Loan l = c.getCurrentLoan();
-					System.out.println(l);
+					Loan l = library.getNextAvailibleCopyOfBook(b).getCurrentLoan();
 					return l != null ? "ab " + Loan.getFormattedDate(l.getDueDate()) : "nicht verfügbar";
 				} else {
 					return "nicht verfügbar";

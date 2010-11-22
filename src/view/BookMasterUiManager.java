@@ -104,9 +104,9 @@ public class BookMasterUiManager {
 		});
 	}
 
-	public void openLoanWindow(Loan l) {
+	public void openLoanWindow(Customer c) {
 		if (loanDetailFrame == null) {
-			loanDetailFrame = new LoanDetail(this, l);
+			loanDetailFrame = new LoanDetail(this, c);
 			loanDetailFrame.addWindowListener(new WindowAdapter() {
 				@Override
 				public void windowClosed(WindowEvent arg0) {
@@ -115,7 +115,7 @@ public class BookMasterUiManager {
 			});
 		} else {
 			loanDetailFrame.toFront();
-			loanDetailFrame.updateLoan(l);
+			loanDetailFrame.updateCustomer(c);
 		}
 	}
 

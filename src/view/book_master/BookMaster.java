@@ -69,6 +69,7 @@ public class BookMaster implements Observer {
 	private static final int INDEX_OF_BOOKS_TAB = 0, INDEX_OF_LOANS_TAB = 1, INDEX_OF_CUSTOMERS_TAB = 2;
 	private JButton btnShowSelectedBooks;
 	private JButton btnShowSelectedCustomers;
+	private JButton btnLoanForSelectedCustomer;
 	private JButton btnShowSelectedLoans;
 	private JCheckBox chckbxAvailibleOnly;
 	private JCheckBox chckbxOverduesOnly;
@@ -431,7 +432,7 @@ public class BookMaster implements Observer {
 		});
 		txtFilterCustomers.setColumns(10);
 
-		btnShowSelectedCustomers = new JButton("Selektierte Anzeigen...");
+		btnShowSelectedCustomers = new JButton("Selektierte Bearbeiten...");
 		btnShowSelectedCustomers.setEnabled(false);
 		btnShowSelectedCustomers.setMnemonic('a');
 		btnShowSelectedCustomers.addActionListener(new ActionListener() {
@@ -441,6 +442,17 @@ public class BookMaster implements Observer {
 				for (Customer b : customers) {
 					createOrShowCustomerDetailFrame(b);
 				}
+			}
+		});
+		btnLoanForSelectedCustomer = new JButton("Ausleihe für Kunde erfassen...");
+		btnLoanForSelectedCustomer.setEnabled(false);
+		btnLoanForSelectedCustomer.setMnemonic('u');
+		btnLoanForSelectedCustomer.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Customer customer = getSelectedCustomer();
+				if (customer != null)
+					uimanager.openLoanWindow(customer);
 			}
 		});
 
@@ -453,7 +465,7 @@ public class BookMaster implements Observer {
 		});
 		btnNewClient.setMnemonic('n');
 
-		FormLayout layout = new FormLayout("5dlu, pref, 2dlu, pref:grow, 5dlu, pref, 2dlu, pref, 5dlu",
+		FormLayout layout = new FormLayout("5dlu, pref, 2dlu, pref:grow, 5dlu, pref, 2dlu, pref, 2dlu, pref, 5dlu",
 				"3dlu, pref, 5dlu, pref, 5dlu, pref, 8dlu");
 		JPanel panel = new JPanel(layout);
 		CellConstraints cc = new CellConstraints();
@@ -461,8 +473,9 @@ public class BookMaster implements Observer {
 		panel.add(lblAlleAusleighen, cc.xyw(2, 4, 7));
 		panel.add(lblFilterCustomers, cc.xy(2, 6));
 		panel.add(txtFilterCustomers, cc.xy(4, 6));
-		panel.add(btnShowSelectedCustomers, cc.xy(6, 6));
-		panel.add(btnNewClient, cc.xy(8, 6));
+		panel.add(btnLoanForSelectedCustomer, cc.xy(6, 6));
+		panel.add(btnShowSelectedCustomers, cc.xy(8, 6));
+		panel.add(btnNewClient, cc.xy(10, 6));
 		return panel;
 	}
 
@@ -527,7 +540,7 @@ public class BookMaster implements Observer {
 	}
 
 	protected void createOrShowLoanDetailFrame(Loan l) {
-		uimanager.openLoanWindow(l);
+		uimanager.openLoanWindow(l == null ? null : l.getCustomer());
 	}
 
 	private void initTblBooks() {
@@ -724,6 +737,7 @@ public class BookMaster implements Observer {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				btnShowSelectedCustomers.setEnabled(tblCustomers.getSelectedRowCount() > 0);
+				btnLoanForSelectedCustomer.setEnabled(tblCustomers.getSelectedRowCount() > 0);
 			}
 		});
 		tblCustomers.getRowSorter().toggleSortOrder(tblCustomersModel.getDefaultSortedColumn());

@@ -116,10 +116,6 @@ public class LoanDetail implements SubFrame<Customer> {
 		updateCustomerInformation();
 	}
 
-	public LoanDetail(BookMasterUiManager uimanager, Loan loan) {
-		this(uimanager, loan == null ? null : loan.getCustomer());
-	}
-
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -406,10 +402,8 @@ public class LoanDetail implements SubFrame<Customer> {
 		frmLoanDetail.toFront();
 	}
 
-	public void updateLoan(Loan l) {
-		cmbCustomer.setSelectedItem(l.getCustomer());
-		// updateCustomerInformation
-
+	public void updateCustomer(Customer c) {
+		cmbCustomer.setSelectedItem(c);
 	}
 
 	@Override
