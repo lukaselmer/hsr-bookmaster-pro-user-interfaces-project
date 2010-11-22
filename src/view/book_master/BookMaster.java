@@ -178,7 +178,7 @@ public class BookMaster implements Observer {
 
 	private void initBooksPanel() {
 		pnlBooks = new JPanel();
-		tabbedPane.addTab("Bücher", new ImageIcon("data/icons/book.png"), pnlBooks, "Bücher anzeigen");
+		tabbedPane.addTab("Bücher   ", new ImageIcon("data/icons/book.png"), pnlBooks, "Bücher anzeigen");
 
 		pnlBooks.setLayout(new BorderLayout(0, 0));
 
@@ -294,7 +294,7 @@ public class BookMaster implements Observer {
 
 	private void initLoansPanel() {
 		pnlLoans = new JPanel();
-		tabbedPane.addTab("Ausleihen", new ImageIcon("data/icons/loan.png"), pnlLoans, "Ausleihen anzeigen");
+		tabbedPane.addTab("Ausleihen   ", new ImageIcon("data/icons/loan.png"), pnlLoans, "Ausleihen anzeigen");
 		pnlLoans.setLayout(new BorderLayout(0, 0));
 
 		pnlLoans.add(getPnlLoanStatistics(), BorderLayout.NORTH);
@@ -345,7 +345,11 @@ public class BookMaster implements Observer {
 		btnShowSelectedLoans = new JButton("Selektierte Anzeigen...");
 		btnShowSelectedLoans.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO: Implement this
+				// TODO: Implement this
+				List<Loan> loans = getSelectedLoans();
+				for (Loan b : loans) {
+					createOrShowLoanDetailFrame(b);
+				}
 			}
 		});
 		btnShowSelectedLoans.setEnabled(false);
@@ -354,7 +358,7 @@ public class BookMaster implements Observer {
 		JButton btnNewLoan = new JButton("Neue Ausleihe Erfassen...");
 		btnNewLoan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO: Implement this
+				// TODO: Implement this
 			}
 		});
 		btnNewLoan.setMnemonic('n');
@@ -397,7 +401,7 @@ public class BookMaster implements Observer {
 
 	private void initCustomersPanel() {
 		pnlCustomers = new JPanel();
-		tabbedPane.addTab("Kunden", new ImageIcon("data/icons/customer.png"), pnlCustomers, "Kunden anzeigen");
+		tabbedPane.addTab("Kunden   ", new ImageIcon("data/icons/customer.png"), pnlCustomers, "Kunden anzeigen");
 		pnlCustomers.setLayout(new BorderLayout(0, 0));
 
 		pnlCustomers.add(getPnlCustomersStatistics(), BorderLayout.NORTH);
@@ -511,6 +515,14 @@ public class BookMaster implements Observer {
 		return lst;
 	}
 
+	protected List<Loan> getSelectedLoans() {
+		List<Loan> lst = new ArrayList<Loan>();
+		for (int row : tblLoans.getSelectedRows()) {
+			lst.add(getLoanOfRow(row));
+		}
+		return lst;
+	}
+
 	protected void filterAndUpdateBooks() {
 		tblBooksModel.updateObjects(library.filterBooks(txtFilterBooks.getText(), chckbxAvailibleOnly.isSelected()));
 		scrollTblBooks.updateUI();
@@ -532,6 +544,10 @@ public class BookMaster implements Observer {
 
 	protected void createOrShowCustomerDetailFrame(Customer c) {
 		uimanager.openWindow(c);
+	}
+
+	protected void createOrShowLoanDetailFrame(Loan l) {
+		uimanager.openWindow(l);
 	}
 
 	private void initTblBooks() {
@@ -757,6 +773,11 @@ public class BookMaster implements Observer {
 	protected Customer getCustomerOfRow(int row) {
 		row = tblCustomers.convertRowIndexToModel(row);
 		return (Customer) tblCustomers.getModel().getValueAt(row, -1);
+	}
+
+	protected Loan getLoanOfRow(int row) {
+		row = tblLoans.convertRowIndexToModel(row);
+		return (Loan) tblLoans.getModel().getValueAt(row, -1);
 	}
 
 	@Override
