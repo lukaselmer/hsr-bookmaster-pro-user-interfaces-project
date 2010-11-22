@@ -1,8 +1,8 @@
 package test;
 
 import junit.framework.TestCase;
-import domain.Copy;
 import domain.Book;
+import domain.Copy;
 import domain.Shelf;
 
 public class CopyTest extends TestCase {

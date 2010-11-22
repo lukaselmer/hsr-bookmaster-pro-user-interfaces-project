@@ -3,7 +3,12 @@ package test;
 import java.util.GregorianCalendar;
 
 import junit.framework.TestCase;
-import domain.*;
+import domain.Book;
+import domain.Copy;
+import domain.Customer;
+import domain.IllegalLoanOperationException;
+import domain.Loan;
+import domain.Shelf;
 
 public class LoanTest extends TestCase {
 

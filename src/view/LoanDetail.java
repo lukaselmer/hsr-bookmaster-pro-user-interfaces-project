@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -44,14 +46,10 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.validation.view.ValidationComponentUtils;
 
-import domain.Book;
 import domain.Copy;
 import domain.Customer;
 import domain.Library;
 import domain.Loan;
-
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class LoanDetail implements SubFrame<Customer> {
 

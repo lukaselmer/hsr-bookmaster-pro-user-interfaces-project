@@ -1,16 +1,13 @@
 package view.customer;
 
 import java.awt.EventQueue;
-import java.awt.event.WindowAdapter;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import view.BookMasterUiManager;
-
 import application.LibraryApp;
 import domain.Customer;
-import domain.Library;
 
 public class CustomerNew extends CustomerForm {
 

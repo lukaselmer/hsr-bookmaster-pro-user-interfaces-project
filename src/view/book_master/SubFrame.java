@@ -2,8 +2,6 @@ package view.book_master;
 
 import java.awt.event.WindowAdapter;
 
-import javax.swing.JFrame;
-
 public abstract interface SubFrame<T> {
 	public abstract T getObject();
 

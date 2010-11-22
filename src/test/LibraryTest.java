@@ -3,10 +3,10 @@ package test;
 import java.util.List;
 
 import junit.framework.TestCase;
+import domain.Book;
 import domain.Customer;
 import domain.Library;
 import domain.Loan;
-import domain.Book;
 import domain.Shelf;
 
 public class LibraryTest extends TestCase {

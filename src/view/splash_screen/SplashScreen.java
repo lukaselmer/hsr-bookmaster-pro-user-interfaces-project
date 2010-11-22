@@ -1,5 +1,21 @@
 package view.splash_screen;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.ComponentOrientation;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JWindow;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+
+import view.book_master.BookMaster;
 import application.LibraryApp;
 
 import com.jgoodies.animation.Animation;
@@ -12,15 +28,6 @@ import com.jgoodies.animation.animations.FanAnimation;
 import com.jgoodies.animation.animations.GlyphAnimation;
 import com.jgoodies.animation.components.FanComponent;
 import com.jgoodies.animation.components.GlyphLabel;
-
-import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
-import view.book_master.BookMaster;
 
 public class SplashScreen {
 

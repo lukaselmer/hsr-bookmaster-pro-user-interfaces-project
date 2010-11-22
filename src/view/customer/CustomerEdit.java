@@ -9,11 +9,9 @@ import javax.swing.UIManager;
 
 import view.BookMasterUiManager;
 import view.book_master.SubFrame;
-
+import application.LibraryApp;
 import domain.Customer;
 import domain.Library;
-
-import application.LibraryApp;
 
 public class CustomerEdit extends CustomerForm implements SubFrame<Customer> {
 	private Customer customer;

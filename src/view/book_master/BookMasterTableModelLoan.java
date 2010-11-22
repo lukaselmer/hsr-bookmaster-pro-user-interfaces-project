@@ -3,7 +3,6 @@ package view.book_master;
 import java.util.List;
 
 import view.BookMasterTableModel;
-
 import domain.Book;
 import domain.Copy;
 import domain.Library;

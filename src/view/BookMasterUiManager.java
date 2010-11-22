@@ -5,9 +5,7 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import view.book.BookEdit;
-import view.book.BookForm;
 import view.book.BookNew;
 import view.book_detail.BookDetail;
 import view.book_master.SubFrame;
@@ -16,7 +14,6 @@ import view.customer.CustomerNew;
 import domain.Book;
 import domain.Customer;
 import domain.Library;
-import domain.Loan;
 
 public class BookMasterUiManager {
 	protected final Library library;

@@ -6,10 +6,8 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import view.BookMasterUiManager;
-
 import application.LibraryApp;
 import domain.Book;
-import domain.Library;
 
 public class BookNew extends BookForm {
 
