@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+import view.BookMasterUiManager;
+
 import application.LibraryApp;
 import domain.Book;
 import domain.Library;
@@ -16,7 +18,7 @@ public class BookNew extends BookForm {
 			public void run() {
 				try {
 					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-					new BookNew(LibraryApp.inst());
+					new BookNew(new BookMasterUiManager(LibraryApp.inst()));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -24,8 +26,8 @@ public class BookNew extends BookForm {
 		});
 	}
 
-	public BookNew(Library library) {
-		super(library);
+	public BookNew(BookMasterUiManager uimanager) {
+		super(uimanager);
 	}
 
 	@Override

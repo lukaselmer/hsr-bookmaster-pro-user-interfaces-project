@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.text.ParseException;
 
 import javax.swing.GroupLayout;
@@ -22,6 +23,7 @@ import org.jdesktop.swingx.JXTitledSeparator;
 
 import validators.CustomerValidator;
 import validators.FormValidator;
+import view.BookMasterUiManager;
 import view.ViewUtil;
 import application.LibraryApp;
 
@@ -41,6 +43,7 @@ public abstract class CustomerForm {
 	protected JTextField txtCity;
 	protected JButton btnSave;
 	protected FormValidator<Customer> formValidator;
+	private BookMasterUiManager uimanager;
 
 	/**
 	 * Launch the application.
@@ -50,7 +53,7 @@ public abstract class CustomerForm {
 			public void run() {
 				try {
 					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-					new CustomerNew(LibraryApp.inst());
+					new CustomerNew(new BookMasterUiManager(LibraryApp.inst()));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -72,8 +75,9 @@ public abstract class CustomerForm {
 	 * @param library
 	 * @wbp.parser.entryPoint
 	 */
-	public CustomerForm(Library library) {
-		this.library = library;
+	public CustomerForm(BookMasterUiManager uimanager) {
+		this.uimanager = uimanager;
+		this.library = uimanager.getLibrary();
 		try {
 			initialize();
 		} catch (ParseException e) {
@@ -91,6 +95,10 @@ public abstract class CustomerForm {
 	public void toFront() {
 		frmCustomerForm.setState(JFrame.NORMAL);
 		frmCustomerForm.toFront();
+	}
+
+	public void addWindowListener(WindowAdapter windowAdapter) {
+		frmCustomerForm.addWindowListener(windowAdapter);
 	}
 
 	/**
@@ -188,68 +196,81 @@ public abstract class CustomerForm {
 				frmCustomerForm.dispose();
 			}
 		});
-		
+
 		JXTitledSeparator label = ViewUtil.getSeparator(getWindowTitle());
-		//JLabel label = new JLabel("XXX");
-		
+		// JLabel label = new JLabel("XXX");
+
 		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(lblSurname, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(lblStreet)
-								.addComponent(lblZip)
-								.addComponent(lblCity)
-								.addComponent(lblName))
-							.addGap(18)
-							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-								.addGroup(gl_panel.createSequentialGroup()
-									.addComponent(btnSave, GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(btnCancel, GroupLayout.PREFERRED_SIZE, 170, GroupLayout.PREFERRED_SIZE))
-								.addComponent(txtStreet, GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
-								.addComponent(txtZip, GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
-								.addComponent(txtName, GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
-								.addComponent(txtSurname, GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
-								.addComponent(txtCity, GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)))
-						.addComponent(label))
-					.addContainerGap())
-		);
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(label)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblName)
-						.addComponent(txtName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblSurname)
-						.addComponent(txtSurname, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblStreet)
-						.addComponent(txtStreet, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblZip)
-						.addComponent(txtZip, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblCity)
-						.addComponent(txtCity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnSave)
-						.addComponent(btnCancel))
-					.addContainerGap(32, Short.MAX_VALUE))
-		);
+		gl_panel.setHorizontalGroup(gl_panel.createParallelGroup(Alignment.LEADING).addGroup(
+				gl_panel.createSequentialGroup()
+						.addContainerGap()
+						.addGroup(
+								gl_panel.createParallelGroup(Alignment.LEADING)
+										.addGroup(
+												gl_panel.createSequentialGroup()
+														.addGroup(
+																gl_panel.createParallelGroup(Alignment.LEADING, false)
+																		.addComponent(lblSurname, Alignment.TRAILING,
+																				GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+																				Short.MAX_VALUE).addComponent(lblStreet)
+																		.addComponent(lblZip).addComponent(lblCity).addComponent(lblName))
+														.addGap(18)
+														.addGroup(
+																gl_panel.createParallelGroup(Alignment.TRAILING)
+																		.addGroup(
+																				gl_panel.createSequentialGroup()
+																						.addComponent(btnSave, GroupLayout.DEFAULT_SIZE,
+																								164, Short.MAX_VALUE)
+																						.addPreferredGap(ComponentPlacement.RELATED)
+																						.addComponent(btnCancel,
+																								GroupLayout.PREFERRED_SIZE, 170,
+																								GroupLayout.PREFERRED_SIZE))
+																		.addComponent(txtStreet, GroupLayout.DEFAULT_SIZE, 340,
+																				Short.MAX_VALUE)
+																		.addComponent(txtZip, GroupLayout.DEFAULT_SIZE, 340,
+																				Short.MAX_VALUE)
+																		.addComponent(txtName, GroupLayout.DEFAULT_SIZE, 340,
+																				Short.MAX_VALUE)
+																		.addComponent(txtSurname, GroupLayout.DEFAULT_SIZE, 340,
+																				Short.MAX_VALUE)
+																		.addComponent(txtCity, GroupLayout.DEFAULT_SIZE, 340,
+																				Short.MAX_VALUE))).addComponent(label)).addContainerGap()));
+		gl_panel.setVerticalGroup(gl_panel.createParallelGroup(Alignment.LEADING).addGroup(
+				gl_panel.createSequentialGroup()
+						.addContainerGap()
+						.addComponent(label)
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(
+								gl_panel.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblName)
+										.addComponent(txtName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(
+								gl_panel.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblSurname)
+										.addComponent(txtSurname, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(
+								gl_panel.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblStreet)
+										.addComponent(txtStreet, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(
+								gl_panel.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblZip)
+										.addComponent(txtZip, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(
+								gl_panel.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblCity)
+										.addComponent(txtCity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE)).addPreferredGap(ComponentPlacement.UNRELATED)
+						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE).addComponent(btnSave).addComponent(btnCancel))
+						.addContainerGap(32, Short.MAX_VALUE)));
 		panel.setLayout(gl_panel);
 	}
 }

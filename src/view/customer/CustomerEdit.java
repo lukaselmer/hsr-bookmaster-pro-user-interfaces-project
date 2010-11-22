@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+import view.BookMasterUiManager;
 import view.book_master.SubFrame;
 
 import domain.Customer;
@@ -23,7 +24,7 @@ public class CustomerEdit extends CustomerForm implements SubFrame<Customer> {
 				try {
 					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
 					Library l = LibraryApp.inst();
-					new CustomerEdit(l, l.getCustomers().get(new Random().nextInt(l.getCustomers().size())));
+					new CustomerEdit(new BookMasterUiManager(l), l.getCustomers().get(new Random().nextInt(l.getCustomers().size())));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -31,8 +32,8 @@ public class CustomerEdit extends CustomerForm implements SubFrame<Customer> {
 		});
 	}
 
-	public CustomerEdit(Library library, Customer customer) {
-		super(library);
+	public CustomerEdit(BookMasterUiManager uimanager, Customer customer) {
+		super(uimanager);
 		this.customer = customer;
 		txtName.setText(customer.getName());
 		txtSurname.setText(customer.getSurname());

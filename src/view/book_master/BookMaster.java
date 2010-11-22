@@ -52,6 +52,7 @@ import view.DocumentListenerAdapter;
 import view.DoubleClickMouseAdapter;
 import view.ViewUtil;
 import view.book.BookNew;
+import view.book_detail.BookDetail;
 import view.customer.CustomerNew;
 import application.LibraryApp;
 
@@ -80,7 +81,6 @@ public class BookMaster implements Observer {
 	private JLabel lblOverdueAmountNum;
 	private Library library;
 	protected CustomerNew newCustomerFrame;
-	protected BookNew newBookFrame;
 	private JPanel pnlBooks;
 	private JPanel pnlCustomers;
 	private JPanel pnlLoans;
@@ -244,22 +244,7 @@ public class BookMaster implements Observer {
 		btnAddNewBook.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// new BookEdit(library, library.getBooks().get((new
-				// Random()).nextInt(library.getBooks().size())));
-				if (newBookFrame != null && newBookFrame.isValid()) {
-					newBookFrame.toFront();
-				} else {
-					newBookFrame = new BookNew(library);
-					newBookFrame.getFrame().addWindowListener(new WindowAdapter() {
-						@Override
-						public void windowClosed(WindowEvent arg0) {
-							Book b = newBookFrame.getSavedObject();
-							newBookFrame = null;
-							if (b != null)
-								createOrShowBookDetailFrame(b);
-						}
-					});
-				}
+				uimanager.openBookNewFrame();
 			}
 		});
 
@@ -463,11 +448,7 @@ public class BookMaster implements Observer {
 		btnNewClient.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (newCustomerFrame != null && newCustomerFrame.isValid()) {
-					newCustomerFrame.toFront();
-				} else {
-					newCustomerFrame = new CustomerNew(library);
-				}
+				uimanager.openCustomerNewWindow();
 			}
 		});
 		btnNewClient.setMnemonic('n');
@@ -538,11 +519,11 @@ public class BookMaster implements Observer {
 	}
 
 	protected void createOrShowBookDetailFrame(Book b) {
-		uimanager.openWindow(b);
+		uimanager.openBookDetailWindow(b);
 	}
 
 	protected void createOrShowCustomerDetailFrame(Customer c) {
-		uimanager.openWindow(c);
+		uimanager.openCustomerEditWindow(c);
 	}
 
 	protected void createOrShowLoanDetailFrame(Loan l) {

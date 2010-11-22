@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.text.ParseException;
 
 import javax.swing.JButton;
@@ -18,6 +19,7 @@ import javax.swing.UIManager;
 
 import validators.BookValidator;
 import validators.FormValidator;
+import view.BookMasterUiManager;
 import view.ViewUtil;
 import application.LibraryApp;
 
@@ -45,6 +47,7 @@ public abstract class BookForm {
 	protected JLabel lblPublisher;
 	protected JLabel lblShelf;
 	protected Book savedObject;
+	private BookMasterUiManager uimanager;
 
 	/**
 	 * Launch the application.
@@ -54,7 +57,7 @@ public abstract class BookForm {
 			public void run() {
 				try {
 					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-					new BookNew(LibraryApp.inst());
+					new BookNew(new BookMasterUiManager(LibraryApp.inst()));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -80,8 +83,9 @@ public abstract class BookForm {
 	 * @param library
 	 * @wbp.parser.entryPoint
 	 */
-	public BookForm(Library library) {
-		this.library = library;
+	public BookForm(BookMasterUiManager uimanager) {
+		this.uimanager = uimanager;
+		this.library = uimanager.getLibrary();
 		try {
 			initialize();
 		} catch (ParseException e) {
@@ -214,8 +218,12 @@ public abstract class BookForm {
 			}
 		});
 	}
-	
-	public Book getSavedObject(){
+
+	public Book getSavedObject() {
 		return savedObject;
+	}
+
+	public void addWindowListener(WindowAdapter windowAdapter) {
+		frmBookForm.addWindowListener(windowAdapter);
 	}
 }

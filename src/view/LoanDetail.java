@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -82,6 +83,7 @@ public class LoanDetail implements SubFrame<Customer> {
 	private JPanel pnlLoan;
 	private JPanel pnlReturnLoan;
 	private JButton btnReturnLoan;
+	private BookMasterUiManager uimanager;
 
 	/**
 	 * Launch the application.
@@ -93,7 +95,7 @@ public class LoanDetail implements SubFrame<Customer> {
 				Library l = LibraryApp.inst();
 				try {
 					Random r = new Random();
-					new LoanDetail(l, l.getCustomers().get(r.nextInt(l.getCustomers().size())));
+					new LoanDetail(new BookMasterUiManager(l), l.getCustomers().get(r.nextInt(l.getCustomers().size())));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -104,8 +106,9 @@ public class LoanDetail implements SubFrame<Customer> {
 	/**
 	 * Create the application.
 	 */
-	public LoanDetail(Library library, Customer customer) {
-		this.library = library;
+	public LoanDetail(BookMasterUiManager uimanager, Customer customer) {
+		this.uimanager = uimanager;
+		this.library = uimanager.getLibrary();
 		this.customer = customer;
 		initialize();
 		frmLoanDetail.setLocationByPlatform(true);
@@ -113,14 +116,8 @@ public class LoanDetail implements SubFrame<Customer> {
 		updateCustomerInformation();
 	}
 
-	public LoanDetail(Library library, Loan loan) {
-		this(library, loan == null ? null : loan.getCustomer());
-		// this.library = library;
-		// this.customer = loan.getCustomer();
-		// initialize();
-		// frmLoanDetail.setLocationByPlatform(true);
-		// frmLoanDetail.setVisible(true);
-		// updateCustomerInformation();
+	public LoanDetail(BookMasterUiManager uimanager, Loan loan) {
+		this(uimanager, loan == null ? null : loan.getCustomer());
 	}
 
 	/**
@@ -404,14 +401,19 @@ public class LoanDetail implements SubFrame<Customer> {
 		frmLoanDetail.toFront();
 	}
 
-	@Override
-	public JFrame getFrame() {
-		return frmLoanDetail;
-	}
-
 	public void updateLoan(Loan l) {
 		cmbCustomer.setSelectedItem(l.getCustomer());
 		// updateCustomerInformation
 
+	}
+
+	@Override
+	public boolean isValid() {
+		return frmLoanDetail.isValid();
+	}
+
+	@Override
+	public void addWindowListener(WindowAdapter windowAdapter) {
+		frmLoanDetail.addWindowListener(windowAdapter);
 	}
 }

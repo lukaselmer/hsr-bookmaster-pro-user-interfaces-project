@@ -1,5 +1,7 @@
 package view.book_master;
 
+import java.awt.event.WindowAdapter;
+
 import javax.swing.JFrame;
 
 public abstract interface SubFrame<T> {
@@ -7,5 +9,7 @@ public abstract interface SubFrame<T> {
 
 	public abstract void toFront();
 
-	public abstract JFrame getFrame();
+	public abstract boolean isValid();
+
+	public abstract void addWindowListener(WindowAdapter windowAdapter);
 }

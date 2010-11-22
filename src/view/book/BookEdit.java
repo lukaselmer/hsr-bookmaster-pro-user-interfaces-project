@@ -8,12 +8,11 @@ import java.util.Random;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+import view.BookMasterUiManager;
 import view.book_master.SubFrame;
-
+import application.LibraryApp;
 import domain.Book;
 import domain.Library;
-
-import application.LibraryApp;
 
 public class BookEdit extends BookForm implements SubFrame<Book>, Observer {
 	protected final Book book;
@@ -25,7 +24,7 @@ public class BookEdit extends BookForm implements SubFrame<Book>, Observer {
 				try {
 					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
 					Library l = LibraryApp.inst();
-					new BookEdit(l, l.getBooks().get(new Random().nextInt(l.getBooks().size())));
+					new BookEdit(new BookMasterUiManager(l), l.getBooks().get(new Random().nextInt(l.getBooks().size())));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -33,8 +32,8 @@ public class BookEdit extends BookForm implements SubFrame<Book>, Observer {
 		});
 	}
 
-	public BookEdit(Library library, Book book) {
-		super(library);
+	public BookEdit(BookMasterUiManager uimanager, Book book) {
+		super(uimanager);
 		this.book = book;
 		updateForm(book);
 		book.addObserver(this);

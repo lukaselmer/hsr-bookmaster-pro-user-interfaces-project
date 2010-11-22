@@ -7,9 +7,12 @@ import java.util.List;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import view.book.BookEdit;
+import view.book.BookForm;
+import view.book.BookNew;
 import view.book_detail.BookDetail;
 import view.book_master.SubFrame;
 import view.customer.CustomerEdit;
+import view.customer.CustomerNew;
 import domain.Book;
 import domain.Customer;
 import domain.Library;
@@ -17,8 +20,11 @@ import domain.Loan;
 
 public class BookMasterUiManager {
 	protected final Library library;
-	protected List<SubFrame<Object>> subFrames = new ArrayList<SubFrame<Object>>();
+	@SuppressWarnings("rawtypes")
+	protected List<SubFrame> subFrames = new ArrayList<SubFrame>();
 	protected LoanDetail loanDetailFrame;
+	private CustomerNew customerNewFrame;
+	private BookNew bookNewFrame;
 
 	public BookMasterUiManager(Library library) {
 		this.library = library;
@@ -28,59 +34,80 @@ public class BookMasterUiManager {
 		return library;
 	}
 
-	public <T> void openWindow(T object) {
-		openWindow(object, 0);
-	}
+	// protected <T> SubFrame<T> createFrame(T t) {
+	// return createFrame(t, 0);
+	// }
 
-	public <T> void openWindow(T object, int i) {
-		boolean detailOpen = false;
-		for (SubFrame<Object> bd : subFrames) {
-			if (bd.getObject().equals(object)) {
-				detailOpen = true;
-				bd.toFront();
-				break;
+	// protected <T> SubFrame<T> createFrame(T o, int i) {
+	// if (o instanceof Book) {
+	// if (i == 0)
+	// return (SubFrame<T>) new BookDetail(this, (Book) o);
+	// else if (i == 1)
+	// return (SubFrame<T>) new BookEdit(getLibrary(), (Book) o);
+	// else
+	// throw new NotImplementedException();
+	// } else if (o instanceof Customer) {
+	// return (SubFrame<T>) new CustomerEdit(this, (Customer) o);
+	// } else {
+	// throw new NotImplementedException();
+	// }
+	// }
+
+	public void openBookDetailWindow(Book o) {
+		for (SubFrame<Book> f : subFrames) {
+			if (f instanceof BookDetail && f.getObject().equals(o)) {
+				f.toFront();
+				return;
 			}
-			if ((Object) bd instanceof LoanDetail) {
-				detailOpen = true;
-				bd.toFront();
-				LoanDetail ld = (LoanDetail) (Object) bd;
-				ld.updateLoan((Loan) object);
-				break;
+		}
+		final SubFrame<Book> f = new BookDetail(this, o);
+		subFrames.add(f);
+		f.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent arg0) {
+				subFrames.remove(f);
+			}
+		});
+	}
+
+	public void openBookEditWindow(Book o) {
+		for (SubFrame<Book> f : subFrames) {
+			if (f instanceof BookEdit && f.getObject().equals(o)) {
+				f.toFront();
+				return;
 			}
 		}
-		if (!detailOpen) {
-			final SubFrame<T> bd = createFrame(object, i);
-			subFrames.add((SubFrame<Object>) bd);
-			bd.getFrame().addWindowListener(new WindowAdapter() {
-				@Override
-				public void windowClosed(WindowEvent arg0) {
-					subFrames.remove(bd);
-				}
-			});
-		}
+		final SubFrame<Book> f = new BookEdit(this, o);
+		subFrames.add(f);
+		f.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent arg0) {
+				subFrames.remove(f);
+			}
+		});
 	}
 
-	protected <T> SubFrame<T> createFrame(T t) {
-		return createFrame(t, 0);
-	}
-
-	protected <T> SubFrame<T> createFrame(T o, int i) {
-		if (o instanceof Book) {
-			if (i == 0)
-				return (SubFrame<T>) new BookDetail(this, (Book) o);
-			else
-				return (SubFrame<T>) new BookEdit(getLibrary(), (Book) o);
-		} else if (o instanceof Customer) {
-			return (SubFrame<T>) new CustomerEdit(library, (Customer) o);
-		} else {
-			throw new NotImplementedException();
+	public void openCustomerEditWindow(Customer o) {
+		for (SubFrame<Customer> f : subFrames) {
+			if (f instanceof CustomerEdit && f.getObject().equals(o)) {
+				f.toFront();
+				return;
+			}
 		}
+		final SubFrame<Customer> f = new CustomerEdit(this, o);
+		subFrames.add(f);
+		f.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent arg0) {
+				subFrames.remove(f);
+			}
+		});
 	}
 
 	public void openLoanWindow(Loan l) {
-		if (loanDetailFrame == null || !loanDetailFrame.getFrame().isValid()) {
-			loanDetailFrame = new LoanDetail(library, l);
-			loanDetailFrame.getFrame().addWindowListener(new WindowAdapter() {
+		if (loanDetailFrame == null) {
+			loanDetailFrame = new LoanDetail(this, l);
+			loanDetailFrame.addWindowListener(new WindowAdapter() {
 				@Override
 				public void windowClosed(WindowEvent arg0) {
 					loanDetailFrame = null;
@@ -91,5 +118,63 @@ public class BookMasterUiManager {
 			loanDetailFrame.updateLoan(l);
 		}
 	}
+
+	public void openCustomerNewWindow() {
+		if (customerNewFrame == null) {
+			customerNewFrame = new CustomerNew(this);
+			customerNewFrame.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosed(WindowEvent arg0) {
+					customerNewFrame = null;
+				}
+			});
+		} else {
+			customerNewFrame.toFront();
+		}
+	}
+
+	public void openBookNewFrame() {
+		if (bookNewFrame == null) {
+			bookNewFrame = new BookNew(this);
+			bookNewFrame.addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosed(WindowEvent arg0) {
+					Book b = bookNewFrame.getSavedObject();
+					bookNewFrame = null;
+					if (b != null)
+						openBookDetailWindow(b);
+					bookNewFrame = null;
+				}
+			});
+		} else {
+			bookNewFrame.toFront();
+		}
+	}
+
+	// boolean detailOpen = false;
+	// for (SubFrame<Object> bd : subFrames) {
+	// if (bd.getObject().equals(object)) {
+	// detailOpen = true;
+	// bd.toFront();
+	// break;
+	// }
+	// if (bd.getClass().equals(LoanDetail.class)) {
+	// detailOpen = true;
+	// bd.toFront();
+	// LoanDetail ld = (LoanDetail) (Object) bd;
+	// ld.updateLoan((Loan) object);
+	// break;
+	// }
+	// }
+	// if (!detailOpen) {
+	// final SubFrame<T> bd = createFrame(object, i);
+	// subFrames.add((SubFrame<Object>) bd);
+	// bd.getFrame().addWindowListener(new WindowAdapter() {
+	// @Override
+	// public void windowClosed(WindowEvent arg0) {
+	// subFrames.remove(bd);
+	// }
+	// });
+	// }
 
 }
