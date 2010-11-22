@@ -163,7 +163,12 @@ public class LoanDetail implements SubFrame<Customer> {
 			}
 		});
 
-		cmbCustomer.setSelectedItem(customer);
+		if (customer != null) {
+			cmbCustomer.setSelectedItem(customer);
+		} else {
+			cmbCustomer.setSelectedIndex(0);
+			customer = (Customer) cmbCustomer.getItemAt(0);
+		}
 		pnlCustomer.add(cmbCustomer, cc.xyw(4, 4, 3));
 
 		lblNumberOfLoans = new JLabel("Anzahl Ausleihen:");

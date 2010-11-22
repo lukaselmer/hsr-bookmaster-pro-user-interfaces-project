@@ -5,6 +5,7 @@ import java.util.List;
 import view.BookMasterTableModel;
 
 import domain.Book;
+import domain.Copy;
 import domain.Library;
 import domain.Loan;
 import domain.Shelf;
@@ -62,8 +63,10 @@ public class BookMasterTableModelBook extends BookMasterTableModel<Book> {
 				return availibleCopies == 1 ? "1 Exemplar" : availibleCopies + " Exemplare";
 			} else {
 				if (library.hasNextAvailibleCopyOfBook(b)) {
-					//TODO: Exception!
-					return "ab " + Loan.getFormattedDate(library.getNextAvailibleCopyOfBook(b).getCurrentLoan().getDueDate());
+					Copy c = library.getNextAvailibleCopyOfBook(b);
+					Loan l = c.getCurrentLoan();
+					System.out.println(l);
+					return l != null ? "ab " + Loan.getFormattedDate(l.getDueDate()) : "nicht verfügbar";
 				} else {
 					return "nicht verfügbar";
 				}
@@ -85,7 +88,7 @@ public class BookMasterTableModelBook extends BookMasterTableModel<Book> {
 
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
-		//TODO: Exception!
+		// TODO: Exception!
 		return getValueAt(0, columnIndex).getClass();
 	}
 }
