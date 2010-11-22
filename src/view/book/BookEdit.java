@@ -47,7 +47,6 @@ public class BookEdit extends BookForm implements SubFrame<Book>, Observer {
 		txtPublisher.setText(b.getPublisher());
 		cmbShelf.setSelectedItem(b.getShelf());
 		formValidator.validateAll();
-
 	}
 
 	@Override

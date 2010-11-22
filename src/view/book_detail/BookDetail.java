@@ -79,8 +79,9 @@ public class BookDetail implements SubFrame<Book>, Observer {
 			public void run() {
 				Library l = LibraryApp.inst();
 				try {
-					Random r = new Random();
-					new BookDetail(new BookMasterUiManager(l), l.getBooks().get(r.nextInt(l.getBooks().size())));
+//					Random r = new Random();
+//					new BookDetail(new BookMasterUiManager(l), l.getBooks().get(r.nextInt(l.getBooks().size())));
+					new BookDetail(new BookMasterUiManager(l), l.getBooks().get(0));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -154,19 +155,16 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		lblShelf = new JLabel("Regal:");
 
 		txtTitle = ViewUtil.getTextField(book.getName());
+		txtTitle.setCaretPosition(1);
 		txtAuthor = ViewUtil.getTextField(book.getAuthor());
 		txtPublisher = ViewUtil.getTextField(book.getPublisher());
 		txtShelf = ViewUtil.getTextField(book.getShelf().toString());
 		
 		btnEditBook = new JButton("Buch Bearbeiten...");
+		btnEditBook.setMnemonic('b');
 		btnEditBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				uimanager.openWindow(book, 2);
-//				if (editBookFrame != null && editBookFrame.isValid()){
-//					editBookFrame.toFront();
-//				} else {
-//					editBookFrame = new BookEdit(library, book);
-//				}
 			}
 		});
 	}
@@ -244,6 +242,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		lblNumber = new JLabel("" + library.getCopiesOfBook(book).size());
 		
 		btnRemoveSelected = new JButton("Ausgewählte Entfernen");
+		btnRemoveSelected.setMnemonic('e');
 		btnRemoveSelected.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				List<Copy> copies = getSelectedCopies();
@@ -256,6 +255,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		btnRemoveSelected.setEnabled(false);
 		
 		btnAddCopy = new JButton("Exemplar Hinzufügen");
+		btnAddCopy.setMnemonic('h');
 		btnAddCopy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				library.createAndAddCopy(book);
