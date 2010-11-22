@@ -224,7 +224,7 @@ public class BookMaster implements Observer {
 			}
 		});
 
-		btnShowSelectedBooks = new JButton("Selektierte Anzeigen");
+		btnShowSelectedBooks = new JButton("Selektierte Anzeigen...");
 		btnShowSelectedBooks.setEnabled(false);
 		btnShowSelectedBooks.setMnemonic('a');
 		btnShowSelectedBooks.addActionListener(new ActionListener() {
@@ -237,7 +237,7 @@ public class BookMaster implements Observer {
 			}
 		});
 
-		JButton btnAddNewBook = new JButton("Neuer Buchtitel Erfassen");
+		JButton btnAddNewBook = new JButton("Neuer Buchtitel Erfassen...");
 		btnAddNewBook.setMnemonic('n');
 		btnAddNewBook.addActionListener(new ActionListener() {
 			@Override
@@ -342,11 +342,21 @@ public class BookMaster implements Observer {
 			}
 		});
 
-		btnShowSelectedLoans = new JButton("Selektierte Anzeigen");
+		btnShowSelectedLoans = new JButton("Selektierte Anzeigen...");
+		btnShowSelectedLoans.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//TODO: Implement this
+			}
+		});
 		btnShowSelectedLoans.setEnabled(false);
 		btnShowSelectedLoans.setMnemonic('a');
 
-		JButton btnNewLoan = new JButton("Neue Ausleihe Erfassen");
+		JButton btnNewLoan = new JButton("Neue Ausleihe Erfassen...");
+		btnNewLoan.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//TODO: Implement this
+			}
+		});
 		btnNewLoan.setMnemonic('n');
 
 		FormLayout layout = new FormLayout("5dlu, pref, 2dlu, pref:grow, 2dlu, pref, 5dlu, pref, 2dlu, pref, 5dlu",
@@ -433,7 +443,7 @@ public class BookMaster implements Observer {
 		});
 		txtFilterCustomers.setColumns(10);
 
-		btnShowSelectedCustomers = new JButton("Selektierte Anzeigen");
+		btnShowSelectedCustomers = new JButton("Selektierte Anzeigen...");
 		btnShowSelectedCustomers.setEnabled(false);
 		btnShowSelectedCustomers.setMnemonic('a');
 		btnShowSelectedCustomers.addActionListener(new ActionListener() {
@@ -446,7 +456,7 @@ public class BookMaster implements Observer {
 			}
 		});
 
-		JButton btnNewClient = new JButton("Neuer Kunde Erfassen");
+		JButton btnNewClient = new JButton("Neuer Kunde Erfassen...");
 		btnNewClient.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
