@@ -40,6 +40,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -48,6 +49,7 @@ import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
 
 import view.BookMasterUiManager;
 import view.DocumentListenerAdapter;
+import view.DoubleClickMouseAdapter;
 import view.ViewUtil;
 import view.book.BookNew;
 import view.customer.CustomerNew;
@@ -345,10 +347,9 @@ public class BookMaster implements Observer {
 		btnShowSelectedLoans = new JButton("Selektierte Anzeigen...");
 		btnShowSelectedLoans.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO: Implement this
 				List<Loan> loans = getSelectedLoans();
-				for (Loan b : loans) {
-					createOrShowLoanDetailFrame(b);
+				for (Loan l : loans) {
+					createOrShowLoanDetailFrame(l);
 				}
 			}
 		});
@@ -358,7 +359,7 @@ public class BookMaster implements Observer {
 		JButton btnNewLoan = new JButton("Neue Ausleihe Erfassen...");
 		btnNewLoan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO: Implement this
+				createOrShowLoanDetailFrame(null);
 			}
 		});
 		btnNewLoan.setMnemonic('n');
@@ -416,14 +417,12 @@ public class BookMaster implements Observer {
 		pnlCustomerLoan.add(scrollTblCustomers, BorderLayout.CENTER);
 
 		initTblCustomers();
-		tblCustomers.addMouseListener(new MouseAdapter() {
+		tblCustomers.addMouseListener(new DoubleClickMouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent mouseEvent) {
-				if (mouseEvent.getClickCount() == 2 && mouseEvent.getButton() == MouseEvent.BUTTON1) {
-					Customer c = getSelectedCustomer();
-					if (c != null) {
-						createOrShowCustomerDetailFrame(c);
-					}
+			public void leftDoubleClick(MouseEvent mouseEvent) {
+				Customer c = getSelectedCustomer();
+				if (c != null) {
+					createOrShowCustomerDetailFrame(c);
 				}
 			}
 		});
@@ -547,7 +546,7 @@ public class BookMaster implements Observer {
 	}
 
 	protected void createOrShowLoanDetailFrame(Loan l) {
-		uimanager.openWindow(l);
+		uimanager.openLoanWindow(l);
 	}
 
 	private void initTblBooks() {
@@ -620,14 +619,12 @@ public class BookMaster implements Observer {
 			}
 		});
 
-		tblBooks.addMouseListener(new MouseAdapter() {
+		tblBooks.addMouseListener(new DoubleClickMouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent mouseEvent) {
-				if (mouseEvent.getClickCount() == 2 && mouseEvent.getButton() == MouseEvent.BUTTON1) {
-					Book b = getSelectedBook();
-					if (b != null) {
-						createOrShowBookDetailFrame(b);
-					}
+			public void leftDoubleClick(MouseEvent mouseEvent) {
+				Book b = getSelectedBook();
+				if (b != null) {
+					createOrShowBookDetailFrame(b);
 				}
 			}
 		});
@@ -648,10 +645,6 @@ public class BookMaster implements Observer {
 			}
 
 		});
-		// Set up tool tips for the sport cells.
-		// DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-		// renderer.setToolTipText("Anklicken um Regal zu bearbeiten");
-		// shelfColumn.setCellRenderer(renderer);
 	}
 
 	private void initTblLoans() {
@@ -659,7 +652,7 @@ public class BookMaster implements Observer {
 			private static final long serialVersionUID = -2284571437513151450L;
 
 			@Override
-			public Component prepareRenderer(javax.swing.table.TableCellRenderer renderer, int row, int column) {
+			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
 				if (!isCellSelected(row, column)) {
 					Color col = colorForRow(row);
@@ -726,6 +719,16 @@ public class BookMaster implements Observer {
 			}
 		});
 		tblLoans.getRowSorter().toggleSortOrder(tblLoansModel.getDefaultSortedColumn());
+
+		tblLoans.addMouseListener(new DoubleClickMouseAdapter() {
+			@Override
+			public void leftDoubleClick(MouseEvent mouseEvent) {
+				Loan l = getSelectedLoan();
+				if (l != null) {
+					createOrShowLoanDetailFrame(l);
+				}
+			}
+		});
 	}
 
 	private void initTblCustomers() {
@@ -760,6 +763,14 @@ public class BookMaster implements Observer {
 		int row = tblCustomers.getSelectedRow();
 		if (row != -1) {
 			return getCustomerOfRow(row);
+		}
+		return null;
+	}
+
+	protected Loan getSelectedLoan() {
+		int row = tblLoans.getSelectedRow();
+		if (row != -1) {
+			return getLoanOfRow(row);
 		}
 		return null;
 	}

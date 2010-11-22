@@ -18,6 +18,7 @@ import domain.Loan;
 public class BookMasterUiManager {
 	protected final Library library;
 	protected List<SubFrame<Object>> subFrames = new ArrayList<SubFrame<Object>>();
+	protected LoanDetail loanDetailFrame;
 
 	public BookMasterUiManager(Library library) {
 		this.library = library;
@@ -42,7 +43,7 @@ public class BookMasterUiManager {
 			if ((Object) bd instanceof LoanDetail) {
 				detailOpen = true;
 				bd.toFront();
-				LoanDetail ld = (LoanDetail)(Object) bd;
+				LoanDetail ld = (LoanDetail) (Object) bd;
 				ld.updateLoan((Loan) object);
 				break;
 			}
@@ -71,10 +72,23 @@ public class BookMasterUiManager {
 				return (SubFrame<T>) new BookEdit(getLibrary(), (Book) o);
 		} else if (o instanceof Customer) {
 			return (SubFrame<T>) new CustomerEdit(library, (Customer) o);
-		} else if (o instanceof Loan) {
-			return (SubFrame<T>) new LoanDetail(library, (Loan) o);
 		} else {
 			throw new NotImplementedException();
+		}
+	}
+
+	public void openLoanWindow(Loan l) {
+		if (loanDetailFrame == null || !loanDetailFrame.getFrame().isValid()) {
+			loanDetailFrame = new LoanDetail(library, l);
+			loanDetailFrame.getFrame().addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosed(WindowEvent arg0) {
+					loanDetailFrame = null;
+				}
+			});
+		} else {
+			loanDetailFrame.toFront();
+			loanDetailFrame.updateLoan(l);
 		}
 	}
 
