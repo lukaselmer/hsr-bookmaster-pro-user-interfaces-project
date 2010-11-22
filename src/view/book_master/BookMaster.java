@@ -106,8 +106,8 @@ public class BookMaster implements Observer {
 	private BookMasterUiManager uimanager;
 	private JMenuBar menuBar;
 	private JMenu mnDatei;
-	private JMenu menu_1;
-	private JMenu menu_2;
+	private JMenu mnBcher;
+	private JMenu mnLoans;
 	private JMenuItem mnClose;
 	private JMenuItem menuItem_1;
 	private JMenuItem menuItem_2;
@@ -118,6 +118,8 @@ public class BookMaster implements Observer {
 	private final Action actNewLoan = new ActNewLoan();
 	private JMenuItem mnNewCustomer;
 	private final Action actNewCustomer = new ActNewCustomer();
+	private final Action actShowSelectedBooks = new ActShowSelectedBooks();
+	private JMenu mnClients;
 
 	/**
 	 * Launch the application.
@@ -145,9 +147,11 @@ public class BookMaster implements Observer {
 		updateBooksStatistics();
 		updateLoansStatistics();
 		updateCustomersStatistics();
-		// updateTableObjects();
 		frmBookmaster.setLocationByPlatform(true);
+		frmBookmaster.setVisible(true);
+	}
 
+	private void initMenu() {
 		menuBar = new JMenuBar();
 		frmBookmaster.setJMenuBar(menuBar);
 
@@ -155,45 +159,33 @@ public class BookMaster implements Observer {
 		mnDatei.setMnemonic('d');
 		menuBar.add(mnDatei);
 
-		mnNewBook = new JMenuItem("Neuer Buchtitel Erfassen...");
-		mnNewBook.setAction(actNewBook);
-		mnNewBook.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_MASK));
-		mnDatei.add(mnNewBook);
-
-		mnNewLoan = new JMenuItem("New menu item");
-		mnNewLoan.setAction(actNewLoan);
-		mnDatei.add(mnNewLoan);
-
-		mnNewCustomer = new JMenuItem("New menu item");
-		mnNewCustomer.setAction(actNewCustomer);
-		mnDatei.add(mnNewCustomer);
-
 		mnClose = new JMenuItem(actClose);
 		mnDatei.add(mnClose);
 
-		menu_1 = new JMenu("New menu");
-		menuBar.add(menu_1);
+		mnBcher = new JMenu("Bücher");
+		menuBar.add(mnBcher);
+		
+				mnNewBook = new JMenuItem(actNewBook);
+				mnBcher.add(mnNewBook);
 
-		menuItem_1 = new JMenuItem("New menu item");
-		menu_1.add(menuItem_1);
+		menuItem_1 = new JMenuItem(actShowSelectedBooks);
+		mnBcher.add(menuItem_1);
 
-		menu_2 = new JMenu("New menu");
-		menuBar.add(menu_2);
+		mnLoans = new JMenu("Ausleihen");
+		menuBar.add(mnLoans);
+		
+				mnNewLoan = new JMenuItem(actNewLoan);
+				mnLoans.add(mnNewLoan);
 
 		menuItem_2 = new JMenuItem("New menu item");
-		menu_2.add(menuItem_2);
-		frmBookmaster.setVisible(true);
-		// TEMP!!! DEBUG!!!
-		// tabbedPane.setSelectedIndex(1);
+		mnLoans.add(menuItem_2);
+		
+		mnClients = new JMenu("Kunden");
+		menuBar.add(mnClients);
+		
+				mnNewCustomer = new JMenuItem(actNewCustomer);
+				mnClients.add(mnNewCustomer);
 	}
-
-	// private void updateTableObjects() {
-	// tblBooksModel.updateObjects(library.filterBooks(txtFilterBooks.getText(),
-	// chckbxAvailibleOnly.isSelected()));
-	// tblLoansModel.updateObjects(library.filterLoans(txtFilterLoans.getText(),
-	// chckbxOverduesOnly.isSelected()));
-	// tblCustomersModel.updateObjects(library.filterCustomers(txtFilterCustomers.getText()));
-	// }
 
 	public BookMaster inst() {
 		return this;
@@ -215,6 +207,7 @@ public class BookMaster implements Observer {
 		});
 		frmBookmaster.getContentPane().setLayout(new BorderLayout(0, 0));
 		frmBookmaster.setMinimumSize(new Dimension(650, 400));
+		initMenu();
 
 		tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		frmBookmaster.getContentPane().add(tabbedPane, BorderLayout.CENTER);
@@ -276,18 +269,8 @@ public class BookMaster implements Observer {
 			}
 		});
 
-		btnShowSelectedBooks = new JButton("Selektierte Anzeigen...");
-		btnShowSelectedBooks.setEnabled(false);
-		btnShowSelectedBooks.setMnemonic('a');
-		btnShowSelectedBooks.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				List<Book> books = getSelectedBooks();
-				for (Book b : books) {
-					createOrShowBookDetailFrame(b);
-				}
-			}
-		});
+		btnShowSelectedBooks = new JButton(actShowSelectedBooks);
+		actShowSelectedBooks.setEnabled(false);
 
 		JButton btnAddNewBook = new JButton(actNewBook);
 
@@ -659,7 +642,7 @@ public class BookMaster implements Observer {
 		tblBooks.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				btnShowSelectedBooks.setEnabled(tblBooks.getSelectedRowCount() > 0);
+				actShowSelectedBooks.setEnabled(tblBooks.getSelectedRowCount() > 0);
 			}
 		});
 
@@ -933,6 +916,22 @@ public class BookMaster implements Observer {
 
 		public void actionPerformed(ActionEvent e) {
 			uimanager.openCustomerNewWindow();
+		}
+	}
+
+	private class ActShowSelectedBooks extends AbstractAction {
+		public ActShowSelectedBooks() {
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_MASK));
+			putValue(MNEMONIC_KEY, KeyEvent.VK_A);
+			putValue(NAME, "Selektierte Bücher Anzeigen...");
+			putValue(SHORT_DESCRIPTION, "Zeigt die selektierten Bücher an");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			List<Book> books = getSelectedBooks();
+			for (Book b : books) {
+				createOrShowBookDetailFrame(b);
+			}
 		}
 	}
 }
