@@ -71,6 +71,7 @@ public class BookMaster implements Observer {
 	private JButton btnShowSelectedCustomers;
 	private JButton btnLoanForSelectedCustomer;
 	private JButton btnShowSelectedLoans;
+	private JButton btnReturnSelectedLoans;
 	private JCheckBox chckbxAvailibleOnly;
 	private JCheckBox chckbxOverduesOnly;
 	private JFrame frmBookmaster;
@@ -330,6 +331,20 @@ public class BookMaster implements Observer {
 			}
 		});
 
+		btnReturnSelectedLoans = new JButton("Selektierte Zurückgeben...");
+		btnReturnSelectedLoans.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				List<Loan> loans = getSelectedLoans();
+				// TODO: add dialog for returned loans, maybe promt if lons
+				// really should be returned!
+				for (Loan l : loans) {
+					l.returnCopy();
+				}
+			}
+		});
+		btnReturnSelectedLoans.setEnabled(false);
+		btnReturnSelectedLoans.setMnemonic('a');
+
 		btnShowSelectedLoans = new JButton("Selektierte Anzeigen...");
 		btnShowSelectedLoans.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -350,7 +365,7 @@ public class BookMaster implements Observer {
 		});
 		btnNewLoan.setMnemonic('n');
 
-		FormLayout layout = new FormLayout("5dlu, pref, 2dlu, pref:grow, 2dlu, pref, 5dlu, pref, 2dlu, pref, 5dlu",
+		FormLayout layout = new FormLayout("5dlu, pref, 2dlu, pref:grow, 2dlu, pref, 5dlu, pref, 2dlu, pref, 2dlu, pref, 5dlu",
 				"3dlu, pref, 5dlu, pref, 5dlu, pref, 8dlu");
 		JPanel panel = new JPanel(layout);
 		CellConstraints cc = new CellConstraints();
@@ -359,8 +374,9 @@ public class BookMaster implements Observer {
 		panel.add(lblFilterLoans, cc.xy(2, 6));
 		panel.add(txtFilterLoans, cc.xy(4, 6));
 		panel.add(chckbxOverduesOnly, cc.xy(6, 6));
-		panel.add(btnShowSelectedLoans, cc.xy(8, 6));
-		panel.add(btnNewLoan, cc.xy(10, 6));
+		panel.add(btnReturnSelectedLoans, cc.xy(8, 6));
+		panel.add(btnShowSelectedLoans, cc.xy(10, 6));
+		panel.add(btnNewLoan, cc.xy(12, 6));
 		return panel;
 	}
 
@@ -710,6 +726,7 @@ public class BookMaster implements Observer {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				btnShowSelectedLoans.setEnabled(tblLoans.getSelectedRowCount() > 0);
+				btnReturnSelectedLoans.setEnabled(tblLoans.getSelectedRowCount() > 0);
 			}
 		});
 		tblLoans.getRowSorter().toggleSortOrder(tblLoansModel.getDefaultSortedColumn());
