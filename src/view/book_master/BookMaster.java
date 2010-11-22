@@ -68,6 +68,8 @@ import javax.swing.KeyStroke;
 import java.awt.event.InputEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JSeparator;
 
 public class BookMaster implements Observer {
 	private static final int INDEX_OF_BOOKS_TAB = 0, INDEX_OF_LOANS_TAB = 1, INDEX_OF_CUSTOMERS_TAB = 2;
@@ -110,7 +112,6 @@ public class BookMaster implements Observer {
 	private JMenu mnLoans;
 	private JMenuItem mnClose;
 	private JMenuItem menuItem_1;
-	private JMenuItem menuItem_2;
 	private JMenuItem mnNewBook;
 	private final Action actNewBook = new SwingAction();
 	private final Action actClose = new ActClose();
@@ -120,6 +121,9 @@ public class BookMaster implements Observer {
 	private final Action actNewCustomer = new ActNewCustomer();
 	private final Action actShowSelectedBooks = new ActShowSelectedBooks();
 	private JMenu mnClients;
+	private JCheckBoxMenuItem mnOverduesOnly;
+	private JSeparator separator;
+	private final Action actOverduesOnly = new ActOverduesOnly();
 
 	/**
 	 * Launch the application.
@@ -164,27 +168,24 @@ public class BookMaster implements Observer {
 
 		mnBcher = new JMenu("Bücher");
 		menuBar.add(mnBcher);
-		
-				mnNewBook = new JMenuItem(actNewBook);
-				mnBcher.add(mnNewBook);
+
+		mnNewBook = new JMenuItem(actNewBook);
+		mnBcher.add(mnNewBook);
 
 		menuItem_1 = new JMenuItem(actShowSelectedBooks);
 		mnBcher.add(menuItem_1);
 
 		mnLoans = new JMenu("Ausleihen");
 		menuBar.add(mnLoans);
-		
-				mnNewLoan = new JMenuItem(actNewLoan);
-				mnLoans.add(mnNewLoan);
 
-		menuItem_2 = new JMenuItem("New menu item");
-		mnLoans.add(menuItem_2);
-		
+		mnNewLoan = new JMenuItem(actNewLoan);
+		mnLoans.add(mnNewLoan);
+
 		mnClients = new JMenu("Kunden");
 		menuBar.add(mnClients);
-		
-				mnNewCustomer = new JMenuItem(actNewCustomer);
-				mnClients.add(mnNewCustomer);
+
+		mnNewCustomer = new JMenuItem(actNewCustomer);
+		mnClients.add(mnNewCustomer);
 	}
 
 	public BookMaster inst() {
@@ -347,13 +348,7 @@ public class BookMaster implements Observer {
 		});
 		txtFilterLoans.setColumns(10);
 
-		chckbxOverduesOnly = new JCheckBox("Nur Überfällige");
-		chckbxOverduesOnly.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent arg0) {
-				filterAndUpdateLoans();
-			}
-		});
+		chckbxOverduesOnly = new JCheckBox(actOverduesOnly);
 
 		btnReturnSelectedLoans = new JButton("Selektierte Zurückgeben...");
 		btnReturnSelectedLoans.addActionListener(new ActionListener() {
@@ -932,6 +927,19 @@ public class BookMaster implements Observer {
 			for (Book b : books) {
 				createOrShowBookDetailFrame(b);
 			}
+		}
+	}
+
+	private class ActOverduesOnly extends AbstractAction {
+		public ActOverduesOnly() {
+			putValue(MNEMONIC_KEY, KeyEvent.VK_U);
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
+			putValue(NAME, "Nur Überfällige");
+			putValue(SHORT_DESCRIPTION, "Filtert die Tabelle so, dass nur überfällige Ausleihen angezeigt werden.");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			filterAndUpdateLoans();
 		}
 	}
 }
