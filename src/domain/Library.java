@@ -120,11 +120,11 @@ public class Library extends Observable implements Observer {
 		return lentCopies;
 	}
 
-	public List<Loan> getAvailibleCopiesOfBook(Book book) {
-		List<Loan> availibleCopies = new ArrayList<Loan>();
-		for (Loan l : loans) {
-			if (l.getCopy().getBook().equals(book) && !l.isLent()) {
-				availibleCopies.add(l);
+	public List<Copy> getAvailibleCopiesOfBook(Book book) {
+		List<Copy> availibleCopies = new ArrayList<Copy>();
+		for (Copy c : copies) {
+			if (c.getBook().equals(book) && !c.isLent()) {
+				availibleCopies.add(c);
 			}
 		}
 		return availibleCopies;

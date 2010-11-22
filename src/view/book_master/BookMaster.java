@@ -598,6 +598,12 @@ public class BookMaster implements Observer {
 		rowSorter.setComparator(0, new Comparator<String>() {
 			@Override
 			public int compare(String s1, String s2) {
+				if (s1.equals("nicht verfügbar")) {
+					return 1;
+				}
+				if (s2.equals("nicht verfügbar")) {
+					return -1;
+				}
 				if (s1.startsWith("ab ") && s2.startsWith("ab ")) {
 					s1 = s1.substring(3, 13);
 					s2 = s2.substring(3, 13);
