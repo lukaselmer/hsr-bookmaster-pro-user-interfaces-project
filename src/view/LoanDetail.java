@@ -114,7 +114,7 @@ public class LoanDetail implements SubFrame<Customer> {
 	}
 
 	public LoanDetail(Library library, Loan loan) {
-		this(library, loan.getCustomer());
+		this(library, loan == null ? null : loan.getCustomer());
 		// this.library = library;
 		// this.customer = loan.getCustomer();
 		// initialize();
@@ -196,8 +196,8 @@ public class LoanDetail implements SubFrame<Customer> {
 			public void actionPerformed(ActionEvent arg0) {
 				List<Loan> list = getSelectedLoans();
 				for (Loan l : list) {
-					//TODO: Meldung anzeigen
-					//library.getLoans().remove(l);
+					// TODO: Meldung anzeigen
+					// library.getLoans().remove(l);
 					l.returnCopy();
 				}
 				updateLoanInformation();
@@ -411,7 +411,7 @@ public class LoanDetail implements SubFrame<Customer> {
 
 	public void updateLoan(Loan l) {
 		cmbCustomer.setSelectedItem(l.getCustomer());
-		//updateCustomerInformation
-		
+		// updateCustomerInformation
+
 	}
 }
