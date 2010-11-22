@@ -13,8 +13,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -24,7 +29,10 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.imageio.ImageIO;
 import javax.swing.DefaultCellEditor;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -40,16 +48,21 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.IconUIResource;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
+import org.jdesktop.swingx.painter.ImagePainter;
 
 import view.BookDetail;
 import view.BookMasterUiManager;
+import view.DocumentListenerAdapter;
 import view.ViewUtil;
 import view.book.BookNew;
 import view.customer.CustomerEdit;
@@ -181,7 +194,7 @@ public class BookMaster implements Observer {
 
 	private void initBooksPanel() {
 		pnlBooks = new JPanel();
-		tabbedPane.addTab("Bücher", null, pnlBooks, null);
+		tabbedPane.addTab("Bücher", new ImageIcon("data/icons/book.png"), pnlBooks, null);
 		pnlBooks.setLayout(new BorderLayout(0, 0));
 
 		pnlBooks.add(getPnlInventoryStatistics(), BorderLayout.NORTH);
@@ -204,9 +217,9 @@ public class BookMaster implements Observer {
 
 		txtFilterBooks = new JTextField();
 		txtFilterBooks.setToolTipText("Filtern nach Exemplar-IDs, Buchtitel, Regal, Author oder Verlag");
-		txtFilterBooks.addKeyListener(new KeyAdapter() {
+		txtFilterBooks.getDocument().addDocumentListener(new DocumentListenerAdapter() {
 			@Override
-			public void keyReleased(KeyEvent e) {
+			public void documentUpdate(DocumentEvent e) {
 				filterAndUpdateBooks();
 			}
 		});
@@ -296,7 +309,7 @@ public class BookMaster implements Observer {
 
 	private void initLoansPanel() {
 		pnlLoans = new JPanel();
-		tabbedPane.addTab("Ausleihen", null, pnlLoans, null);
+		tabbedPane.addTab("Ausleihen", new ImageIcon("data/icons/loan.png"), pnlLoans, null);
 		pnlLoans.setLayout(new BorderLayout(0, 0));
 
 		pnlLoans.add(getPnlLoanStatistics(), BorderLayout.NORTH);
@@ -328,9 +341,9 @@ public class BookMaster implements Observer {
 		txtFilterLoans = new JTextField();
 		txtFilterLoans.setToolTipText("Filtern nach Status, Exemplar-ID, Buchtitel, Ausgeliehen Bis oder Ausgeliehen An");
 		lblFilterLoans.setLabelFor(txtFilterLoans);
-		txtFilterLoans.addKeyListener(new KeyAdapter() {
+		txtFilterLoans.getDocument().addDocumentListener(new DocumentListenerAdapter() {
 			@Override
-			public void keyReleased(KeyEvent e) {
+			public void documentUpdate(DocumentEvent e) {
 				filterAndUpdateLoans();
 			}
 		});
@@ -389,7 +402,7 @@ public class BookMaster implements Observer {
 
 	private void initCustomersPanel() {
 		pnlCustomers = new JPanel();
-		tabbedPane.addTab("Kunden", null, pnlCustomers, null);
+		tabbedPane.addTab("Kunden", new ImageIcon("data/icons/customer.png"), pnlCustomers, null);
 		pnlCustomers.setLayout(new BorderLayout(0, 0));
 
 		pnlCustomers.add(getPnlCustomersStatistics(), BorderLayout.NORTH);
@@ -427,9 +440,9 @@ public class BookMaster implements Observer {
 
 		txtFilterCustomers = new JTextField();
 		lblFilterCustomers.setLabelFor(txtFilterCustomers);
-		txtFilterCustomers.addKeyListener(new KeyAdapter() {
+		txtFilterCustomers.getDocument().addDocumentListener(new DocumentListenerAdapter() {
 			@Override
-			public void keyReleased(KeyEvent e) {
+			public void documentUpdate(DocumentEvent e) {
 				filterAndUpdateCustomers();
 			}
 		});
