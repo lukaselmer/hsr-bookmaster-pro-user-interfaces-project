@@ -7,19 +7,11 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -29,9 +21,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.imageio.ImageIO;
-import javax.swing.DefaultCellEditor;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -49,23 +38,18 @@ import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.IconUIResource;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
-import org.jdesktop.swingx.painter.ImagePainter;
 
-import view.BookDetail;
 import view.BookMasterUiManager;
 import view.DocumentListenerAdapter;
 import view.ViewUtil;
 import view.book.BookNew;
-import view.customer.CustomerEdit;
 import view.customer.CustomerNew;
 import application.LibraryApp;
 
@@ -194,7 +178,8 @@ public class BookMaster implements Observer {
 
 	private void initBooksPanel() {
 		pnlBooks = new JPanel();
-		tabbedPane.addTab("Bücher", new ImageIcon("data/icons/book.png"), pnlBooks, null);
+		tabbedPane.addTab("Bücher", new ImageIcon("data/icons/book.png"), pnlBooks, "Bücher anzeigen");
+
 		pnlBooks.setLayout(new BorderLayout(0, 0));
 
 		pnlBooks.add(getPnlInventoryStatistics(), BorderLayout.NORTH);
@@ -309,7 +294,7 @@ public class BookMaster implements Observer {
 
 	private void initLoansPanel() {
 		pnlLoans = new JPanel();
-		tabbedPane.addTab("Ausleihen", new ImageIcon("data/icons/loan.png"), pnlLoans, null);
+		tabbedPane.addTab("Ausleihen", new ImageIcon("data/icons/loan.png"), pnlLoans, "Ausleihen anzeigen");
 		pnlLoans.setLayout(new BorderLayout(0, 0));
 
 		pnlLoans.add(getPnlLoanStatistics(), BorderLayout.NORTH);
@@ -402,7 +387,7 @@ public class BookMaster implements Observer {
 
 	private void initCustomersPanel() {
 		pnlCustomers = new JPanel();
-		tabbedPane.addTab("Kunden", new ImageIcon("data/icons/customer.png"), pnlCustomers, null);
+		tabbedPane.addTab("Kunden", new ImageIcon("data/icons/customer.png"), pnlCustomers, "Kunden anzeigen");
 		pnlCustomers.setLayout(new BorderLayout(0, 0));
 
 		pnlCustomers.add(getPnlCustomersStatistics(), BorderLayout.NORTH);
