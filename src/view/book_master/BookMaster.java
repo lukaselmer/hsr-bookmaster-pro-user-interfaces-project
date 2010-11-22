@@ -111,9 +111,13 @@ public class BookMaster implements Observer {
 	private JMenuItem mnClose;
 	private JMenuItem menuItem_1;
 	private JMenuItem menuItem_2;
-	private JMenuItem mntmNeuerBuchtitelErfassen;
+	private JMenuItem mnNewBook;
 	private final Action actNewBook = new SwingAction();
 	private final Action actClose = new ActClose();
+	private JMenuItem mnNewLoan;
+	private final Action actNewLoan = new ActNewLoan();
+	private JMenuItem mnNewCustomer;
+	private final Action actNewCustomer = new ActNewCustomer();
 
 	/**
 	 * Launch the application.
@@ -151,10 +155,18 @@ public class BookMaster implements Observer {
 		mnDatei.setMnemonic('d');
 		menuBar.add(mnDatei);
 
-		mntmNeuerBuchtitelErfassen = new JMenuItem("Neuer Buchtitel Erfassen...");
-		mntmNeuerBuchtitelErfassen.setAction(actNewBook);
-		mntmNeuerBuchtitelErfassen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_MASK));
-		mnDatei.add(mntmNeuerBuchtitelErfassen);
+		mnNewBook = new JMenuItem("Neuer Buchtitel Erfassen...");
+		mnNewBook.setAction(actNewBook);
+		mnNewBook.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_MASK));
+		mnDatei.add(mnNewBook);
+
+		mnNewLoan = new JMenuItem("New menu item");
+		mnNewLoan.setAction(actNewLoan);
+		mnDatei.add(mnNewLoan);
+
+		mnNewCustomer = new JMenuItem("New menu item");
+		mnNewCustomer.setAction(actNewCustomer);
+		mnDatei.add(mnNewCustomer);
 
 		mnClose = new JMenuItem(actClose);
 		mnDatei.add(mnClose);
@@ -386,19 +398,13 @@ public class BookMaster implements Observer {
 		btnShowSelectedLoans.setEnabled(false);
 		btnShowSelectedLoans.setMnemonic('a');
 
-		JButton btnNewLoan = new JButton("Neue Ausleihe Erfassen...");
-		btnNewLoan.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				createOrShowLoanDetailFrame(null);
-			}
-		});
-		btnNewLoan.setMnemonic('n');
+		JButton btnNewLoan = new JButton(actNewLoan);
 
 		FormLayout layout = new FormLayout("5dlu, pref, 2dlu, pref:grow, 2dlu, pref, 5dlu, pref, 2dlu, pref, 2dlu, pref, 5dlu",
 				"3dlu, pref, 5dlu, pref, 5dlu, pref, 8dlu");
 		JPanel panel = new JPanel(layout);
 		CellConstraints cc = new CellConstraints();
-		panel.add(ViewUtil.getSeparator("Erfasste Ausleihen"), cc.xyw(2, 2, 9));
+		panel.add(ViewUtil.getSeparator("Erfasste Ausleihen"), cc.xyw(2, 2, 11));
 		panel.add(lblAlleAusleighen, cc.xyw(2, 4, 9));
 		panel.add(lblFilterLoans, cc.xy(2, 6));
 		panel.add(txtFilterLoans, cc.xy(4, 6));
@@ -501,20 +507,13 @@ public class BookMaster implements Observer {
 			}
 		});
 
-		JButton btnNewClient = new JButton("Neuer Kunde Erfassen...");
-		btnNewClient.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				uimanager.openCustomerNewWindow();
-			}
-		});
-		btnNewClient.setMnemonic('n');
+		JButton btnNewClient = new JButton(actNewCustomer);
 
 		FormLayout layout = new FormLayout("5dlu, pref, 2dlu, pref:grow, 5dlu, pref, 2dlu, pref, 2dlu, pref, 5dlu",
 				"3dlu, pref, 5dlu, pref, 5dlu, pref, 8dlu");
 		JPanel panel = new JPanel(layout);
 		CellConstraints cc = new CellConstraints();
-		panel.add(ViewUtil.getSeparator("Erfasste Kunden"), cc.xyw(2, 2, 7));
+		panel.add(ViewUtil.getSeparator("Erfasste Kunden"), cc.xyw(2, 2, 9));
 		panel.add(lblAlleAusleighen, cc.xyw(2, 4, 7));
 		panel.add(lblFilterCustomers, cc.xy(2, 6));
 		panel.add(txtFilterCustomers, cc.xy(4, 6));
@@ -880,7 +879,7 @@ public class BookMaster implements Observer {
 		private static final long serialVersionUID = -7602741039227249620L;
 
 		public SwingAction() {
-			putValue(MNEMONIC_KEY, KeyEvent.VK_B);
+			putValue(MNEMONIC_KEY, KeyEvent.VK_N);
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_MASK));
 			putValue(NAME, "Neuer Buchtitel Erfassen...");
 			putValue(SHORT_DESCRIPTION, "Erfasst einen neuen Buchtitel");
@@ -895,6 +894,7 @@ public class BookMaster implements Observer {
 		private static final long serialVersionUID = -6063045550224278740L;
 
 		public ActClose() {
+			putValue(MNEMONIC_KEY, KeyEvent.VK_S);
 			putValue(NAME, "Schliessen");
 			putValue(SHORT_DESCRIPTION, "Schliesst BookMasterPro");
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_MASK));
@@ -907,6 +907,32 @@ public class BookMaster implements Observer {
 				frmBookmaster.dispose();
 				System.exit(0);
 			}
+		}
+	}
+
+	private class ActNewLoan extends AbstractAction {
+		public ActNewLoan() {
+			putValue(MNEMONIC_KEY, KeyEvent.VK_N);
+			putValue(NAME, "Neue Ausleihe Erfassen...");
+			putValue(SHORT_DESCRIPTION, "Erfasst eine neue Ausleihe");
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_MASK));
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			createOrShowLoanDetailFrame(null);
+		}
+	}
+
+	private class ActNewCustomer extends AbstractAction {
+		public ActNewCustomer() {
+			putValue(MNEMONIC_KEY, KeyEvent.VK_N);
+			putValue(NAME, "Neuer Kunde Erfassen...");
+			putValue(SHORT_DESCRIPTION, "Erfasst einen neuen Kunden");
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_K, InputEvent.CTRL_MASK));
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			uimanager.openCustomerNewWindow();
 		}
 	}
 }
