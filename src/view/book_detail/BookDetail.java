@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -15,16 +16,22 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.basic.BasicSplitPaneUI.KeyboardEndHandler;
 import javax.swing.table.TableRowSorter;
 
 import org.jdesktop.swingx.JXTitledSeparator;
@@ -69,6 +76,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	private JButton btnAddCopy;
 	private JScrollPane scrCopies;
 	private BookMasterUiManager uimanager;
+	private JMenuBar menuBar;
 
 	/**
 	 * Launch the application.
@@ -124,8 +132,39 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		frmBookDetailView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmBookDetailView.getContentPane().setLayout(new BorderLayout(0, 0));
 		cc = new CellConstraints();
+		initMenu();
 		initBookPanel();
 		initCopiesPanel();
+	}
+
+	private void initMenu() {
+		menuBar = new JMenuBar();
+		frmBookDetailView.setJMenuBar(menuBar);
+		JMenu mnFile = new JMenu("Datei");
+		JMenu mnEdit = new JMenu("Bearbeiten");
+		menuBar.add(mnFile);
+		menuBar.add(mnEdit);
+		
+		JMenuItem mnClose = new JMenuItem("Schliessen");
+		mnClose.setMnemonic(KeyEvent.VK_S);
+		mnClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
+		mnClose.addActionListener(new ActionListener() {	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frmBookDetailView.dispose();
+			}
+		});
+		mnFile.add(mnClose);
+		
+		JMenuItem mnEditBook = new JMenuItem("Buch Bearbeiten...");
+		mnEditBook.setMnemonic(KeyEvent.VK_B);
+mnEditBook.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				uimanager.openWindow(book, 2);
+			}
+		});
+		mnEdit.add(mnEditBook);
 	}
 
 	private void initBookPanel() {
