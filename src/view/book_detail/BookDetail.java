@@ -1,4 +1,4 @@
-package view;
+package view.book_detail;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -29,8 +29,9 @@ import javax.swing.table.TableRowSorter;
 
 import org.jdesktop.swingx.JXTitledSeparator;
 
+import view.BookMasterUiManager;
+import view.ViewUtil;
 import view.book.BookEdit;
-import view.book_detail.BookDetailTableModel;
 import view.book_master.SubFrame;
 import application.LibraryApp;
 
@@ -67,6 +68,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	private JButton btnRemoveSelected;
 	private JButton btnAddCopy;
 	private JScrollPane scrCopies;
+	private BookMasterUiManager uimanager;
 
 	/**
 	 * Launch the application.
@@ -78,7 +80,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 				Library l = LibraryApp.inst();
 				try {
 					Random r = new Random();
-					new BookDetail(l, l.getBooks().get(r.nextInt(l.getBooks().size())));
+					new BookDetail(new BookMasterUiManager(l), l.getBooks().get(r.nextInt(l.getBooks().size())));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -92,8 +94,9 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	 * @param book
 	 * @param l
 	 */
-	public BookDetail(Library l, Book book) {
-		this.library = l;
+	public BookDetail(BookMasterUiManager uimanager, Book book) {
+		this.uimanager = uimanager;
+		this.library = uimanager.getLibrary();
 		this.book = book;
 		initialize();
 		frmBookDetailView.setLocationByPlatform(true);
@@ -155,14 +158,15 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		txtPublisher = ViewUtil.getTextField(book.getPublisher());
 		txtShelf = ViewUtil.getTextField(book.getShelf().toString());
 		
-		btnEditBook = new JButton("Buch bearbeiten");
+		btnEditBook = new JButton("Buch Bearbeiten...");
 		btnEditBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (editBookFrame != null && editBookFrame.isValid()){
-					editBookFrame.toFront();
-				} else {
-					editBookFrame = new BookEdit(library, book);
-				}
+				uimanager.openWindow(book, 2);
+//				if (editBookFrame != null && editBookFrame.isValid()){
+//					editBookFrame.toFront();
+//				} else {
+//					editBookFrame = new BookEdit(library, book);
+//				}
 			}
 		});
 	}

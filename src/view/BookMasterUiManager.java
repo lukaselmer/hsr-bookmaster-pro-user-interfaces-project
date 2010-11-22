@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import view.book.BookEdit;
+import view.book_detail.BookDetail;
 import view.book_master.SubFrame;
 import view.customer.CustomerEdit;
 import domain.Book;
@@ -23,8 +25,12 @@ public class BookMasterUiManager {
 	public Library getLibrary() {
 		return library;
 	}
+	
+	public <T> void openWindow(T object){
+		openWindow(object, 0);
+	}
 
-	public <T> void openWindow(T object) {
+	public <T> void openWindow(T object, int i) {
 		boolean detailOpen = false;
 		for (SubFrame<Object> bd : subFrames) {
 			if (bd.getObject().equals(object)) {
@@ -34,7 +40,7 @@ public class BookMasterUiManager {
 			}
 		}
 		if (!detailOpen) {
-			final SubFrame<T> bd = createFrame(object);
+			final SubFrame<T> bd = createFrame(object, i);
 			subFrames.add((SubFrame<Object>) bd);
 			bd.getFrame().addWindowListener(new WindowAdapter() {
 				@Override
@@ -45,9 +51,13 @@ public class BookMasterUiManager {
 		}
 	}
 
-	protected <T> SubFrame<T> createFrame(T o) {
+	protected <T> SubFrame<T> createFrame(T t) {
+		return createFrame(t, 0);
+	}
+	protected <T> SubFrame<T> createFrame(T o, int i) {
 		if (o instanceof Book) {
-			return (SubFrame<T>) new BookDetail(library, (Book) o);
+			if ( i == 0) return (SubFrame<T>) new BookDetail(this, (Book) o);
+			else return (SubFrame<T>) new BookEdit(getLibrary(), (Book) o);
 		} else if (o instanceof Customer) {
 			return (SubFrame<T>) new CustomerEdit(library, (Customer) o);
 		} else {
