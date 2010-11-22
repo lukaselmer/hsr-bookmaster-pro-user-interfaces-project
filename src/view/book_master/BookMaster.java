@@ -61,6 +61,13 @@ import domain.Customer;
 import domain.Library;
 import domain.Loan;
 import domain.Shelf;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
+import java.awt.event.InputEvent;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 public class BookMaster implements Observer {
 	private static final int INDEX_OF_BOOKS_TAB = 0, INDEX_OF_LOANS_TAB = 1, INDEX_OF_CUSTOMERS_TAB = 2;
@@ -97,6 +104,16 @@ public class BookMaster implements Observer {
 	private JTextField txtFilterCustomers;
 	private JTextField txtFilterLoans;
 	private BookMasterUiManager uimanager;
+	private JMenuBar menuBar;
+	private JMenu mnDatei;
+	private JMenu menu_1;
+	private JMenu menu_2;
+	private JMenuItem mnClose;
+	private JMenuItem menuItem_1;
+	private JMenuItem menuItem_2;
+	private JMenuItem mntmNeuerBuchtitelErfassen;
+	private final Action actNewBook = new SwingAction();
+	private final Action actClose = new ActClose();
 
 	/**
 	 * Launch the application.
@@ -126,6 +143,33 @@ public class BookMaster implements Observer {
 		updateCustomersStatistics();
 		// updateTableObjects();
 		frmBookmaster.setLocationByPlatform(true);
+
+		menuBar = new JMenuBar();
+		frmBookmaster.setJMenuBar(menuBar);
+
+		mnDatei = new JMenu("Datei");
+		mnDatei.setMnemonic('d');
+		menuBar.add(mnDatei);
+
+		mntmNeuerBuchtitelErfassen = new JMenuItem("Neuer Buchtitel Erfassen...");
+		mntmNeuerBuchtitelErfassen.setAction(actNewBook);
+		mntmNeuerBuchtitelErfassen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_MASK));
+		mnDatei.add(mntmNeuerBuchtitelErfassen);
+
+		mnClose = new JMenuItem(actClose);
+		mnDatei.add(mnClose);
+
+		menu_1 = new JMenu("New menu");
+		menuBar.add(menu_1);
+
+		menuItem_1 = new JMenuItem("New menu item");
+		menu_1.add(menuItem_1);
+
+		menu_2 = new JMenu("New menu");
+		menuBar.add(menu_2);
+
+		menuItem_2 = new JMenuItem("New menu item");
+		menu_2.add(menuItem_2);
 		frmBookmaster.setVisible(true);
 		// TEMP!!! DEBUG!!!
 		// tabbedPane.setSelectedIndex(1);
@@ -154,12 +198,7 @@ public class BookMaster implements Observer {
 		frmBookmaster.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				if (JOptionPane.showConfirmDialog(frmBookmaster, "Sind Sie sicher? Alle Unterfenster werden geschlossen.",
-						"BookMasterPro Schliessen", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-					frmBookmaster.setVisible(false);
-					frmBookmaster.dispose();
-					System.exit(0);
-				}
+				actClose.actionPerformed(null);
 			}
 		});
 		frmBookmaster.getContentPane().setLayout(new BorderLayout(0, 0));
@@ -238,14 +277,7 @@ public class BookMaster implements Observer {
 			}
 		});
 
-		JButton btnAddNewBook = new JButton("Neuer Buchtitel Erfassen...");
-		btnAddNewBook.setMnemonic('n');
-		btnAddNewBook.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				uimanager.openBookNewFrame();
-			}
-		});
+		JButton btnAddNewBook = new JButton(actNewBook);
 
 		FormLayout layout = new FormLayout("5dlu, pref, 2dlu, pref:grow, 2dlu, pref, 5dlu, pref, 2dlu, pref, 5dlu",
 				"3dlu, pref, 5dlu, pref, 5dlu, pref, 8dlu");
@@ -842,5 +874,39 @@ public class BookMaster implements Observer {
 		// library.getCurrentCustomers().size());
 		// lblOverdueAmountNum.setText("" +
 		// library.getCurrentCustomers(true).size());
+	}
+
+	private class SwingAction extends AbstractAction {
+		private static final long serialVersionUID = -7602741039227249620L;
+
+		public SwingAction() {
+			putValue(MNEMONIC_KEY, KeyEvent.VK_B);
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_MASK));
+			putValue(NAME, "Neuer Buchtitel Erfassen...");
+			putValue(SHORT_DESCRIPTION, "Erfasst einen neuen Buchtitel");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			uimanager.openBookNewFrame();
+		}
+	}
+
+	private class ActClose extends AbstractAction {
+		private static final long serialVersionUID = -6063045550224278740L;
+
+		public ActClose() {
+			putValue(NAME, "Schliessen");
+			putValue(SHORT_DESCRIPTION, "Schliesst BookMasterPro");
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_MASK));
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			if (JOptionPane.showConfirmDialog(frmBookmaster, "Sind Sie sicher? Alle Unterfenster werden geschlossen.",
+					"BookMasterPro Schliessen", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+				frmBookmaster.setVisible(false);
+				frmBookmaster.dispose();
+				System.exit(0);
+			}
+		}
 	}
 }
