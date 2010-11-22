@@ -5,6 +5,7 @@ import java.util.Observable;
 public class Copy extends Observable {
 
 	public enum Condition {
+		//TODO: Implement this?
 		NEW, GOOD, DAMAGED, WASTE, LOST
 	}
 

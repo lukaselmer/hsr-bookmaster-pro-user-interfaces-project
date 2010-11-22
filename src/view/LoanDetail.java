@@ -196,7 +196,9 @@ public class LoanDetail implements SubFrame<Customer> {
 			public void actionPerformed(ActionEvent arg0) {
 				List<Loan> list = getSelectedLoans();
 				for (Loan l : list) {
-					library.getLoans().remove(l);
+					//TODO: Meldung anzeigen
+					//library.getLoans().remove(l);
+					l.returnCopy();
 				}
 				updateLoanInformation();
 			}

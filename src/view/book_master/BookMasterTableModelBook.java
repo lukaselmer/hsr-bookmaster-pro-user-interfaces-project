@@ -62,6 +62,7 @@ public class BookMasterTableModelBook extends BookMasterTableModel<Book> {
 				return availibleCopies == 1 ? "1 Exemplar" : availibleCopies + " Exemplare";
 			} else {
 				if (library.hasNextAvailibleCopyOfBook(b)) {
+					//TODO: Exception!
 					return "ab " + Loan.getFormattedDate(library.getNextAvailibleCopyOfBook(b).getCurrentLoan().getDueDate());
 				} else {
 					return "nicht verfügbar";
@@ -84,6 +85,7 @@ public class BookMasterTableModelBook extends BookMasterTableModel<Book> {
 
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
+		//TODO: Exception!
 		return getValueAt(0, columnIndex).getClass();
 	}
 }

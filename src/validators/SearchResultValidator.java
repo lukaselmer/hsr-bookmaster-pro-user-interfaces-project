@@ -20,6 +20,7 @@ public class SearchResultValidator implements Validator<SearchResult<Copy>> {
 		if (ValidationUtils.isBlank(searchResult.getSearchString())) {
 			support.addError("Exemplar-ID", "Muss ausgefüllt werden");
 		} else if (c.isLent()) {
+			//TODO: correct this
 			support.addError("Exemplar-ID", "Exemplar ist bereits ausgeliehen");
 		}
 		return support.getResult();
