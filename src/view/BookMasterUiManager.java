@@ -13,6 +13,7 @@ import view.customer.CustomerEdit;
 import domain.Book;
 import domain.Customer;
 import domain.Library;
+import domain.Loan;
 
 public class BookMasterUiManager {
 	protected final Library library;
@@ -25,8 +26,8 @@ public class BookMasterUiManager {
 	public Library getLibrary() {
 		return library;
 	}
-	
-	public <T> void openWindow(T object){
+
+	public <T> void openWindow(T object) {
 		openWindow(object, 0);
 	}
 
@@ -36,6 +37,13 @@ public class BookMasterUiManager {
 			if (bd.getObject().equals(object)) {
 				detailOpen = true;
 				bd.toFront();
+				break;
+			}
+			if ((Object) bd instanceof LoanDetail) {
+				detailOpen = true;
+				bd.toFront();
+				LoanDetail ld = (LoanDetail)(Object) bd;
+				ld.updateLoan((Loan) object);
 				break;
 			}
 		}
@@ -54,12 +62,17 @@ public class BookMasterUiManager {
 	protected <T> SubFrame<T> createFrame(T t) {
 		return createFrame(t, 0);
 	}
+
 	protected <T> SubFrame<T> createFrame(T o, int i) {
 		if (o instanceof Book) {
-			if ( i == 0) return (SubFrame<T>) new BookDetail(this, (Book) o);
-			else return (SubFrame<T>) new BookEdit(getLibrary(), (Book) o);
+			if (i == 0)
+				return (SubFrame<T>) new BookDetail(this, (Book) o);
+			else
+				return (SubFrame<T>) new BookEdit(getLibrary(), (Book) o);
 		} else if (o instanceof Customer) {
 			return (SubFrame<T>) new CustomerEdit(library, (Customer) o);
+		} else if (o instanceof Loan) {
+			return (SubFrame<T>) new LoanDetail(library, (Loan) o);
 		} else {
 			throw new NotImplementedException();
 		}

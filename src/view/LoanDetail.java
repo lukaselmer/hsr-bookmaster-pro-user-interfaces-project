@@ -35,6 +35,7 @@ import sun.misc.Sort;
 import validators.FormValidator;
 import validators.SearchResult;
 import validators.SearchResultValidator;
+import view.book_master.SubFrame;
 import view.loan_detail.LoanDetailTableModel;
 import application.LibraryApp;
 
@@ -42,6 +43,7 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.validation.view.ValidationComponentUtils;
 
+import domain.Book;
 import domain.Copy;
 import domain.Customer;
 import domain.Library;
@@ -50,7 +52,7 @@ import domain.Loan;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class LoanDetail {
+public class LoanDetail implements SubFrame<Customer> {
 
 	private JFrame frmLoanDetail;
 	private Library library;
@@ -111,6 +113,16 @@ public class LoanDetail {
 		updateCustomerInformation();
 	}
 
+	public LoanDetail(Library library, Loan loan) {
+		this(library, loan.getCustomer());
+		// this.library = library;
+		// this.customer = loan.getCustomer();
+		// initialize();
+		// frmLoanDetail.setLocationByPlatform(true);
+		// frmLoanDetail.setVisible(true);
+		// updateCustomerInformation();
+	}
+
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -127,7 +139,7 @@ public class LoanDetail {
 		initLoanPanel();
 		initAddNewLoanPanel();
 	}
-	
+
 	private void initCustomerPanel() {
 		FormLayout layoutCustomer = new FormLayout("5dlu, pref, 5dlu, pref, 5dlu, pref:grow, 5dlu",
 				"3dlu, pref, 10dlu, pref, 5dlu, pref, 5dlu");
@@ -141,7 +153,6 @@ public class LoanDetail {
 
 		customers = library.getCustomers().toArray();
 		Sort.quicksort(customers, new Compare() {
-
 			@Override
 			public int doCompare(Object o1, Object o2) {
 				Customer s1 = (Customer) o1, s2 = (Customer) o2;
@@ -164,19 +175,18 @@ public class LoanDetail {
 		lblNumber = new JLabel();
 		pnlCustomer.add(lblNumber, cc.xy(4, 6));
 	}
-	
+
 	private void initLoanPanel() {
 		pnlLoan = new JPanel();
 		pnlLoan.setLayout(new BorderLayout(0, 0));
 		frmLoanDetail.getContentPane().add(pnlLoan, BorderLayout.CENTER);
-		
+
 		initReturnLoanPanel();
 		initLoanTable();
 	}
 
 	private void initReturnLoanPanel() {
-		FormLayout layout = new FormLayout("5dlu, pref:grow, 5dlu",
-		"pref, 5dlu, pref, 5dlu");
+		FormLayout layout = new FormLayout("5dlu, pref:grow, 5dlu", "pref, 5dlu, pref, 5dlu");
 		pnlReturnLoan = new JPanel(layout);
 		pnlLoan.add(pnlReturnLoan, BorderLayout.NORTH);
 		sprCustomer = ViewUtil.getSeparator("");
@@ -185,7 +195,7 @@ public class LoanDetail {
 		btnReturnLoan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				List<Loan> list = getSelectedLoans();
-				for (Loan l : list){
+				for (Loan l : list) {
 					library.getLoans().remove(l);
 				}
 				updateLoanInformation();
@@ -194,13 +204,13 @@ public class LoanDetail {
 		btnReturnLoan.setEnabled(false);
 		pnlReturnLoan.add(btnReturnLoan, cc.xy(2, 3, "right, bottom"));
 	}
-	
+
 	private void initLoanTable() {
 		scrollPane = new JScrollPane();
 		pnlLoan.add(scrollPane, BorderLayout.CENTER);
 
 		loanTableModel = new LoanDetailTableModel(library, customer);
-		tblLoans = new JTable(){
+		tblLoans = new JTable() {
 
 			private static final long serialVersionUID = -3462714108092442892L;
 
@@ -230,7 +240,7 @@ public class LoanDetail {
 		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.STATUS).setMinWidth(50);
 		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.STATUS).setMaxWidth(50);
 		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.INVENTORY_NUMBER).setMinWidth(80);
-		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.INVENTORY_NUMBER).setMaxWidth(80);	
+		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.INVENTORY_NUMBER).setMaxWidth(80);
 		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.LOAN_UNTIL).setMinWidth(100);
 		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.LOAN_UNTIL).setMaxWidth(100);
 		tblLoans.setColumnSelectionAllowed(false);
@@ -244,7 +254,9 @@ public class LoanDetail {
 					Date d1 = DateFormat.getDateInstance().parse(s1);
 					Date d2 = DateFormat.getDateInstance().parse(s2);
 					return d1.compareTo(d2);
-				} catch (ParseException e) { e.printStackTrace(); }
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 				return 0;
 			}
 		});
@@ -253,12 +265,12 @@ public class LoanDetail {
 			public int compare(Long l1, Long l2) {
 				return l1.compareTo(l2);
 			}
-			
+
 		});
 		tblLoans.setRowSorter(rowSorter);
-		
+
 		tblLoans.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			
+
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
 				btnReturnLoan.setEnabled(tblLoans.getSelectedRowCount() > 0);
@@ -360,22 +372,44 @@ public class LoanDetail {
 			updateLoanInformation();
 		}
 	}
-	protected void updateLoanInformation(){
+
+	protected void updateLoanInformation() {
 		loanTableModel.updateLoans(library.getCustomerLoans(customer));
 		btnLendNewCopy.setEnabled(library.getCurrentLoans().size() < 3);
 		txtCopyId.setEnabled(library.getCustomerLoans(customer).size() < 3);
 		txtCopyId.setText("" + (txtCopyId.isEnabled() ? "" : "Maximale Anzahl Ausleihen erreicht"));
 	}
-	
-	protected List<Loan> getSelectedLoans(){
+
+	protected List<Loan> getSelectedLoans() {
 		List<Loan> list = new ArrayList<Loan>();
-		for (int row : tblLoans.getSelectedRows()){
+		for (int row : tblLoans.getSelectedRows()) {
 			list.add(getLoanOfRow(row));
 		}
 		return list;
 	}
-	
-	protected Loan getLoanOfRow(int row){
+
+	protected Loan getLoanOfRow(int row) {
 		return (Loan) tblLoans.getValueAt(row, -1);
+	}
+
+	@Override
+	public Customer getObject() {
+		return customer;
+	}
+
+	@Override
+	public void toFront() {
+		frmLoanDetail.toFront();
+	}
+
+	@Override
+	public JFrame getFrame() {
+		return frmLoanDetail;
+	}
+
+	public void updateLoan(Loan l) {
+		cmbCustomer.setSelectedItem(l.getCustomer());
+		//updateCustomerInformation
+		
 	}
 }
