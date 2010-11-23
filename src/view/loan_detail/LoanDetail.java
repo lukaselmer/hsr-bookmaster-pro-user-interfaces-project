@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -16,8 +17,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Random;
 
 import javax.swing.AbstractAction;
@@ -50,8 +49,8 @@ import validators.SearchResultValidator;
 import view.BookMasterActions;
 import view.BookMasterUiManager;
 import view.ViewUtil;
-import view.BookMasterActions.ActClose;
 import view.book_master.SubFrame;
+import view.loan_detail.LoanDetailTableModel;
 import application.LibraryApp;
 
 import com.jgoodies.forms.layout.CellConstraints;
@@ -63,7 +62,7 @@ import domain.Customer;
 import domain.Library;
 import domain.Loan;
 
-public class LoanDetail implements SubFrame<Customer>, Observer {
+public class LoanDetail implements SubFrame<Customer> {
 
 	private JFrame frmLoanDetail;
 	private Library library;
@@ -100,6 +99,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 			frmLoanDetail.dispose();
 		}
 	};
+	private Action actLendNewCopy = new ActLendNewCopy();
 	private JMenuBar menuBar;
 	private final Action actReturnLoan = new ActReturnLoan();
 
@@ -150,7 +150,6 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		initCustomerPanel();
 		initLoanPanel();
 		initAddNewLoanPanel();
-		library.addObserver(this);
 	}
 
 	private void initMenu() {
@@ -320,21 +319,8 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		ValidationComponentUtils.setMandatory(txtCopyId, true);
 		pnlNewLoan.add(txtCopyId, cc.xy(4, 4));
 
-		btnLendNewCopy = new JButton("Exemplar Ausleihen");
-		btnLendNewCopy.setMnemonic(KeyEvent.VK_A);
-		btnLendNewCopy.setEnabled(false);
-		btnLendNewCopy.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Copy c = formValidator.validateForm(null).getObject();
-				if (c == null)
-					throw new RuntimeException("Bad state");
-				library.createAndAddLoan(customer, c);
-				updateCustomerInformation();
-				txtBookTitle.setText("");
-				txtBookAuthor.setText("");
-				txtBookPublisher.setText("");
-			}
-		});
+		btnLendNewCopy = new JButton(actLendNewCopy);
+		actLendNewCopy.setEnabled(false);
 		pnlNewLoan.add(btnLendNewCopy, cc.xy(6, 4));
 
 		lblTitle = new JLabel("Titel:");
@@ -359,7 +345,8 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		pnlNewLoan.add(txtBookPublisher, cc.xyw(4, 10, 3));
 
 		JTextField[] fields = { txtCopyId };
-		formValidator = new FormValidator<SearchResult<Copy>>(frmLoanDetail, fields, new SearchResultValidator(), btnLendNewCopy) {
+		formValidator = new FormValidator<SearchResult<Copy>>(frmLoanDetail, fields, new SearchResultValidator(), btnLendNewCopy,
+				actLendNewCopy) {
 			@Override
 			public SearchResult<Copy> createObject() {
 				String searchString = txtCopyId.getText();
@@ -400,10 +387,10 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 	protected void updateLoanInformation() {
 		loanTableModel.updateLoans(library.getCustomerLoans(customer));
 		lblNumber.setText("" + library.getCustomerLoans(customer).size());
-		btnLendNewCopy.setEnabled(library.getCurrentLoans().size() < 3);
+		actLendNewCopy.setEnabled(library.getCurrentLoans().size() < 3);
 		txtCopyId.setEnabled(library.getCustomerLoans(customer).size() < 3 && !(library.hasCustomerOverdueBooks(customer)));
 		txtCopyId.setText(""
-				+ (txtCopyId.isEnabled() ? "" : (library.hasCustomerOverdueBooks(customer) ? "Überfällige Ausleihe, keine neue Ausleihe möglich"
+				+ (txtCopyId.isEnabled() ? "" : (library.hasCustomerOverdueBooks(customer) ? "Überfällige Ausleihe"
 						: "Maximale Anzahl Ausleihen erreicht")));
 	}
 
@@ -467,11 +454,25 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		}
 	}
 
-	@Override
-	public void update(Observable o, Object arg1) {
-		if (o instanceof Loan){
-			cmbCustomer.setSelectedItem(cmbCustomer.getSelectedItem());
+	private class ActLendNewCopy extends AbstractAction {
+		private static final long serialVersionUID = 7524200258063461521L;
+
+		public ActLendNewCopy() {
+			putValue(MNEMONIC_KEY, KeyEvent.VK_A);
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
+			putValue(NAME, "Exemplar Ausleihen");
+			putValue(SHORT_DESCRIPTION, "Macht die Rückgabe der Ausleihen rückgängig und schliesst das Fenster");
 		}
-		updateLoanInformation();
+
+		public void actionPerformed(ActionEvent e) {
+			Copy c = formValidator.validateForm(null).getObject();
+			if (c == null)
+				throw new RuntimeException("Bad state");
+			library.createAndAddLoan(customer, c);
+			updateCustomerInformation();
+			txtBookTitle.setText("");
+			txtBookAuthor.setText("");
+			txtBookPublisher.setText("");
+		}
 	}
 }
