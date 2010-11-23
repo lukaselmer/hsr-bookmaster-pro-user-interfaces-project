@@ -128,13 +128,14 @@ public class LoansReport {
 		});
 
 		// Undo button
-		btnUndo = new JButton("Rückgängig");
+		btnUndo = new JButton("Rückgängig Und Schliessen");
 		btnUndo.setMnemonic(KeyEvent.VK_R);
 		btnUndo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				for (Loan l : loans) {
 					l.undoReturnCopy();
 				}
+				frmLoansReportForm.dispose();
 			}
 		});
 	}
