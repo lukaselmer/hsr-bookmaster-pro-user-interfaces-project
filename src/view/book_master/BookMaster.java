@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -44,6 +46,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
+import org.jdesktop.swingx.painter.RectanglePainter;
 
 import view.BookMasterUiManager;
 import view.DocumentListenerAdapter;
@@ -65,6 +68,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import java.awt.event.InputEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
@@ -212,7 +219,7 @@ public class BookMaster implements Observer {
 	 */
 	private void initialize() {
 		frmBookmaster = new JFrame();
-		frmBookmaster.setTitle("BookMaster");
+		frmBookmaster.setTitle("BookMasterPro");
 		frmBookmaster.setBounds(100, 100, 950, 600);
 		frmBookmaster.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frmBookmaster.addWindowListener(new WindowAdapter() {
@@ -225,7 +232,26 @@ public class BookMaster implements Observer {
 		frmBookmaster.setMinimumSize(new Dimension(650, 400));
 		initMenu();
 
-		tabbedPane = new JTabbedPane(SwingConstants.TOP);
+		tabbedPane = new JTabbedPane(SwingConstants.TOP) {
+			protected void paintComponent(java.awt.Graphics g) {
+				Graphics2D g2 = (Graphics2D) g;
+				g2.setColor(new Color(255, 255, 255, 230));
+				Ellipse2D cloudPuff1 = new Ellipse2D.Double(0, 40, 250, 70);
+				Ellipse2D cloudPuff2 = new Ellipse2D.Double(25, 0, 100, 90);
+				Ellipse2D cloudPuff3 = new Ellipse2D.Double(95, 10, 80, 60);
+				Ellipse2D cloudPuff4 = new Ellipse2D.Double(145, 30, 80, 60);
+				Area cloud = new Area(cloudPuff1);
+				cloud.add(new Area(cloudPuff2));
+				cloud.add(new Area(cloudPuff3));
+				cloud.add(new Area(cloudPuff4));
+				AffineTransform t = new AffineTransform();
+				t.translate(this.getWidth() - 120, 10);
+				t.scale(0.4, 0.4);
+				cloud.transform(t);
+				g2.fill(cloud);
+				super.paintComponent(g);
+			};
+		};
 		frmBookmaster.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 
 		initBooksPanel();
@@ -968,8 +994,10 @@ public class BookMaster implements Observer {
 					l.returnCopy();
 				}
 				uimanager.openLoansReportFrame(report);
-//				JOptionPane
-//						.showMessageDialog(frmBookmaster, report, "Report für zurückgegebene Ausleihen", JOptionPane.INFORMATION_MESSAGE);
+				// JOptionPane
+				// .showMessageDialog(frmBookmaster, report,
+				// "Report für zurückgegebene Ausleihen",
+				// JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}

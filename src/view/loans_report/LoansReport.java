@@ -77,6 +77,7 @@ public class LoansReport {
 		initComponents();
 
 		FormLayout layout = new FormLayout("5dlu, pref:grow, 5dlu", "4dlu, pref, 4dlu, pref:grow, 5dlu, pref, 5dlu");
+		//TODO: Fix scrollbar size
 		// layout.setRowGroups(new int[][] { { 2, 4, 6, 8, 10 } });
 		JPanel panel = new JPanel(layout);
 		CellConstraints cc = new CellConstraints();
