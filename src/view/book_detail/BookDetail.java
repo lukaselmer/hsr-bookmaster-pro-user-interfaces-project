@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -80,10 +81,12 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
-			
+			frmBookDetailView.dispose();
 		}
 	};
+	private final Action actEditBook = new ActEditBook();
+	private final Action actRemoveSelected = new ActRemoveSelected();
+	private final Action actAddCopy = new ActAddCopy();
 
 	/**
 	 * Launch the application.
@@ -153,49 +156,13 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		menuBar.add(mnFile);
 		menuBar.add(mnEdit);
 
-		JMenuItem mnClose = new JMenuItem("Schliessen");
-		mnClose.setMnemonic(KeyEvent.VK_S);
-		mnClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
-		mnClose.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				frmBookDetailView.dispose();
-			}
-		});
+		JMenuItem mnClose = new JMenuItem(actClose);
 		mnFile.add(mnClose);
 
-		JMenuItem mnEditBook = new JMenuItem("Buch Bearbeiten...");
-		mnEditBook.setMnemonic(KeyEvent.VK_B);
-		mnEditBook.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.ALT_MASK));
-		mnEditBook.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				uimanager.openBookEditWindow(book);
-			}
-		});
+		JMenuItem mnEditBook = new JMenuItem(actEditBook);
+		mnRemoveSelected = new JMenuItem(actRemoveSelected);
 		
-		mnRemoveSelected = new JMenuItem("Selektierte Entfernen");
-		mnRemoveSelected.setEnabled(false);
-		mnRemoveSelected.setMnemonic(KeyEvent.VK_E);
-		mnRemoveSelected.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.ALT_MASK));
-		mnRemoveSelected.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				removeSelectedCopies();
-				updateBookInformation();
-			}
-		});
-		
-		JMenuItem mnAddCopy = new JMenuItem("Exemplar Hinzufügen");
-		mnAddCopy.setMnemonic(KeyEvent.VK_H);
-		mnAddCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.ALT_MASK));
-		mnAddCopy.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				addNewCopy();				
-			}
-		});
-		
+		JMenuItem mnAddCopy = new JMenuItem(actAddCopy);
 
 		mnEdit.add(mnEditBook);
 		mnEdit.add(mnRemoveSelected);
@@ -235,13 +202,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		txtPublisher = ViewUtil.getTextField(book.getPublisher());
 		txtShelf = ViewUtil.getTextField(book.getShelf().toString());
 
-		btnEditBook = new JButton("Buch Bearbeiten...");
-		btnEditBook.setMnemonic('b');
-		btnEditBook.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				uimanager.openBookEditWindow(book);
-			}
-		});
+		btnEditBook = new JButton(actEditBook);
 	}
 
 	private void initCopiesPanel() {
@@ -308,8 +269,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		tblCopies.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
-				btnRemoveSelected.setEnabled(tblCopies.getSelectedRowCount() > 0);
-				mnRemoveSelected.setEnabled(tblCopies.getSelectedRowCount() > 0);
+				actRemoveSelected.setEnabled(tblCopies.getSelectedRowCount() > 0);
 			}
 		});
 	}
@@ -318,23 +278,10 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		lblNumberOfCopies = new JLabel("Anzahl Exemplare:");
 		lblNumber = new JLabel("" + library.getCopiesOfBook(book).size());
 
-		btnRemoveSelected = new JButton("Selektierte Entfernen");
-		btnRemoveSelected.setMnemonic('e');
-		btnRemoveSelected.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				removeSelectedCopies();
-				updateBookInformation();
-			}
-		});
-		btnRemoveSelected.setEnabled(false);
+		btnRemoveSelected = new JButton(actRemoveSelected);
+		actRemoveSelected.setEnabled(false);
 
-		btnAddCopy = new JButton("Exemplar Hinzufügen");
-		btnAddCopy.setMnemonic('h');
-		btnAddCopy.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				addNewCopy();
-			}
-		});
+		btnAddCopy = new JButton(actAddCopy);
 	}
 
 	protected void addNewCopy() {
@@ -395,5 +342,48 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	@Override
 	public void addWindowListener(WindowAdapter windowAdapter) {
 		frmBookDetailView.addWindowListener(windowAdapter);
+	}
+	
+	private class ActEditBook extends AbstractAction{
+		private static final long serialVersionUID = 3182075129242820202L;
+		
+		ActEditBook(){
+			putValue(MNEMONIC_KEY, KeyEvent.VK_B);
+			putValue(NAME, "Buch Bearbeiten...");
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.ALT_MASK));
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			uimanager.openBookEditWindow(book);
+		}
+	}
+	
+	private class ActRemoveSelected extends AbstractAction{
+		private static final long serialVersionUID = 4185674812266173535L;
+
+		public ActRemoveSelected() {
+			putValue(MNEMONIC_KEY, KeyEvent.VK_E);
+			putValue(NAME, "Selektierte Entfernen");
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.ALT_MASK));
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			removeSelectedCopies();
+			updateBookInformation();
+		}
+	}
+	
+	private class ActAddCopy extends AbstractAction{
+		private static final long serialVersionUID = 6762488117389436253L;
+		
+		public ActAddCopy(){
+			putValue(MNEMONIC_KEY, KeyEvent.VK_H);
+			putValue(NAME, "Exemplar Hinzufügen");
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.ALT_MASK));
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			addNewCopy();	
+		}
 	}
 }

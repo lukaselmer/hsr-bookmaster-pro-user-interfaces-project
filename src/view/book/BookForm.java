@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.text.ParseException;
 
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -24,6 +25,7 @@ import javax.swing.UIManager;
 
 import validators.BookValidator;
 import validators.FormValidator;
+import view.BookMasterActions;
 import view.BookMasterUiManager;
 import view.ViewUtil;
 import application.LibraryApp;
@@ -54,6 +56,12 @@ public abstract class BookForm {
 	protected Book savedObject;
 	private BookMasterUiManager uimanager;
 	private JMenuBar menuBar;
+	private Action actClose = new BookMasterActions.ActClose() {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			frmBookForm.dispose();
+		}
+	};
 
 	/**
 	 * Launch the application.
@@ -166,15 +174,7 @@ public abstract class BookForm {
 		
 		JMenuItem mnSave = getSaveMenuItem();
 		
-		JMenuItem mnClose = new JMenuItem("Schliessen");
-		mnClose.setMnemonic(KeyEvent.VK_S);
-		mnClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
-		mnClose.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				frmBookForm.dispose();
-			}
-		});
+		JMenuItem mnClose = new JMenuItem(actClose);
 		
 		mnFile.add(mnSave);
 		mnFile.add(mnClose);
