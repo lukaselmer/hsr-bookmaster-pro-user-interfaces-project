@@ -1,11 +1,16 @@
 package view.book;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
 import view.BookMasterUiManager;
@@ -97,5 +102,20 @@ public class BookEdit extends BookForm implements SubFrame<Book>, Observer {
 			updateForm(book);
 		}
 
+	}
+
+	@Override
+	protected JMenuItem getSaveMenuItem() {
+		JMenuItem mnSave = new JMenuItem("Änderungen Speichern");
+		mnSave.setMnemonic(KeyEvent.VK_S);
+		mnSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+		mnSave.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				saveBook(book);
+				}
+		});
+		mnSave.setEnabled(false);
+		return mnSave;
 	}
 }

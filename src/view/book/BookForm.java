@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.text.ParseException;
 
@@ -13,9 +14,14 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import javax.swing.plaf.basic.BasicSplitPaneUI.KeyboardEndHandler;
 
 import validators.BookValidator;
 import validators.FormValidator;
@@ -48,6 +54,7 @@ public abstract class BookForm {
 	protected JLabel lblShelf;
 	protected Book savedObject;
 	private BookMasterUiManager uimanager;
+	private JMenuBar menuBar;
 
 	/**
 	 * Launch the application.
@@ -70,6 +77,8 @@ public abstract class BookForm {
 	protected abstract String getSaveButtonTitle();
 
 	protected abstract void saveBook(Book c);
+	
+	protected abstract JMenuItem getSaveMenuItem(); 
 
 	public JFrame getFrame() {
 		return frmBookForm;
@@ -115,11 +124,12 @@ public abstract class BookForm {
 		frmBookForm.setTitle(getWindowTitle());
 		frmBookForm.setBounds(100, 100, 450, 215);
 		frmBookForm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frmBookForm.setSize(new Dimension(500, 222));
-		frmBookForm.setMinimumSize(new Dimension(350, 222));
+		frmBookForm.setSize(new Dimension(500, 242));
+		frmBookForm.setMinimumSize(new Dimension(350, 242));
 		// frmBookForm.setMaximumSize(new Dimension(650, 322));
 		// frmBookForm.setResizable(false);
 
+		initMenu();
 		initComponents();
 
 		FormLayout layout = new FormLayout("5dlu, pref, 5dlu, pref:grow, 5dlu",
@@ -147,6 +157,28 @@ public abstract class BookForm {
 				return new Book(txtName.getText(), txtAuthor.getText(), txtPublisher.getText(), (Shelf) cmbShelf.getSelectedItem());
 			}
 		};
+	}
+
+	private void initMenu() {
+		menuBar = new JMenuBar();
+		frmBookForm.setJMenuBar(menuBar);
+		JMenu mnFile = new JMenu("Datei");
+		menuBar.add(mnFile);
+		
+		JMenuItem mnSave = getSaveMenuItem();
+		
+		JMenuItem mnClose = new JMenuItem("Schliessen");
+		mnClose.setMnemonic(KeyEvent.VK_S);
+		mnClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
+		mnClose.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frmBookForm.dispose();
+			}
+		});
+		
+		mnFile.add(mnSave);
+		mnFile.add(mnClose);
 	}
 
 	private Component getButtonsPanel() {
@@ -199,6 +231,7 @@ public abstract class BookForm {
 
 		// Save button
 		btnSave = new JButton(getSaveButtonTitle());
+		btnSave.setMnemonic(KeyEvent.VK_S);
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				savedObject = formValidator.validateForm(null);
@@ -212,6 +245,7 @@ public abstract class BookForm {
 
 		// Cancel button
 		btnCancel = new JButton("Abbrechen");
+		btnCancel.setMnemonic(KeyEvent.VK_A);
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frmBookForm.dispose();
