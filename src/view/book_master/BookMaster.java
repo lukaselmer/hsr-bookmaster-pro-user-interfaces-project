@@ -5,10 +5,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -22,19 +22,24 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
@@ -48,7 +53,6 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
-import org.jdesktop.swingx.painter.RectanglePainter;
 
 import view.BookMasterUiManager;
 import view.DocumentListenerAdapter;
@@ -65,20 +69,6 @@ import domain.Customer;
 import domain.Library;
 import domain.Loan;
 import domain.Shelf;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
-import java.awt.event.InputEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 
 public class BookMaster implements Observer {
 	private static final int INDEX_OF_BOOKS_TAB = 0, INDEX_OF_LOANS_TAB = 1, INDEX_OF_CUSTOMERS_TAB = 2;
@@ -234,38 +224,33 @@ public class BookMaster implements Observer {
 			}
 		});
 		frmBookmaster.getContentPane().setLayout(new BorderLayout(0, 0));
-		frmBookmaster.setMinimumSize(new Dimension(650, 400));
+		frmBookmaster.setMinimumSize(new Dimension(675, 400));
 		initMenu();
 
-			tabbedPane = new JTabbedPane(SwingConstants.TOP) {
-			private BufferedImage myPicture;
+		tabbedPane = new JTabbedPane(SwingConstants.TOP) {
+			private static final long serialVersionUID = -316298348154524977L;
 
-			protected void paintComponent(java.awt.Graphics g) {
+			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				Graphics2D g2 = (Graphics2D) g;
-				try {
-					myPicture = ImageIO.read(new File("data/icons/logo2.png"));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				g2.drawImage(myPicture, this.getWidth() - 227, 3, this);
-//				g2.setColor(new Color(100, 240, 240, 230));
-//				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//
-//				Ellipse2D cloudPuff1 = new Ellipse2D.Double(0, 40, 250, 70);
-//				Ellipse2D cloudPuff2 = new Ellipse2D.Double(25, 0, 100, 90);
-//				Ellipse2D cloudPuff3 = new Ellipse2D.Double(95, 10, 80, 60);
-//				Ellipse2D cloudPuff4 = new Ellipse2D.Double(145, 30, 80, 60);
-//				Area cloud = new Area(cloudPuff1);
-//				cloud.add(new Area(cloudPuff2));
-//				cloud.add(new Area(cloudPuff3));
-//				cloud.add(new Area(cloudPuff4));
-//				AffineTransform t = new AffineTransform();
-//				t.translate(this.getWidth() - 120, 10);
-//				t.scale(0.4, 0.4);
-//				cloud.transform(t);
-//				g2.fill(cloud);
+				g2.drawImage(new ImageIcon("data/icons/logo2.png").getImage(), this.getWidth() - 227, 3, this);
+				// Demo: 2D Wolke zeichnen
+				// g2.setColor(new Color(100, 240, 240, 130));
+				// g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				// RenderingHints.VALUE_ANTIALIAS_ON);
+				// Ellipse2D cloudPuff1 = new Ellipse2D.Double(0, 40, 250, 70);
+				// Ellipse2D cloudPuff2 = new Ellipse2D.Double(25, 0, 100, 90);
+				// Ellipse2D cloudPuff3 = new Ellipse2D.Double(95, 10, 80, 60);
+				// Ellipse2D cloudPuff4 = new Ellipse2D.Double(145, 30, 80, 60);
+				// Area cloud = new Area(cloudPuff1);
+				// cloud.add(new Area(cloudPuff2));
+				// cloud.add(new Area(cloudPuff3));
+				// cloud.add(new Area(cloudPuff4));
+				// AffineTransform t = new AffineTransform();
+				// t.translate(this.getWidth() - 350, 10);
+				// t.scale(0.4, 0.4);
+				// cloud.transform(t);
+				// g2.fill(cloud);
 			};
 		};
 		frmBookmaster.getContentPane().add(tabbedPane, BorderLayout.CENTER);
