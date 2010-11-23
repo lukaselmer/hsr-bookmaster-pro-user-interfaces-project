@@ -265,7 +265,7 @@ public abstract class BookForm {
 			savedObject = formValidator.validateForm(null);
 			if (savedObject == null)
 				throw new RuntimeException("Bad state");
-			saveBook();
+			saveBook(savedObject);
 			frmBookForm.dispose();
 		}
 	}
