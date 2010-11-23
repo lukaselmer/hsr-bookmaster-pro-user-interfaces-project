@@ -10,6 +10,7 @@ public class Loan extends Observable {
 	private Copy copy;
 	private Customer customer;
 	private GregorianCalendar pickupDate, returnDate;
+	private boolean wasOverdue = false;
 	private final static int DAYS_TO_RETURN_BOOK = 30;
 
 	public Loan(Customer customer, Copy copy) {
@@ -25,6 +26,7 @@ public class Loan extends Observable {
 
 	public boolean returnCopy() {
 		try {
+			wasOverdue = isOverdue();
 			returnCopy(new GregorianCalendar());
 			setChanged();
 			notifyObservers();
@@ -124,5 +126,9 @@ public class Loan extends Observable {
 
 	public Book getBook() {
 		return getCopy().getBook();
+	}
+
+	public boolean wasOverdue() {
+		return wasOverdue;
 	}
 }

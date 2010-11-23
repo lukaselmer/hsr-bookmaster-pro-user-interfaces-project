@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,6 +27,9 @@ import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.validation.view.ValidationComponentUtils;
 
+import domain.Library;
+import domain.Loan;
+
 public class LoansReport {
 
 	protected JFrame frmLoansReportForm;
@@ -34,6 +38,7 @@ public class LoansReport {
 	private BookMasterUiManager uimanager;
 	private String report;
 	private JScrollPane sclPane;
+	private List<Loan> loans;
 
 	/**
 	 * Launch the application.
@@ -43,9 +48,8 @@ public class LoansReport {
 			public void run() {
 				try {
 					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-					new LoansReport(
-							new BookMasterUiManager(LibraryApp.inst()),
-							"asodifj asdfoijasd foasidj asdfasdf asdf asdf adsfadsf asdfoijasd foasidj asdfasdf asdf asdf adsfadsf afdsfdsaff \nXXXXX\ncdsa\n\nXXXXX\ncdsa\n\nXXXXX\ncdsa\n\nXXXXX\ncdsa\n\nXXXXX\ncdsa\n");
+					Library l = LibraryApp.inst();
+					new LoansReport(new BookMasterUiManager(l), l.getLoans());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -53,9 +57,10 @@ public class LoansReport {
 		});
 	}
 
-	public LoansReport(BookMasterUiManager uimanager, String report) {
+	public LoansReport(BookMasterUiManager uimanager, List<Loan> loans) {
 		this.uimanager = uimanager;
-		this.report = report;
+		this.loans = loans;
+		this.report = uimanager.getLibrary().generateReportForLoansReturn(loans);
 		initialize();
 		frmLoansReportForm.setLocationByPlatform(true);
 		frmLoansReportForm.setVisible(true);
@@ -69,15 +74,14 @@ public class LoansReport {
 	private void initialize() {
 		frmLoansReportForm = new JFrame();
 		frmLoansReportForm.setTitle("Ausleihe Rückgabe Report");
-		frmLoansReportForm.setBounds(100, 100, 450, 215);
 		frmLoansReportForm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frmLoansReportForm.setSize(new Dimension(500, 242));
+		frmLoansReportForm.setSize(new Dimension(700, 600));
 		frmLoansReportForm.setMinimumSize(new Dimension(350, 242));
 
 		initComponents();
 
-		FormLayout layout = new FormLayout("5dlu, pref:grow, 5dlu", "4dlu, pref, 4dlu, pref:grow, 5dlu, pref, 5dlu");
-		//TODO: Fix scrollbar size
+		FormLayout layout = new FormLayout("5dlu, pref:grow, 5dlu", "4dlu, pref, 4dlu, fill:pref:grow, 5dlu, pref, 5dlu");
+		// TODO: Fix scrollbar size
 		// layout.setRowGroups(new int[][] { { 2, 4, 6, 8, 10 } });
 		JPanel panel = new JPanel(layout);
 		CellConstraints cc = new CellConstraints();
@@ -105,8 +109,10 @@ public class LoansReport {
 		txtAreaReport.setLineWrap(true);
 		txtAreaReport.setEditable(false);
 		txtAreaReport.setBackground(Color.WHITE);
+		txtAreaReport.setCaretPosition(0);
 		sclPane = new JScrollPane(txtAreaReport);
 		sclPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		sclPane.setPreferredSize(new Dimension(10, 10));
 
 		// Cancel button
 		btnCancel = new JButton("Schliessen");

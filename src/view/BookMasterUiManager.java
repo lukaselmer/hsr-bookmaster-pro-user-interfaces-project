@@ -11,9 +11,11 @@ import view.book_detail.BookDetail;
 import view.book_master.SubFrame;
 import view.customer.CustomerEdit;
 import view.customer.CustomerNew;
+import view.loans_report.LoansReport;
 import domain.Book;
 import domain.Customer;
 import domain.Library;
+import domain.Loan;
 
 public class BookMasterUiManager {
 	protected final Library library;
@@ -129,9 +131,8 @@ public class BookMasterUiManager {
 		}
 	}
 
-	public void openLoansReportFrame(String report) {
-		// TODO Auto-generated method stub
-
+	public void openLoansReportFrame(List<Loan> loans) {
+		new LoansReport(this, loans);
 	}
 
 }

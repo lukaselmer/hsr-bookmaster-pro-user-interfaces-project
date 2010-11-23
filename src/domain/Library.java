@@ -277,7 +277,7 @@ public class Library extends Observable implements Observer {
 	}
 
 	public String generateReportForLoansReturn(List<Loan> ll) {
-		StringBuilder s = new StringBuilder("Report für " + ll.size() + " Ausleihe" + (ll.size() > 1 ? "n" : "") + ":\n\n");
+		StringBuilder s = new StringBuilder("Report für die Rückgabe von " + ll.size() + " Ausleihe" + (ll.size() > 1 ? "n" : "") + ":\n\n");
 		Map<Customer, List<Loan>> m = new HashMap<Customer, List<Loan>>();
 		for (Loan l : ll) {
 			if (!m.containsKey(l.getCustomer())) {
@@ -295,7 +295,7 @@ public class Library extends Observable implements Observer {
 		StringBuilder s = new StringBuilder("Kunde: " + c.toString() + ":\n");
 		int overduesCount = 0;
 		for (Loan l : ll) {
-			overduesCount += (l.isOverdue() ? 1 : 0);
+			overduesCount += (l.wasOverdue() ? 1 : 0);
 		}
 		s.append(ll.size() + " Ausleihe" + (ll.size() > 1 ? "n" : "") + "\n" + (overduesCount == 0 ? "Keine" : overduesCount)
 				+ " Überfällig" + (overduesCount != 1 ? "e" : "") + "\n\n");
