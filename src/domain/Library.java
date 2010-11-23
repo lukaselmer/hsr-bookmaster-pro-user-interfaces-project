@@ -275,6 +275,16 @@ public class Library extends Observable implements Observer {
 		}
 		return null;
 	}
+	
+	public List<Loan> hasCustomerOverdueBooks(Customer c){
+		List<Loan> loans = new ArrayList<Loan>();
+		for (Loan l : getCustomerLoans(c)){
+			if (l.isOverdue()){
+				loans.add(l);
+			}
+		}
+		return loans;
+	}
 
 	public String generateReportForLoansReturn(List<Loan> ll) {
 		StringBuilder s = new StringBuilder("Report für die Rückgabe von " + ll.size() + " Ausleihe" + (ll.size() > 1 ? "n" : "") + ":\n\n");

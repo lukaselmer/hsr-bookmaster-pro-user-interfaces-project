@@ -290,7 +290,7 @@ public class LoanDetail implements SubFrame<Customer> {
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
 				actReturnLoan.setEnabled(tblLoans.getSelectedRowCount() > 0);
-				
+
 			}
 		});
 	}
@@ -447,12 +447,15 @@ public class LoanDetail implements SubFrame<Customer> {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			List<Loan> list = getSelectedLoans();
-			for (Loan l : list) {
-				l.returnCopy();
+			if (JOptionPane.showConfirmDialog(frmLoanDetail, "Sind Sie sicher, dass Sie " + list.size() + " Ausleihe"
+					+ (list.size() > 1 ? "n" : "") + " zurückgeben wollen?", "Selektierte Ausleihen zurückgeben",
+					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+				for (Loan l : list) {
+					l.returnCopy();
+				}
+				uimanager.openLoansReportFrame(list);
+				updateLoanInformation();
 			}
-			JOptionPane.showMessageDialog(frmLoanDetail, "Selektierte Ausleihen wurden erfolgreich zurückgegeben.", "Hinweis",
-					JOptionPane.INFORMATION_MESSAGE);
-			updateLoanInformation();
 		}
 	}
 }
