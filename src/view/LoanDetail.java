@@ -27,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -289,6 +290,7 @@ public class LoanDetail implements SubFrame<Customer> {
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
 				actReturnLoan.setEnabled(tblLoans.getSelectedRowCount() > 0);
+				
 			}
 		});
 	}
@@ -391,7 +393,7 @@ public class LoanDetail implements SubFrame<Customer> {
 
 	protected void updateLoanInformation() {
 		loanTableModel.updateLoans(library.getCustomerLoans(customer));
-		lblNumber.setText(""+library.getCustomerLoans(customer).size());
+		lblNumber.setText("" + library.getCustomerLoans(customer).size());
 		btnLendNewCopy.setEnabled(library.getCurrentLoans().size() < 3);
 		txtCopyId.setEnabled(library.getCustomerLoans(customer).size() < 3);
 		txtCopyId.setText("" + (txtCopyId.isEnabled() ? "" : "Maximale Anzahl Ausleihen erreicht"));
@@ -432,10 +434,10 @@ public class LoanDetail implements SubFrame<Customer> {
 	public void addWindowListener(WindowAdapter windowAdapter) {
 		frmLoanDetail.addWindowListener(windowAdapter);
 	}
-	
-	private class ActReturnLoan extends AbstractAction{
+
+	private class ActReturnLoan extends AbstractAction {
 		private static final long serialVersionUID = 5728087231118105568L;
-		
+
 		public ActReturnLoan() {
 			putValue(NAME, "Selektierte Zurückgeben");
 			putValue(MNEMONIC_KEY, KeyEvent.VK_Z);
@@ -446,10 +448,11 @@ public class LoanDetail implements SubFrame<Customer> {
 		public void actionPerformed(ActionEvent arg0) {
 			List<Loan> list = getSelectedLoans();
 			for (Loan l : list) {
-				// TODO: Meldung anzeigen
 				l.returnCopy();
 			}
+			JOptionPane.showMessageDialog(frmLoanDetail, "Selektierte Ausleihen wurden erfolgreich zurückgegeben.", "Hinweis",
+					JOptionPane.INFORMATION_MESSAGE);
 			updateLoanInformation();
-		}		
+		}
 	}
 }
