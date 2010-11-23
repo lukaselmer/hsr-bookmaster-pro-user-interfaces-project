@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -32,6 +33,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
+import view.BookMasterActions;
 import view.BookMasterUiManager;
 import view.ViewUtil;
 import view.book.BookEdit;
@@ -74,6 +76,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	private BookMasterUiManager uimanager;
 	private JMenuBar menuBar;
 	private JMenuItem mnRemoveSelected;
+	private final Action actClose = new BookMasterActions.ActClose();
 
 	/**
 	 * Launch the application.
