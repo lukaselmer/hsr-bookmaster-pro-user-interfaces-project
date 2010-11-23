@@ -6,29 +6,35 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.util.List;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 
+import view.BookMasterActions;
 import view.BookMasterUiManager;
 import view.ViewUtil;
 import application.LibraryApp;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.validation.view.ValidationComponentUtils;
 
 import domain.Library;
 import domain.Loan;
+import javax.swing.KeyStroke;
+import java.awt.event.KeyEvent;
+import java.awt.event.InputEvent;
 
 public class LoansReport {
 
@@ -41,6 +47,20 @@ public class LoansReport {
 	private JScrollPane sclPane;
 	private List<Loan> loans;
 	private Library library;
+	private JMenuBar menuBar;
+	private JMenu mnDatei;
+	private JMenuItem mntmSchliessen;
+	private JMenu mnBearbeiten;
+	private JMenuItem mntmRckgngigUndSchliessen;
+	private final Action actUndo = new ActUndo();
+	private final Action actClose = new BookMasterActions.ActClose() {
+		private static final long serialVersionUID = 5525544072589710482L;
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			frmLoansReportForm.dispose();
+		}
+	};
 
 	/**
 	 * Launch the application.
@@ -66,6 +86,21 @@ public class LoansReport {
 		this.report = uimanager.getLibrary().generateReportForLoansReturn(loans);
 		initialize();
 		frmLoansReportForm.setLocationByPlatform(true);
+
+		menuBar = new JMenuBar();
+		frmLoansReportForm.setJMenuBar(menuBar);
+
+		mnDatei = new JMenu("Datei");
+		menuBar.add(mnDatei);
+
+		mntmSchliessen = new JMenuItem(actClose);
+		mnDatei.add(mntmSchliessen);
+
+		mnBearbeiten = new JMenu("Bearbeiten");
+		menuBar.add(mnBearbeiten);
+
+		mntmRckgngigUndSchliessen = new JMenuItem(actUndo);
+		mnBearbeiten.add(mntmRckgngigUndSchliessen);
 		frmLoansReportForm.setVisible(true);
 	}
 
@@ -84,8 +119,6 @@ public class LoansReport {
 		initComponents();
 
 		FormLayout layout = new FormLayout("5dlu, pref:grow, 5dlu", "4dlu, pref, 4dlu, fill:pref:grow, 5dlu, pref, 5dlu");
-		// TODO: Fix scrollbar size
-		// layout.setRowGroups(new int[][] { { 2, 4, 6, 8, 10 } });
 		JPanel panel = new JPanel(layout);
 		CellConstraints cc = new CellConstraints();
 		panel.add(ViewUtil.getSeparator("Ausleihe Rückgabe Report"), cc.xy(2, 2));
@@ -105,7 +138,6 @@ public class LoansReport {
 	}
 
 	private void initComponents() {
-		// Report
 		txtAreaReport = new JTextArea();
 		txtAreaReport.setColumns(10);
 		txtAreaReport.setName("Ausleihen.Report");
@@ -114,29 +146,30 @@ public class LoansReport {
 		txtAreaReport.setEditable(false);
 		txtAreaReport.setBackground(Color.WHITE);
 		txtAreaReport.setCaretPosition(0);
+		
 		sclPane = new JScrollPane(txtAreaReport);
 		sclPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		sclPane.setPreferredSize(new Dimension(10, 10));
+		
+		btnCancel = new JButton(actClose);
+		btnUndo = new JButton(actUndo);
+	}
 
-		// Cancel button
-		btnCancel = new JButton("Schliessen");
-		btnCancel.setMnemonic(KeyEvent.VK_S);
-		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frmLoansReportForm.dispose();
-			}
-		});
+	private class ActUndo extends AbstractAction {
+		private static final long serialVersionUID = 7524200252063261221L;
 
-		// Undo button
-		btnUndo = new JButton("Rückgängig Und Schliessen");
-		btnUndo.setMnemonic(KeyEvent.VK_R);
-		btnUndo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				for (Loan l : loans) {
-					l.undoReturnCopy();
-				}
-				frmLoansReportForm.dispose();
+		public ActUndo() {
+			putValue(MNEMONIC_KEY, KeyEvent.VK_R);
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
+			putValue(NAME, "Rückgängig Und Schliessen");
+			putValue(SHORT_DESCRIPTION, "Macht die Rückgabe der Ausleihen rückgängig und schliesst das Fenster");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			for (Loan l : loans) {
+				l.undoReturnCopy();
 			}
-		});
+			frmLoansReportForm.dispose();
+		}
 	}
 }
