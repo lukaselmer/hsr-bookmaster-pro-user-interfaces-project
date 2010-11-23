@@ -159,7 +159,7 @@ public abstract class BookForm {
 		frmBookForm.getContentPane().add(panel, BorderLayout.CENTER);
 
 		JTextField[] fields = { txtName, txtPublisher, txtAuthor };
-		formValidator = new FormValidator<Book>(frmBookForm, fields, new BookValidator(), btnSave) {
+		formValidator = new FormValidator<Book>(frmBookForm, fields, new BookValidator(), btnSave, actSave) {
 			@Override
 			public Book createObject() {
 				return new Book(txtName.getText(), txtAuthor.getText(), txtPublisher.getText(), (Shelf) cmbShelf.getSelectedItem());

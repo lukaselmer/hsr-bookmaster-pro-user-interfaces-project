@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -235,7 +236,9 @@ public class BookMaster implements Observer {
 		tabbedPane = new JTabbedPane(SwingConstants.TOP) {
 			protected void paintComponent(java.awt.Graphics g) {
 				Graphics2D g2 = (Graphics2D) g;
-				g2.setColor(new Color(255, 255, 255, 230));
+				g2.setColor(new Color(100, 240, 240, 230));
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
 				Ellipse2D cloudPuff1 = new Ellipse2D.Double(0, 40, 250, 70);
 				Ellipse2D cloudPuff2 = new Ellipse2D.Double(25, 0, 100, 90);
 				Ellipse2D cloudPuff3 = new Ellipse2D.Double(95, 10, 80, 60);
