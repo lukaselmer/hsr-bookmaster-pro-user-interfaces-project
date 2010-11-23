@@ -35,6 +35,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
@@ -48,6 +50,7 @@ import validators.SearchResult;
 import validators.SearchResultValidator;
 import view.BookMasterActions;
 import view.BookMasterUiManager;
+import view.DocumentListenerAdapter;
 import view.ViewUtil;
 import view.book_master.SubFrame;
 import view.loan_detail.LoanDetailTableModel;
@@ -355,9 +358,11 @@ public class LoanDetail implements SubFrame<Customer> {
 			}
 		};
 
-		txtCopyId.addKeyListener(new KeyAdapter() {
+		//Todo: Change to Document Listener
+		txtCopyId.getDocument().addDocumentListener(new DocumentListenerAdapter() {
+			
 			@Override
-			public void keyReleased(KeyEvent arg0) {
+			public void documentUpdate(DocumentEvent e) {
 				SearchResult<Copy> s = formValidator.validateForm(null);
 				if (s == null) {
 					txtBookTitle.setText("");
@@ -370,9 +375,26 @@ public class LoanDetail implements SubFrame<Customer> {
 					txtBookTitle.setText(c.getBook().getName());
 					txtBookAuthor.setText(c.getBook().getAuthor());
 					txtBookPublisher.setText(c.getBook().getPublisher());
-				}
 			}
 		});
+//		txtCopyId.addKeyListener(new KeyAdapter() {
+//			@Override
+//			public void keyReleased(KeyEvent arg0) {
+//				SearchResult<Copy> s = formValidator.validateForm(null);
+//				if (s == null) {
+//					txtBookTitle.setText("");
+//					txtBookAuthor.setText("");
+//					txtBookPublisher.setText("");
+//				} else {
+//					Copy c = s.getObject();
+//					if (c == null)
+//						throw new RuntimeException("Bad state");
+//					txtBookTitle.setText(c.getBook().getName());
+//					txtBookAuthor.setText(c.getBook().getAuthor());
+//					txtBookPublisher.setText(c.getBook().getPublisher());
+//				}
+//			}
+//		});
 	}
 
 	protected void updateCustomerInformation() {
