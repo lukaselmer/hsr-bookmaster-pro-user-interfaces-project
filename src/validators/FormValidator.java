@@ -10,6 +10,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -29,15 +31,16 @@ public abstract class FormValidator<T> {
 	private JTextField[] fields;
 	protected Validator<T> validator;
 	private JComponent btnSave;
-	//private JFrame frame;
 	private JComponent currentComponent;
+	private Action actSave;
 
-	public FormValidator(JFrame frame, JTextField[] fields, Validator<T> validator, JButton btnSave) {
+	public FormValidator(JFrame frame, JTextField[] fields, Validator<T> validator, JButton btnSave, Action actSave) {
 		this.validator = validator;
 		this.fields = fields;
 		this.btnSave = btnSave;
+		this.actSave = actSave;
 
-		//this.frame = frame;
+		// this.frame = frame;
 		popup = new JDialog(frame);
 		popupMessage = new JLabel("");
 		popup.getContentPane().setLayout(new FlowLayout());
@@ -100,7 +103,11 @@ public abstract class FormValidator<T> {
 		ValidationResult validation = validator.validate(c);
 		btnSave.setToolTipText(validation.hasErrors() ? "<html>" + validation.getMessagesText().replaceAll("\n", "<br/>") + "</html>"
 				: null);
-		btnSave.setEnabled(!validation.hasErrors());
+		if (actSave == null) {
+			actSave.setEnabled(!validation.hasErrors());
+		} else {
+			btnSave.setEnabled(!validation.hasErrors());
+		}
 		if (f != null) {
 			ValidationResult fieldValidation = validation.subResult(f.getName());
 			if (ValidationComponentUtils.isMandatory(f) && f.getText().length() == 0) {

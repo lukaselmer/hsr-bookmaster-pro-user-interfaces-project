@@ -86,7 +86,10 @@ public class LoansReport {
 		this.report = uimanager.getLibrary().generateReportForLoansReturn(loans);
 		initialize();
 		frmLoansReportForm.setLocationByPlatform(true);
+		frmLoansReportForm.setVisible(true);
+	}
 
+	protected void initMenu() {
 		menuBar = new JMenuBar();
 		frmLoansReportForm.setJMenuBar(menuBar);
 
@@ -101,7 +104,6 @@ public class LoansReport {
 
 		mntmRckgngigUndSchliessen = new JMenuItem(actUndo);
 		mnBearbeiten.add(mntmRckgngigUndSchliessen);
-		frmLoansReportForm.setVisible(true);
 	}
 
 	/**
@@ -117,6 +119,7 @@ public class LoansReport {
 		frmLoansReportForm.setMinimumSize(new Dimension(350, 242));
 
 		initComponents();
+		initMenu();
 
 		FormLayout layout = new FormLayout("5dlu, pref:grow, 5dlu", "4dlu, pref, 4dlu, fill:pref:grow, 5dlu, pref, 5dlu");
 		JPanel panel = new JPanel(layout);

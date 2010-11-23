@@ -353,7 +353,8 @@ public class LoanDetail implements SubFrame<Customer> {
 		pnlNewLoan.add(txtBookPublisher, cc.xyw(4, 10, 3));
 
 		JTextField[] fields = { txtCopyId };
-		formValidator = new FormValidator<SearchResult<Copy>>(frmLoanDetail, fields, new SearchResultValidator(), btnLendNewCopy) {
+		// TODO: change this
+		formValidator = new FormValidator<SearchResult<Copy>>(frmLoanDetail, fields, new SearchResultValidator(), btnLendNewCopy, null) {
 			@Override
 			public SearchResult<Copy> createObject() {
 				String searchString = txtCopyId.getText();

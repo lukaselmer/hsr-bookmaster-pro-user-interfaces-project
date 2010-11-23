@@ -4,16 +4,24 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.text.ParseException;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
 
@@ -21,6 +29,7 @@ import org.jdesktop.swingx.JXTitledSeparator;
 
 import validators.CustomerValidator;
 import validators.FormValidator;
+import view.BookMasterActions;
 import view.BookMasterUiManager;
 import view.ViewUtil;
 import application.LibraryApp;
@@ -42,6 +51,20 @@ public abstract class CustomerForm {
 	protected JButton btnSave;
 	protected FormValidator<Customer> formValidator;
 	private BookMasterUiManager uimanager;
+	private JMenuBar menuBar;
+	private JMenu mnDatei;
+	private JMenu mnBearbeiten;
+	private JMenuItem mntmRckgngigUndSchliessen;
+	private JMenuItem mntmSchliessen;
+	private final Action actSave = new ActSave();
+	private final Action actClose = new BookMasterActions.ActClose() {
+		private static final long serialVersionUID = 5235844072589710482L;
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			frmCustomerForm.dispose();
+		}
+	};
 
 	/**
 	 * Launch the application.
@@ -86,6 +109,23 @@ public abstract class CustomerForm {
 		frmCustomerForm.setVisible(true);
 	}
 
+	private void initMenu() {
+		menuBar = new JMenuBar();
+		frmCustomerForm.setJMenuBar(menuBar);
+
+		mnDatei = new JMenu("Datei");
+		menuBar.add(mnDatei);
+
+		mntmSchliessen = new JMenuItem(actClose);
+		mnDatei.add(mntmSchliessen);
+
+		mnBearbeiten = new JMenu("Bearbeiten");
+		menuBar.add(mnBearbeiten);
+
+		mntmRckgngigUndSchliessen = new JMenuItem(actSave);
+		mnBearbeiten.add(mntmRckgngigUndSchliessen);
+	}
+
 	public boolean isValid() {
 		return frmCustomerForm.isValid();
 	}
@@ -110,6 +150,8 @@ public abstract class CustomerForm {
 		frmCustomerForm.setBounds(100, 100, 450, 256);
 		frmCustomerForm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmCustomerForm.setResizable(false);
+
+		initMenu();
 
 		JPanel panel = new JPanel();
 		panel.setBorder(null);
@@ -148,8 +190,6 @@ public abstract class CustomerForm {
 		txtStreet.setName("Kunde.Strasse");
 		ValidationComponentUtils.setMandatory(txtStreet, true);
 
-		// MaskFormatter formatter = new MaskFormatter("####");
-		// txtZip = new JFormattedTextField(formatter);
 		txtZip = new JTextField();
 		lblZip.setLabelFor(txtZip);
 		txtZip.setColumns(10);
@@ -162,21 +202,11 @@ public abstract class CustomerForm {
 		txtCity.setName("Kunde.Stadt");
 		ValidationComponentUtils.setMandatory(txtCity, true);
 
-		btnSave = new JButton(getSaveButtonTitle());
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Customer c = formValidator.validateForm(null);
-				if (c == null) {
-					throw new RuntimeException("Bad state");
-				}
-				saveCustomer(c);
-				frmCustomerForm.dispose();
-			}
-		});
-		btnSave.setEnabled(false);
+		btnSave = new JButton(actSave);
+		actSave.setEnabled(false);
 
 		JTextField[] fields = { txtName, txtCity, txtStreet, txtSurname, txtZip };
-		formValidator = new FormValidator<Customer>(frmCustomerForm, fields, new CustomerValidator(), btnSave) {
+		formValidator = new FormValidator<Customer>(frmCustomerForm, fields, new CustomerValidator(), btnSave, actSave) {
 			@Override
 			public Customer createObject() {
 				Integer zip = null;
@@ -270,5 +300,25 @@ public abstract class CustomerForm {
 						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE).addComponent(btnSave).addComponent(btnCancel))
 						.addContainerGap(32, Short.MAX_VALUE)));
 		panel.setLayout(gl_panel);
+	}
+
+	private class ActSave extends AbstractAction {
+		private static final long serialVersionUID = 7524200258063461521L;
+
+		public ActSave() {
+			putValue(MNEMONIC_KEY, KeyEvent.VK_R);
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
+			putValue(NAME, getSaveButtonTitle());
+			putValue(SHORT_DESCRIPTION, "Macht die Rückgabe der Ausleihen rückgängig und schliesst das Fenster");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			Customer c = formValidator.validateForm(null);
+			if (c == null) {
+				throw new RuntimeException("Bad state");
+			}
+			saveCustomer(c);
+			frmCustomerForm.dispose();
+		}
 	}
 }
