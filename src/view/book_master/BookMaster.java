@@ -6,7 +6,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -68,8 +67,6 @@ import javax.swing.KeyStroke;
 import java.awt.event.InputEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JSeparator;
 
 public class BookMaster implements Observer {
 	private static final int INDEX_OF_BOOKS_TAB = 0, INDEX_OF_LOANS_TAB = 1, INDEX_OF_CUSTOMERS_TAB = 2;
@@ -121,9 +118,15 @@ public class BookMaster implements Observer {
 	private final Action actNewCustomer = new ActNewCustomer();
 	private final Action actShowSelectedBooks = new ActShowSelectedBooks();
 	private JMenu mnClients;
-	private JCheckBoxMenuItem mnOverduesOnly;
-	private JSeparator separator;
 	private final Action actOverduesOnly = new ActOverduesOnly();
+	private JMenuItem menuItem;
+	private JMenuItem menuItem_2;
+	private final Action actShowSelectedLoans = new ActShowSelectedLoans();
+	private final Action actReturnSelectedLoans = new ActReturnSelectedLoans();
+	private JMenuItem menuItem_3;
+	private JMenuItem menuItem_4;
+	private final Action actShowSelectedCustomers = new ActShowSelectedCustomers();
+	private final Action actLoanForSelectedCustomer = new ActLoanForSelectedCustomer();
 
 	/**
 	 * Launch the application.
@@ -181,11 +184,23 @@ public class BookMaster implements Observer {
 		mnNewLoan = new JMenuItem(actNewLoan);
 		mnLoans.add(mnNewLoan);
 
+		menuItem = new JMenuItem(actShowSelectedLoans);
+		mnLoans.add(menuItem);
+
+		menuItem_2 = new JMenuItem(actReturnSelectedLoans);
+		mnLoans.add(menuItem_2);
+
 		mnClients = new JMenu("Kunden");
 		menuBar.add(mnClients);
 
 		mnNewCustomer = new JMenuItem(actNewCustomer);
 		mnClients.add(mnNewCustomer);
+
+		menuItem_3 = new JMenuItem(actShowSelectedCustomers);
+		mnClients.add(menuItem_3);
+
+		menuItem_4 = new JMenuItem(actLoanForSelectedCustomer);
+		mnClients.add(menuItem_4);
 	}
 
 	public BookMaster inst() {
@@ -218,7 +233,7 @@ public class BookMaster implements Observer {
 		initCustomersPanel();
 
 		tabbedPane.setMnemonicAt(INDEX_OF_BOOKS_TAB, KeyEvent.VK_B);
-		tabbedPane.setMnemonicAt(INDEX_OF_LOANS_TAB, KeyEvent.VK_A);
+		tabbedPane.setMnemonicAt(INDEX_OF_LOANS_TAB, KeyEvent.VK_U);
 		tabbedPane.setMnemonicAt(INDEX_OF_CUSTOMERS_TAB, KeyEvent.VK_K);
 	}
 
@@ -350,31 +365,11 @@ public class BookMaster implements Observer {
 
 		chckbxOverduesOnly = new JCheckBox(actOverduesOnly);
 
-		btnReturnSelectedLoans = new JButton("Selektierte Zurückgeben...");
-		btnReturnSelectedLoans.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				List<Loan> loans = getSelectedLoans();
-				// TODO: add dialog for returned loans, maybe promt if lons
-				// really should be returned!
-				for (Loan l : loans) {
-					l.returnCopy();
-				}
-			}
-		});
-		btnReturnSelectedLoans.setEnabled(false);
-		btnReturnSelectedLoans.setMnemonic('a');
+		btnReturnSelectedLoans = new JButton(actReturnSelectedLoans);
+		actReturnSelectedLoans.setEnabled(false);
 
-		btnShowSelectedLoans = new JButton("Selektierte Anzeigen...");
-		btnShowSelectedLoans.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				List<Loan> loans = getSelectedLoans();
-				for (Loan l : loans) {
-					createOrShowLoanDetailFrame(l);
-				}
-			}
-		});
-		btnShowSelectedLoans.setEnabled(false);
-		btnShowSelectedLoans.setMnemonic('a');
+		btnShowSelectedLoans = new JButton(actShowSelectedLoans);
+		actShowSelectedLoans.setEnabled(false);
 
 		JButton btnNewLoan = new JButton(actNewLoan);
 
@@ -461,29 +456,11 @@ public class BookMaster implements Observer {
 		});
 		txtFilterCustomers.setColumns(10);
 
-		btnShowSelectedCustomers = new JButton("Selektierte Bearbeiten...");
-		btnShowSelectedCustomers.setEnabled(false);
-		btnShowSelectedCustomers.setMnemonic('a');
-		btnShowSelectedCustomers.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				List<Customer> customers = getSelectedCustomers();
-				for (Customer b : customers) {
-					createOrShowCustomerDetailFrame(b);
-				}
-			}
-		});
-		btnLoanForSelectedCustomer = new JButton("Ausleihe für Kunde erfassen...");
-		btnLoanForSelectedCustomer.setEnabled(false);
-		btnLoanForSelectedCustomer.setMnemonic('u');
-		btnLoanForSelectedCustomer.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				Customer customer = getSelectedCustomer();
-				if (customer != null)
-					uimanager.openLoanWindow(customer);
-			}
-		});
+		btnShowSelectedCustomers = new JButton(actShowSelectedCustomers);
+		actShowSelectedCustomers.setEnabled(false);
+
+		btnLoanForSelectedCustomer = new JButton(actLoanForSelectedCustomer);
+		actLoanForSelectedCustomer.setEnabled(false);
 
 		JButton btnNewClient = new JButton(actNewCustomer);
 
@@ -737,8 +714,8 @@ public class BookMaster implements Observer {
 		tblLoans.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				btnShowSelectedLoans.setEnabled(tblLoans.getSelectedRowCount() > 0);
-				btnReturnSelectedLoans.setEnabled(tblLoans.getSelectedRowCount() > 0);
+				actShowSelectedLoans.setEnabled(tblLoans.getSelectedRowCount() > 0);
+				actReturnSelectedLoans.setEnabled(tblLoans.getSelectedRowCount() > 0);
 			}
 		});
 		tblLoans.getRowSorter().toggleSortOrder(tblLoansModel.getDefaultSortedColumn());
@@ -765,8 +742,8 @@ public class BookMaster implements Observer {
 		tblCustomers.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				btnShowSelectedCustomers.setEnabled(tblCustomers.getSelectedRowCount() > 0);
-				btnLoanForSelectedCustomer.setEnabled(tblCustomers.getSelectedRowCount() > 0);
+				actShowSelectedCustomers.setEnabled(tblCustomers.getSelectedRowCount() > 0);
+				actLoanForSelectedCustomer.setEnabled(tblCustomers.getSelectedRowCount() > 0);
 			}
 		});
 		tblCustomers.getRowSorter().toggleSortOrder(tblCustomersModel.getDefaultSortedColumn());
@@ -889,6 +866,8 @@ public class BookMaster implements Observer {
 	}
 
 	private class ActNewLoan extends AbstractAction {
+		private static final long serialVersionUID = 2238469619665846547L;
+
 		public ActNewLoan() {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_N);
 			putValue(NAME, "Neue Ausleihe Erfassen...");
@@ -902,6 +881,8 @@ public class BookMaster implements Observer {
 	}
 
 	private class ActNewCustomer extends AbstractAction {
+		private static final long serialVersionUID = 6502846542854627207L;
+
 		public ActNewCustomer() {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_N);
 			putValue(NAME, "Neuer Kunde Erfassen...");
@@ -915,6 +896,8 @@ public class BookMaster implements Observer {
 	}
 
 	private class ActShowSelectedBooks extends AbstractAction {
+		private static final long serialVersionUID = -7977864894081464478L;
+
 		public ActShowSelectedBooks() {
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_MASK));
 			putValue(MNEMONIC_KEY, KeyEvent.VK_A);
@@ -931,6 +914,8 @@ public class BookMaster implements Observer {
 	}
 
 	private class ActOverduesOnly extends AbstractAction {
+		private static final long serialVersionUID = 7824114454977199514L;
+
 		public ActOverduesOnly() {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_U);
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
@@ -940,6 +925,76 @@ public class BookMaster implements Observer {
 
 		public void actionPerformed(ActionEvent e) {
 			filterAndUpdateLoans();
+		}
+	}
+
+	private class ActShowSelectedLoans extends AbstractAction {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -1143944733937267268L;
+
+		public ActShowSelectedLoans() {
+			putValue(MNEMONIC_KEY, KeyEvent.VK_A);
+			putValue(NAME, "Selektierte Anzeigen...");
+			putValue(SHORT_DESCRIPTION, "Zeigt Details zu den selektierten Ausleihen an");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			List<Loan> loans = getSelectedLoans();
+			for (Loan l : loans) {
+				createOrShowLoanDetailFrame(l);
+			}
+		}
+	}
+
+	private class ActReturnSelectedLoans extends AbstractAction {
+		private static final long serialVersionUID = -4887278482096384896L;
+
+		public ActReturnSelectedLoans() {
+			putValue(NAME, "Selektierte Zurückgeben");
+			putValue(SHORT_DESCRIPTION, "Gibt die selektieren Ausleihen zurück");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			List<Loan> loans = getSelectedLoans();
+			// TODO: add dialog for returned loans, maybe promt if lons
+			// really should be returned!
+			for (Loan l : loans) {
+				l.returnCopy();
+			}
+		}
+	}
+
+	private class ActShowSelectedCustomers extends AbstractAction {
+		private static final long serialVersionUID = 5151723828817846179L;
+
+		public ActShowSelectedCustomers() {
+			putValue(MNEMONIC_KEY, KeyEvent.VK_A);
+			putValue(NAME, "Selektierte Bearbeiten...");
+			putValue(SHORT_DESCRIPTION, "Bearbeitet die ausgewählten Kunden");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			List<Customer> customers = getSelectedCustomers();
+			for (Customer b : customers) {
+				createOrShowCustomerDetailFrame(b);
+			}
+		}
+	}
+
+	private class ActLoanForSelectedCustomer extends AbstractAction {
+		private static final long serialVersionUID = -4233519605516483378L;
+
+		public ActLoanForSelectedCustomer() {
+			putValue(NAME, "Ausleihe für Kunde erfassen...");
+			putValue(SHORT_DESCRIPTION, "Zeigt Details zu den Ausleihen des selekierten Kunden");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			Customer customer = getSelectedCustomer();
+			if (customer != null)
+				uimanager.openLoanWindow(customer);
 		}
 	}
 }
