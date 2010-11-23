@@ -8,7 +8,7 @@ import javax.swing.KeyStroke;
 
 public class BookMasterActions {
 	
-	public abstract class ActClose extends AbstractAction{
+	public static abstract class ActClose extends AbstractAction{
 		private static final long serialVersionUID = -3249467952876507516L;
 		public ActClose(){
 			putValue(MNEMONIC_KEY, KeyEvent.VK_S);

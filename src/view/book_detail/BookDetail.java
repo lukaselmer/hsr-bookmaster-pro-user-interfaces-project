@@ -76,7 +76,14 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	private BookMasterUiManager uimanager;
 	private JMenuBar menuBar;
 	private JMenuItem mnRemoveSelected;
-	private final Action actClose = new BookMasterActions.ActClose();
+	private final Action actClose = new BookMasterActions.ActClose() {
+		
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
 
 	/**
 	 * Launch the application.
