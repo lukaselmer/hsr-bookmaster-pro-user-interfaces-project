@@ -13,7 +13,9 @@ import java.text.ParseException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 
 import view.BookMasterUiManager;
@@ -31,6 +33,7 @@ public class LoansReport {
 	protected JButton btnCancel;
 	private BookMasterUiManager uimanager;
 	private String report;
+	private JScrollPane sclPane;
 
 	/**
 	 * Launch the application.
@@ -40,7 +43,9 @@ public class LoansReport {
 			public void run() {
 				try {
 					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-					new LoansReport(new BookMasterUiManager(LibraryApp.inst()), "asodifj asdfoijasd foasidjf");
+					new LoansReport(
+							new BookMasterUiManager(LibraryApp.inst()),
+							"asodifj asdfoijasd foasidj asdfasdf asdf asdf adsfadsf asdfoijasd foasidj asdfasdf asdf asdf adsfadsf afdsfdsaff \nXXXXX\ncdsa\n\nXXXXX\ncdsa\n\nXXXXX\ncdsa\n\nXXXXX\ncdsa\n\nXXXXX\ncdsa\n");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -71,13 +76,12 @@ public class LoansReport {
 
 		initComponents();
 
-		FormLayout layout = new FormLayout("5dlu, pref:grow, 5dlu",
-				"4dlu, pref, 4dlu, pref, 5dlu, pref, 5dlu");
-		//layout.setRowGroups(new int[][] { { 2, 4, 6, 8, 10 } });
+		FormLayout layout = new FormLayout("5dlu, pref:grow, 5dlu", "4dlu, pref, 4dlu, pref:grow, 5dlu, pref, 5dlu");
+		// layout.setRowGroups(new int[][] { { 2, 4, 6, 8, 10 } });
 		JPanel panel = new JPanel(layout);
 		CellConstraints cc = new CellConstraints();
 		panel.add(ViewUtil.getSeparator("Ausleihe Rückgabe Report"), cc.xy(2, 2));
-		panel.add(txtAreaReport, cc.xy(2, 4));
+		panel.add(sclPane, cc.xy(2, 4));
 		panel.add(getButtonsPanel(), cc.xy(2, 6));
 
 		frmLoansReportForm.getContentPane().add(panel, BorderLayout.CENTER);
@@ -100,6 +104,8 @@ public class LoansReport {
 		txtAreaReport.setLineWrap(true);
 		txtAreaReport.setEditable(false);
 		txtAreaReport.setBackground(Color.WHITE);
+		sclPane = new JScrollPane(txtAreaReport);
+		sclPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
 		// Cancel button
 		btnCancel = new JButton("Schliessen");
