@@ -375,6 +375,7 @@ public class LoanDetail implements SubFrame<Customer> {
 					txtBookTitle.setText(c.getBook().getName());
 					txtBookAuthor.setText(c.getBook().getAuthor());
 					txtBookPublisher.setText(c.getBook().getPublisher());
+				}
 			}
 		});
 //		txtCopyId.addKeyListener(new KeyAdapter() {
