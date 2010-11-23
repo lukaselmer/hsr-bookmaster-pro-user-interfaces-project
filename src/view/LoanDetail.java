@@ -395,8 +395,10 @@ public class LoanDetail implements SubFrame<Customer> {
 		loanTableModel.updateLoans(library.getCustomerLoans(customer));
 		lblNumber.setText("" + library.getCustomerLoans(customer).size());
 		btnLendNewCopy.setEnabled(library.getCurrentLoans().size() < 3);
-		txtCopyId.setEnabled(library.getCustomerLoans(customer).size() < 3);
-		txtCopyId.setText("" + (txtCopyId.isEnabled() ? "" : "Maximale Anzahl Ausleihen erreicht"));
+		txtCopyId.setEnabled(library.getCustomerLoans(customer).size() < 3 && !(library.hasCustomerOverdueBooks(customer)));
+		txtCopyId.setText(""
+				+ (txtCopyId.isEnabled() ? "" : (library.hasCustomerOverdueBooks(customer) ? "Überfällige Ausleihe"
+						: "Maximale Anzahl Ausleihen erreicht")));
 	}
 
 	protected List<Loan> getSelectedLoans() {

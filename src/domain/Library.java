@@ -276,14 +276,11 @@ public class Library extends Observable implements Observer {
 		return null;
 	}
 	
-	public List<Loan> hasCustomerOverdueBooks(Customer c){
-		List<Loan> loans = new ArrayList<Loan>();
+	public boolean hasCustomerOverdueBooks(Customer c){
 		for (Loan l : getCustomerLoans(c)){
-			if (l.isOverdue()){
-				loans.add(l);
-			}
+			if (l.isOverdue()) return true;
 		}
-		return loans;
+		return false;
 	}
 
 	public String generateReportForLoansReturn(List<Loan> ll) {
