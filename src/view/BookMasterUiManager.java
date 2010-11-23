@@ -11,6 +11,7 @@ import view.book_detail.BookDetail;
 import view.book_master.SubFrame;
 import view.customer.CustomerEdit;
 import view.customer.CustomerNew;
+import view.loan_detail.LoanDetail;
 import view.loans_report.LoansReport;
 import domain.Book;
 import domain.Customer;

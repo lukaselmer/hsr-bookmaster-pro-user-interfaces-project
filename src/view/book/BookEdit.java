@@ -8,6 +8,8 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
@@ -59,11 +61,6 @@ public class BookEdit extends BookForm implements SubFrame<Book>, Observer {
 	}
 
 	@Override
-	protected String getSaveButtonTitle() {
-		return "Änderungen Speichern";
-	}
-
-	@Override
 	protected void saveBook(Book b) {
 		book.updateValues(b);
 		JOptionPane.showMessageDialog(frmBookForm, "Buchtitel wurde erfolgreich gespeichert.", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
@@ -101,21 +98,28 @@ public class BookEdit extends BookForm implements SubFrame<Book>, Observer {
 		if (updateForm) {
 			updateForm(book);
 		}
+	}
+	
+	private class ActSaveBook extends AbstractAction{
+		private static final long serialVersionUID = 3518889519555237035L;
 
+		public ActSaveBook() {
+			putValue(NAME, "Änderungen Speichern");
+			putValue(MNEMONIC_KEY, KeyEvent.VK_S);
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			savedObject = formValidator.validateForm(null);
+			if (savedObject == null)
+				throw new RuntimeException("Bad state");
+			saveBook(savedObject);
+			frmBookForm.dispose();
+		}
 	}
 
 	@Override
-	protected JMenuItem getSaveMenuItem() {
-		JMenuItem mnSave = new JMenuItem("Änderungen Speichern");
-		mnSave.setMnemonic(KeyEvent.VK_S);
-		mnSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-		mnSave.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveBook(book);
-				}
-		});
-		mnSave.setEnabled(false);
-		return mnSave;
+	protected Action getSaveAction() {
+		return new ActSaveBook();
 	}
 }

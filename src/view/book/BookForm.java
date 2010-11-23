@@ -62,6 +62,7 @@ public abstract class BookForm {
 			frmBookForm.dispose();
 		}
 	};
+	private Action actSave = getSaveAction();
 
 	/**
 	 * Launch the application.
@@ -81,11 +82,9 @@ public abstract class BookForm {
 
 	protected abstract String getWindowTitle();
 
-	protected abstract String getSaveButtonTitle();
-
 	protected abstract void saveBook(Book c);
 	
-	protected abstract JMenuItem getSaveMenuItem(); 
+	protected abstract Action getSaveAction();
 
 	public JFrame getFrame() {
 		return frmBookForm;
@@ -172,7 +171,7 @@ public abstract class BookForm {
 		JMenu mnFile = new JMenu("Datei");
 		menuBar.add(mnFile);
 		
-		JMenuItem mnSave = getSaveMenuItem();
+		JMenuItem mnSave = new JMenuItem(actSave);
 		
 		JMenuItem mnClose = new JMenuItem(actClose);
 		
@@ -229,18 +228,8 @@ public abstract class BookForm {
 		lblShelf.setLabelFor(cmbShelf);
 
 		// Save button
-		btnSave = new JButton(getSaveButtonTitle());
-		btnSave.setMnemonic(KeyEvent.VK_S);
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				savedObject = formValidator.validateForm(null);
-				if (savedObject == null)
-					throw new RuntimeException("Bad state");
-				saveBook(savedObject);
-				frmBookForm.dispose();
-			}
-		});
-		btnSave.setEnabled(false);
+		btnSave = new JButton(actSave);
+		actSave.setEnabled(false);
 
 		// Cancel button
 		btnCancel = new JButton("Abbrechen");
