@@ -1,9 +1,12 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.TreeMap;
 
 public class Library extends Observable implements Observer {
 
@@ -272,4 +275,31 @@ public class Library extends Observable implements Observer {
 		}
 		return null;
 	}
+
+	public String generateReportForLoansReturn(List<Loan> ll) {
+		StringBuilder s = new StringBuilder("Report für " + ll.size() + " Ausleihe" + (ll.size() > 1 ? "n" : "") + ":\n\n");
+		Map<Customer, List<Loan>> m = new HashMap<Customer, List<Loan>>();
+		for (Loan l : ll) {
+			if (!m.containsKey(l.getCustomer())) {
+				m.put(l.getCustomer(), new ArrayList<Loan>());
+			}
+			m.get(l.getCustomer()).add(l);
+		}
+		for (Customer c : m.keySet()) {
+			s.append(generateReportForLoansReturnForSingleClient(c, m.get(c)));
+		}
+		return s.toString();
+	}
+
+	public StringBuilder generateReportForLoansReturnForSingleClient(Customer c, List<Loan> ll) {
+		StringBuilder s = new StringBuilder("Kunde: " + c.toString() + ":\n");
+		int overduesCount = 0;
+		for (Loan l : ll) {
+			overduesCount += (l.isOverdue() ? 1 : 0);
+		}
+		s.append(ll.size() + " Ausleihe" + (ll.size() > 1 ? "n" : "") + "\n" + (overduesCount == 0 ? "Keine" : overduesCount)
+				+ " Überfällig" + (overduesCount != 1 ? "e" : "") + "\n\n");
+		return s;
+	}
+
 }

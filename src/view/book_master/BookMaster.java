@@ -960,8 +960,15 @@ public class BookMaster implements Observer {
 			List<Loan> loans = getSelectedLoans();
 			// TODO: add dialog for returned loans, maybe promt if lons
 			// really should be returned!
-			for (Loan l : loans) {
-				l.returnCopy();
+			if (JOptionPane.showConfirmDialog(frmBookmaster, "Sind Sie sicher, dass Sie " + loans.size() + " Ausleihe"
+					+ (loans.size() > 1 ? "n" : "") + " zurückgeben wollen?", "Selektierte Ausleihen zurückgeben",
+					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+				String report = library.generateReportForLoansReturn(loans);
+				for (Loan l : loans) {
+					l.returnCopy();
+				}
+				JOptionPane
+						.showMessageDialog(frmBookmaster, report, "Report für zurückgegebene Ausleihen", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}
