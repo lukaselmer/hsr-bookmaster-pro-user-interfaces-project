@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -72,6 +73,9 @@ import java.awt.event.InputEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -233,26 +237,35 @@ public class BookMaster implements Observer {
 		frmBookmaster.setMinimumSize(new Dimension(650, 400));
 		initMenu();
 
-		tabbedPane = new JTabbedPane(SwingConstants.TOP) {
-			protected void paintComponent(java.awt.Graphics g) {
-				Graphics2D g2 = (Graphics2D) g;
-				g2.setColor(new Color(100, 240, 240, 230));
-				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			tabbedPane = new JTabbedPane(SwingConstants.TOP) {
+			private BufferedImage myPicture;
 
-				Ellipse2D cloudPuff1 = new Ellipse2D.Double(0, 40, 250, 70);
-				Ellipse2D cloudPuff2 = new Ellipse2D.Double(25, 0, 100, 90);
-				Ellipse2D cloudPuff3 = new Ellipse2D.Double(95, 10, 80, 60);
-				Ellipse2D cloudPuff4 = new Ellipse2D.Double(145, 30, 80, 60);
-				Area cloud = new Area(cloudPuff1);
-				cloud.add(new Area(cloudPuff2));
-				cloud.add(new Area(cloudPuff3));
-				cloud.add(new Area(cloudPuff4));
-				AffineTransform t = new AffineTransform();
-				t.translate(this.getWidth() - 120, 10);
-				t.scale(0.4, 0.4);
-				cloud.transform(t);
-				g2.fill(cloud);
+			protected void paintComponent(java.awt.Graphics g) {
 				super.paintComponent(g);
+				Graphics2D g2 = (Graphics2D) g;
+				try {
+					myPicture = ImageIO.read(new File("data/icons/logo2.png"));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				g2.drawImage(myPicture, this.getWidth() - 227, 3, this);
+//				g2.setColor(new Color(100, 240, 240, 230));
+//				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//
+//				Ellipse2D cloudPuff1 = new Ellipse2D.Double(0, 40, 250, 70);
+//				Ellipse2D cloudPuff2 = new Ellipse2D.Double(25, 0, 100, 90);
+//				Ellipse2D cloudPuff3 = new Ellipse2D.Double(95, 10, 80, 60);
+//				Ellipse2D cloudPuff4 = new Ellipse2D.Double(145, 30, 80, 60);
+//				Area cloud = new Area(cloudPuff1);
+//				cloud.add(new Area(cloudPuff2));
+//				cloud.add(new Area(cloudPuff3));
+//				cloud.add(new Area(cloudPuff4));
+//				AffineTransform t = new AffineTransform();
+//				t.translate(this.getWidth() - 120, 10);
+//				t.scale(0.4, 0.4);
+//				cloud.transform(t);
+//				g2.fill(cloud);
 			};
 		};
 		frmBookmaster.getContentPane().add(tabbedPane, BorderLayout.CENTER);
