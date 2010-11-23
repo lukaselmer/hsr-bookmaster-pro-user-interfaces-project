@@ -967,8 +967,9 @@ public class BookMaster implements Observer {
 				for (Loan l : loans) {
 					l.returnCopy();
 				}
-				JOptionPane
-						.showMessageDialog(frmBookmaster, report, "Report für zurückgegebene Ausleihen", JOptionPane.INFORMATION_MESSAGE);
+				uimanager.openLoansReportFrame(report);
+//				JOptionPane
+//						.showMessageDialog(frmBookmaster, report, "Report für zurückgegebene Ausleihen", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}

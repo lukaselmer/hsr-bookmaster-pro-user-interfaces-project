@@ -31,25 +31,6 @@ public class BookMasterUiManager {
 		return library;
 	}
 
-	// protected <T> SubFrame<T> createFrame(T t) {
-	// return createFrame(t, 0);
-	// }
-
-	// protected <T> SubFrame<T> createFrame(T o, int i) {
-	// if (o instanceof Book) {
-	// if (i == 0)
-	// return (SubFrame<T>) new BookDetail(this, (Book) o);
-	// else if (i == 1)
-	// return (SubFrame<T>) new BookEdit(getLibrary(), (Book) o);
-	// else
-	// throw new NotImplementedException();
-	// } else if (o instanceof Customer) {
-	// return (SubFrame<T>) new CustomerEdit(this, (Customer) o);
-	// } else {
-	// throw new NotImplementedException();
-	// }
-	// }
-
 	public void openBookDetailWindow(Book o) {
 		for (SubFrame<Book> f : subFrames) {
 			if (f instanceof BookDetail && f.getObject().equals(o)) {
@@ -148,30 +129,9 @@ public class BookMasterUiManager {
 		}
 	}
 
-	// boolean detailOpen = false;
-	// for (SubFrame<Object> bd : subFrames) {
-	// if (bd.getObject().equals(object)) {
-	// detailOpen = true;
-	// bd.toFront();
-	// break;
-	// }
-	// if (bd.getClass().equals(LoanDetail.class)) {
-	// detailOpen = true;
-	// bd.toFront();
-	// LoanDetail ld = (LoanDetail) (Object) bd;
-	// ld.updateLoan((Loan) object);
-	// break;
-	// }
-	// }
-	// if (!detailOpen) {
-	// final SubFrame<T> bd = createFrame(object, i);
-	// subFrames.add((SubFrame<Object>) bd);
-	// bd.getFrame().addWindowListener(new WindowAdapter() {
-	// @Override
-	// public void windowClosed(WindowEvent arg0) {
-	// subFrames.remove(bd);
-	// }
-	// });
-	// }
+	public void openLoansReportFrame(String report) {
+		// TODO Auto-generated method stub
+
+	}
 
 }
