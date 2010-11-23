@@ -35,10 +35,12 @@ public class LoansReport {
 	protected JFrame frmLoansReportForm;
 	protected JTextArea txtAreaReport;
 	protected JButton btnCancel;
+	protected JButton btnUndo;
 	private BookMasterUiManager uimanager;
 	private String report;
 	private JScrollPane sclPane;
 	private List<Loan> loans;
+	private Library library;
 
 	/**
 	 * Launch the application.
@@ -59,6 +61,7 @@ public class LoansReport {
 
 	public LoansReport(BookMasterUiManager uimanager, List<Loan> loans) {
 		this.uimanager = uimanager;
+		this.library = uimanager.getLibrary();
 		this.loans = loans;
 		this.report = uimanager.getLibrary().generateReportForLoansReturn(loans);
 		initialize();
@@ -93,10 +96,11 @@ public class LoansReport {
 	}
 
 	private Component getButtonsPanel() {
-		FormLayout layout = new FormLayout("pref:grow, 5dlu, pref", "pref");
+		FormLayout layout = new FormLayout("pref:grow, 5dlu, pref, 5dlu, pref", "pref");
 		JPanel panel = new JPanel(layout);
 		CellConstraints cc = new CellConstraints();
-		panel.add(btnCancel, cc.xy(3, 1));
+		panel.add(btnUndo, cc.xy(3, 1));
+		panel.add(btnCancel, cc.xy(5, 1));
 		return panel;
 	}
 
@@ -120,6 +124,17 @@ public class LoansReport {
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frmLoansReportForm.dispose();
+			}
+		});
+
+		// Undo button
+		btnUndo = new JButton("Rückgängig");
+		btnUndo.setMnemonic(KeyEvent.VK_R);
+		btnUndo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				for (Loan l : loans) {
+					l.undoReturnCopy();
+				}
 			}
 		});
 	}

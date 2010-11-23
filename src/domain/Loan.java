@@ -36,6 +36,13 @@ public class Loan extends Observable {
 		return true;
 	}
 
+	public void undoReturnCopy() {
+		this.returnDate = null;
+		copy.setCurrentLoan(this);
+		setChanged();
+		notifyObservers();
+	}
+
 	public void returnCopy(GregorianCalendar returnDate) throws IllegalLoanOperationException {
 		if (returnDate.before(pickupDate)) {
 			throw new IllegalLoanOperationException("Return Date is before pickupDate");
