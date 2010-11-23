@@ -18,14 +18,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -82,6 +88,14 @@ public class LoanDetail implements SubFrame<Customer> {
 	private JPanel pnlReturnLoan;
 	private JButton btnReturnLoan;
 	private BookMasterUiManager uimanager;
+	private final Action actClose = new BookMasterActions.ActClose() {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			frmLoanDetail.dispose();
+		}
+	};
+	private JMenuBar menuBar;
+	private final Action actReturnLoan = new ActReturnLoan();
 
 	/**
 	 * Launch the application.
@@ -126,9 +140,23 @@ public class LoanDetail implements SubFrame<Customer> {
 		frmLoanDetail.setMinimumSize(new Dimension(400, 300));
 		cc = new CellConstraints();
 
+		initMenu();
 		initCustomerPanel();
 		initLoanPanel();
 		initAddNewLoanPanel();
+	}
+
+	private void initMenu() {
+		menuBar = new JMenuBar();
+		frmLoanDetail.setJMenuBar(menuBar);
+		JMenu mnFile = new JMenu("Datei");
+		JMenu mnEdit = new JMenu("Bearbeiten");
+		menuBar.add(mnFile);
+		menuBar.add(mnEdit);
+		JMenuItem mnClose = new JMenuItem(actClose);
+		JMenuItem mnReturnLoan = new JMenuItem(actReturnLoan);
+		mnFile.add(mnClose);
+		mnEdit.add(mnReturnLoan);
 	}
 
 	private void initCustomerPanel() {
@@ -187,19 +215,8 @@ public class LoanDetail implements SubFrame<Customer> {
 		pnlLoan.add(pnlReturnLoan, BorderLayout.NORTH);
 		sprCustomer = ViewUtil.getSeparator("");
 		pnlReturnLoan.add(sprCustomer, cc.xy(2, 1));
-		btnReturnLoan = new JButton("Ausgewählte Zurückgeben");
-		btnReturnLoan.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				List<Loan> list = getSelectedLoans();
-				for (Loan l : list) {
-					// TODO: Meldung anzeigen
-					// library.getLoans().remove(l);
-					l.returnCopy();
-				}
-				updateLoanInformation();
-			}
-		});
-		btnReturnLoan.setEnabled(false);
+		btnReturnLoan = new JButton(actReturnLoan);
+		actReturnLoan.setEnabled(false);
 		pnlReturnLoan.add(btnReturnLoan, cc.xy(2, 3, "right, bottom"));
 	}
 
@@ -271,7 +288,7 @@ public class LoanDetail implements SubFrame<Customer> {
 
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
-				btnReturnLoan.setEnabled(tblLoans.getSelectedRowCount() > 0);
+				actReturnLoan.setEnabled(tblLoans.getSelectedRowCount() > 0);
 			}
 		});
 	}
@@ -296,6 +313,7 @@ public class LoanDetail implements SubFrame<Customer> {
 		pnlNewLoan.add(txtCopyId, cc.xy(4, 4));
 
 		btnLendNewCopy = new JButton("Exemplar Ausleihen");
+		btnLendNewCopy.setMnemonic(KeyEvent.VK_A);
 		btnLendNewCopy.setEnabled(false);
 		btnLendNewCopy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -373,6 +391,7 @@ public class LoanDetail implements SubFrame<Customer> {
 
 	protected void updateLoanInformation() {
 		loanTableModel.updateLoans(library.getCustomerLoans(customer));
+		lblNumber.setText(""+library.getCustomerLoans(customer).size());
 		btnLendNewCopy.setEnabled(library.getCurrentLoans().size() < 3);
 		txtCopyId.setEnabled(library.getCustomerLoans(customer).size() < 3);
 		txtCopyId.setText("" + (txtCopyId.isEnabled() ? "" : "Maximale Anzahl Ausleihen erreicht"));
@@ -412,5 +431,25 @@ public class LoanDetail implements SubFrame<Customer> {
 	@Override
 	public void addWindowListener(WindowAdapter windowAdapter) {
 		frmLoanDetail.addWindowListener(windowAdapter);
+	}
+	
+	private class ActReturnLoan extends AbstractAction{
+		private static final long serialVersionUID = 5728087231118105568L;
+		
+		public ActReturnLoan() {
+			putValue(NAME, "Selektierte Zurückgeben");
+			putValue(MNEMONIC_KEY, KeyEvent.VK_Z);
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.ALT_MASK));
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			List<Loan> list = getSelectedLoans();
+			for (Loan l : list) {
+				// TODO: Meldung anzeigen
+				l.returnCopy();
+			}
+			updateLoanInformation();
+		}		
 	}
 }
