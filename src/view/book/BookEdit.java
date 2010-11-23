@@ -99,27 +99,9 @@ public class BookEdit extends BookForm implements SubFrame<Book>, Observer {
 			updateForm(book);
 		}
 	}
-	
-	private class ActSaveBook extends AbstractAction{
-		private static final long serialVersionUID = 3518889519555237035L;
-
-		public ActSaveBook() {
-			putValue(NAME, "Änderungen Speichern");
-			putValue(MNEMONIC_KEY, KeyEvent.VK_S);
-			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-		}
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			savedObject = formValidator.validateForm(null);
-			if (savedObject == null)
-				throw new RuntimeException("Bad state");
-			saveBook(savedObject);
-			frmBookForm.dispose();
-		}
-	}
 
 	@Override
-	protected Action getSaveAction() {
-		return new ActSaveBook();
+	protected String getSaveButtonString() {
+		return "Änderungen Speichern";
 	}
 }

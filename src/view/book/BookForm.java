@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.text.ParseException;
 
+import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -56,13 +57,13 @@ public abstract class BookForm {
 	protected Book savedObject;
 	private BookMasterUiManager uimanager;
 	private JMenuBar menuBar;
-	private Action actClose = new BookMasterActions.ActClose() {
+	private final Action actClose = new BookMasterActions.ActClose() {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			frmBookForm.dispose();
 		}
 	};
-	private Action actSave = getSaveAction();
+	private final Action actSave = new ActSave();
 
 	/**
 	 * Launch the application.
@@ -84,7 +85,8 @@ public abstract class BookForm {
 
 	protected abstract void saveBook(Book c);
 	
-	protected abstract Action getSaveAction();
+	protected abstract String getSaveButtonString();
+
 
 	public JFrame getFrame() {
 		return frmBookForm;
@@ -247,5 +249,24 @@ public abstract class BookForm {
 
 	public void addWindowListener(WindowAdapter windowAdapter) {
 		frmBookForm.addWindowListener(windowAdapter);
+	}
+	
+	private class ActSave extends AbstractAction{
+		private static final long serialVersionUID = 6075552530373572839L;
+
+		public ActSave() {
+			putValue(NAME, getSaveButtonString());
+			putValue(MNEMONIC_KEY, KeyEvent.VK_S);
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			savedObject = formValidator.validateForm(null);
+			if (savedObject == null)
+				throw new RuntimeException("Bad state");
+			saveBook();
+			frmBookForm.dispose();
+		}
 	}
 }

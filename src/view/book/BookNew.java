@@ -46,28 +46,9 @@ public class BookNew extends BookForm {
 		JOptionPane.showMessageDialog(frmBookForm, "Buchtitel wurde erfolgreich erstellt und der Buchtiteltabelle hinzugefügt.", "Hinweis",
 				JOptionPane.INFORMATION_MESSAGE);
 	}
-	
-	private class ActSaveBook extends AbstractAction{
-		private static final long serialVersionUID = -3968511086527288828L;
-
-		public ActSaveBook() {
-			putValue(NAME, "Buchtitel Erfassen");
-			putValue(MNEMONIC_KEY, KeyEvent.VK_S);
-			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			savedObject = formValidator.validateForm(null);
-			if (savedObject == null)
-				throw new RuntimeException("Bad state");
-			saveBook(savedObject);
-			frmBookForm.dispose();
-		}
-	}
 
 	@Override
-	protected Action getSaveAction() {
-		return new ActSaveBook();
+	protected String getSaveButtonString() {
+		return "Buchtitel Erfassen";
 	}
 }
