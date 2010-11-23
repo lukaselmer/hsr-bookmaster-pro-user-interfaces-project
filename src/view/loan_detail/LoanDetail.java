@@ -146,7 +146,7 @@ public class LoanDetail implements SubFrame<Customer> {
 		frmLoanDetail.setBounds(100, 100, 600, 450);
 		frmLoanDetail.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmLoanDetail.getContentPane().setLayout(new BorderLayout(0, 0));
-		frmLoanDetail.setMinimumSize(new Dimension(400, 300));
+		frmLoanDetail.setMinimumSize(new Dimension(500, 450));
 		cc = new CellConstraints();
 
 		initMenu();
