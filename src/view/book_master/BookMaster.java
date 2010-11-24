@@ -913,6 +913,7 @@ public class BookMaster implements Observer {
 			if (JOptionPane.showConfirmDialog(frmBookmaster, "Sind Sie sicher? Alle Unterfenster werden geschlossen.",
 					"BookMasterPro Schliessen", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 				frmBookmaster.setVisible(false);
+				library.deleteObserver(BookMaster.this);
 				frmBookmaster.dispose();
 				System.exit(0);
 			}

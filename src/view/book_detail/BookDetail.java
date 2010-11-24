@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -82,6 +83,8 @@ public class BookDetail implements SubFrame<Book>, Observer {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+			book.deleteObserver(BookDetail.this);
+			library.deleteObserver(BookDetail.this);
 			frmBookDetailView.dispose();
 		}
 	};
@@ -122,7 +125,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		initialize();
 		frmBookDetailView.setLocationByPlatform(true);
 		frmBookDetailView.setVisible(true);
-		book.addObserver(this);
+		this.book.addObserver(this);
 		library.addObserver(this);
 		btnAddCopy.requestFocusInWindow();
 	}
@@ -143,7 +146,13 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		frmBookDetailView.setTitle("Buch Detailansicht");
 		frmBookDetailView.setBounds(100, 100, 550, 400);
 		frmBookDetailView.setMinimumSize(new Dimension(500, 400));
-		frmBookDetailView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmBookDetailView.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frmBookDetailView.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				actClose.actionPerformed(null);
+			}
+		});
 		frmBookDetailView.getContentPane().setLayout(new BorderLayout(0, 0));
 		cc = new CellConstraints();
 		initMenu();
