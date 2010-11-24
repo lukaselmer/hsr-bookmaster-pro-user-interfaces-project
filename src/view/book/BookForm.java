@@ -60,6 +60,7 @@ public abstract class BookForm {
 	private final Action actClose = new BookMasterActions.ActClose() {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+			beforeDispose();
 			frmBookForm.dispose();
 		}
 	};
@@ -67,12 +68,11 @@ public abstract class BookForm {
 	private final Action actEnterPressed = new BookMasterActions.ActEnterPressed() {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			if (actSave.isEnabled()){
+			if (actSave.isEnabled()) {
 				actSave.actionPerformed(arg0);
 			}
 		}
 	};
-	
 
 	/**
 	 * Launch the application.
@@ -93,9 +93,11 @@ public abstract class BookForm {
 	protected abstract String getWindowTitle();
 
 	protected abstract void saveBook(Book c);
-	
+
 	protected abstract String getSaveButtonString();
 
+	protected void beforeDispose() {
+	}
 
 	public JFrame getFrame() {
 		return frmBookForm;
@@ -116,6 +118,7 @@ public abstract class BookForm {
 			initialize();
 		} catch (ParseException e) {
 			e.printStackTrace();
+			beforeDispose();
 			frmBookForm.dispose();
 		}
 		frmBookForm.setLocationByPlatform(true);
@@ -181,11 +184,11 @@ public abstract class BookForm {
 		frmBookForm.setJMenuBar(menuBar);
 		JMenu mnFile = new JMenu("Datei");
 		menuBar.add(mnFile);
-		
+
 		JMenuItem mnSave = new JMenuItem(actSave);
-		
+
 		JMenuItem mnClose = new JMenuItem(actClose);
-		
+
 		mnFile.add(mnSave);
 		mnFile.add(mnClose);
 	}
@@ -250,6 +253,7 @@ public abstract class BookForm {
 		btnCancel.setMnemonic(KeyEvent.VK_A);
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				beforeDispose();
 				frmBookForm.dispose();
 			}
 		});
@@ -262,8 +266,8 @@ public abstract class BookForm {
 	public void addWindowListener(WindowAdapter windowAdapter) {
 		frmBookForm.addWindowListener(windowAdapter);
 	}
-	
-	private class ActSave extends AbstractAction{
+
+	private class ActSave extends AbstractAction {
 		private static final long serialVersionUID = 6075552530373572839L;
 
 		public ActSave() {
@@ -274,11 +278,13 @@ public abstract class BookForm {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(!isEnabled()) return;
+			if (!isEnabled())
+				return;
 			savedObject = formValidator.validateForm(null);
 			if (savedObject == null)
 				throw new RuntimeException("Bad state");
 			saveBook(savedObject);
+			beforeDispose();
 			frmBookForm.dispose();
 		}
 	}

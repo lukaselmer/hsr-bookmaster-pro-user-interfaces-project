@@ -39,6 +39,11 @@ public class BookEdit extends BookForm implements SubFrame<Book>, Observer {
 		book.addObserver(this);
 	}
 
+	@Override
+	protected void beforeDispose() {
+		book.deleteObserver(this);
+	}
+
 	protected void updateForm(Book b) {
 		this.originalBook = new Book(b);
 		txtName.setText(b.getName());
@@ -55,8 +60,11 @@ public class BookEdit extends BookForm implements SubFrame<Book>, Observer {
 
 	@Override
 	protected void saveBook(Book b) {
-		book.updateValues(b);
-		JOptionPane.showMessageDialog(frmBookForm, "Buchtitel wurde erfolgreich gespeichert.", "Hinweis", JOptionPane.INFORMATION_MESSAGE);
+		if (frmBookForm.isValid() && frmBookForm.isVisible()) {
+			book.updateValues(b);
+			JOptionPane.showMessageDialog(frmBookForm, "Buchtitel wurde erfolgreich gespeichert.", "Hinweis",
+					JOptionPane.INFORMATION_MESSAGE);
+		}
 	}
 
 	public Book getBook() {
@@ -69,6 +77,7 @@ public class BookEdit extends BookForm implements SubFrame<Book>, Observer {
 	}
 
 	public void update(Observable o, Object obj) {
+		// if(true)return;
 		Book bookByDataInForm = formValidator.validateForm(null);
 		Book b = (Book) o;
 		if (bookByDataInForm.equals(b)) {
