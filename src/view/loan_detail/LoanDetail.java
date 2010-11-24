@@ -320,6 +320,16 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		pnlNewLoan.add(lblCopyId, cc.xy(2, 4));
 
 		txtCopyId = new JTextField();
+		txtCopyId.setAction(new BookMasterActions.ActClose() {
+			private static final long serialVersionUID = -1404805435161087634L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (actLendNewCopy.isEnabled()) {
+					actLendNewCopy.actionPerformed(e);
+				}
+			}
+		});
 
 		lblCopyId.setDisplayedMnemonic('e');
 		lblCopyId.setLabelFor(txtCopyId);
@@ -363,9 +373,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 			}
 		};
 
-		// Todo: Change to Document Listener
 		txtCopyId.getDocument().addDocumentListener(new DocumentListenerAdapter() {
-
 			@Override
 			public void documentUpdate(DocumentEvent e) {
 				SearchResult<Copy> s = formValidator.validateForm(null);
@@ -415,11 +423,17 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 	protected void updateLoanInformation() {
 		loanTableModel.updateLoans(library.getCustomerLoans(customer));
 		lblNumber.setText("" + library.getCustomerLoans(customer).size());
-		actLendNewCopy.setEnabled(library.getCurrentLoans().size() < 3 && !(library.hasCustomerOverdueBooks(customer)));
+		actLendNewCopy.setEnabled(library.getCustomerLoans(customer).size() < 3 && !(library.hasCustomerOverdueBooks(customer)));
 		txtCopyId.setEnabled(library.getCustomerLoans(customer).size() < 3 && !(library.hasCustomerOverdueBooks(customer)));
-		txtCopyId.setText(""
-				+ (txtCopyId.isEnabled() ? "" : (library.hasCustomerOverdueBooks(customer) ? "Überfällige Ausleihe"
-						: "Maximale Anzahl Ausleihen erreicht")));
+		if (!txtCopyId.isEnabled()) {
+			String s = (library.hasCustomerOverdueBooks(customer) ? "Überfällige Ausleihe" : "Maximale Anzahl Ausleihen erreicht");
+			txtCopyId.setText(s);
+			ValidationComponentUtils.setErrorBackground(txtCopyId);
+		} else {
+			txtCopyId.setText("");
+			txtCopyId.setToolTipText("");
+			ValidationComponentUtils.setMandatoryBackground(txtCopyId);
+		}
 	}
 
 	protected List<Loan> getSelectedLoans() {
@@ -458,7 +472,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		frmLoanDetail.addWindowListener(windowAdapter);
 	}
 
-	private Object[] getCustomerArray(){
+	private Object[] getCustomerArray() {
 		Object[] customers;
 		customers = library.getCustomers().toArray();
 		Sort.quicksort(customers, new Compare() {
@@ -470,7 +484,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		});
 		return customers;
 	}
-	
+
 	@Override
 	public void update(Observable o, Object arg) {
 		customers = getCustomerArray();
@@ -478,7 +492,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		cmbCustomer.setModel(new DefaultComboBoxModel(customers));
 		cmbCustomer.setSelectedIndex(0);
 		customer = (Customer) cmbCustomer.getItemAt(0);
-		if(c != null){
+		if (c != null) {
 			cmbCustomer.setSelectedItem(c);
 			customer = c;
 		}
@@ -521,6 +535,9 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		}
 
 		public void actionPerformed(ActionEvent e) {
+			if (!isEnabled()) {
+				return;
+			}
 			Copy c = formValidator.validateForm(null).getObject();
 			if (c == null)
 				throw new RuntimeException("Bad state");
