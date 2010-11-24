@@ -393,7 +393,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_E);
 			putValue(NAME, "Selektierte Entfernen");
 			putValue(SHORT_DESCRIPTION, "Entfernt die selektierten Bücher");
-			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
 		}
 
 		@Override

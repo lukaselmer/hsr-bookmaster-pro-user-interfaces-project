@@ -973,7 +973,6 @@ public class BookMaster implements Observer {
 
 		public ActOverduesOnly() {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_U);
-			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
 			putValue(NAME, "Nur Überfällige");
 			putValue(SHORT_DESCRIPTION, "Filtert die Tabelle so, dass nur überfällige Ausleihen angezeigt werden.");
 		}
@@ -991,6 +990,7 @@ public class BookMaster implements Observer {
 
 		public ActShowSelectedLoans() {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_A);
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_MASK));
 			putValue(NAME, "Selektierte Anzeigen...");
 			putValue(SHORT_DESCRIPTION, "Zeigt Details zu den selektierten Ausleihen an");
 		}
@@ -1008,6 +1008,8 @@ public class BookMaster implements Observer {
 
 		public ActReturnSelectedLoans() {
 			putValue(NAME, "Selektierte Zurückgeben");
+			putValue(MNEMONIC_KEY, KeyEvent.VK_R);
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK));
 			putValue(SHORT_DESCRIPTION, "Gibt die selektieren Ausleihen zurück");
 		}
 
@@ -1029,6 +1031,7 @@ public class BookMaster implements Observer {
 
 		public ActShowSelectedCustomers() {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_A);
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_MASK));
 			putValue(NAME, "Selektierte Bearbeiten...");
 			putValue(SHORT_DESCRIPTION, "Bearbeitet die ausgewählten Kunden");
 		}
@@ -1046,6 +1049,7 @@ public class BookMaster implements Observer {
 
 		public ActLoanForSelectedCustomer() {
 			putValue(NAME, "Ausleihe für Kunde erfassen...");
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_MASK));
 			putValue(SHORT_DESCRIPTION, "Zeigt Details zu den Ausleihen des selekierten Kunden");
 		}
 
