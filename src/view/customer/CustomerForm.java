@@ -306,10 +306,10 @@ public abstract class CustomerForm {
 		private static final long serialVersionUID = 7524200258063461521L;
 
 		public ActSave() {
-			putValue(MNEMONIC_KEY, KeyEvent.VK_R);
-			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
+			putValue(MNEMONIC_KEY, KeyEvent.VK_S);
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 			putValue(NAME, getSaveButtonTitle());
-			putValue(SHORT_DESCRIPTION, "Macht die Rückgabe der Ausleihen rückgängig und schliesst das Fenster");
+			putValue(SHORT_DESCRIPTION, getSaveButtonTitle());
 		}
 
 		public void actionPerformed(ActionEvent e) {
