@@ -77,7 +77,8 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	private JMenuBar menuBar;
 	private JMenuItem mnRemoveSelected;
 	private final Action actClose = new BookMasterActions.ActClose() {
-		
+		private static final long serialVersionUID = -3144068899843068828L;
+
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			frmBookDetailView.dispose();
@@ -160,7 +161,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 
 		JMenuItem mnEditBook = new JMenuItem(actEditBook);
 		mnRemoveSelected = new JMenuItem(actRemoveSelected);
-		
+
 		JMenuItem mnAddCopy = new JMenuItem(actAddCopy);
 
 		mnEdit.add(mnEditBook);
@@ -196,7 +197,6 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		lblShelf = new JLabel("Regal:");
 
 		txtTitle = ViewUtil.getTextField(book.getName());
-		txtTitle.setCaretPosition(1);
 		txtAuthor = ViewUtil.getTextField(book.getAuthor());
 		txtPublisher = ViewUtil.getTextField(book.getPublisher());
 		txtShelf = ViewUtil.getTextField(book.getShelf().toString());
@@ -290,11 +290,11 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	}
 
 	protected void removeSelectedCopies() {
-			List<Copy> copies = getSelectedCopies();
-			for (Copy c : copies) {
-				library.removeCopy(c);
-			}
-			updateBookInformation();
+		List<Copy> copies = getSelectedCopies();
+		for (Copy c : copies) {
+			library.removeCopy(c);
+		}
+		updateBookInformation();
 	}
 
 	protected void updateBookInformation() {
@@ -328,9 +328,13 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		txtTitle.setText(book.getName());
+		txtTitle.setCaretPosition(0);
 		txtAuthor.setText(book.getAuthor());
+		txtAuthor.setCaretPosition(0);
 		txtPublisher.setText(book.getPublisher());
+		txtPublisher.setCaretPosition(0);
 		txtShelf.setText(book.getShelf().toString());
+		txtShelf.setCaretPosition(0);
 	}
 
 	@Override
@@ -342,22 +346,23 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	public void addWindowListener(WindowAdapter windowAdapter) {
 		frmBookDetailView.addWindowListener(windowAdapter);
 	}
-	
-	private class ActEditBook extends AbstractAction{
+
+	private class ActEditBook extends AbstractAction {
 		private static final long serialVersionUID = 3182075129242820202L;
-		
-		ActEditBook(){
+
+		ActEditBook() {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_B);
 			putValue(NAME, "Buch Bearbeiten...");
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.ALT_MASK));
 		}
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			uimanager.openBookEditWindow(book);
 		}
 	}
-	
-	private class ActRemoveSelected extends AbstractAction{
+
+	private class ActRemoveSelected extends AbstractAction {
 		private static final long serialVersionUID = 4185674812266173535L;
 
 		public ActRemoveSelected() {
@@ -365,24 +370,26 @@ public class BookDetail implements SubFrame<Book>, Observer {
 			putValue(NAME, "Selektierte Entfernen");
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.ALT_MASK));
 		}
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			removeSelectedCopies();
 			updateBookInformation();
 		}
 	}
-	
-	private class ActAddCopy extends AbstractAction{
+
+	private class ActAddCopy extends AbstractAction {
 		private static final long serialVersionUID = 6762488117389436253L;
-		
-		public ActAddCopy(){
+
+		public ActAddCopy() {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_H);
 			putValue(NAME, "Exemplar Hinzufügen");
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.ALT_MASK));
 		}
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			addNewCopy();	
+			addNewCopy();
 		}
 	}
 }

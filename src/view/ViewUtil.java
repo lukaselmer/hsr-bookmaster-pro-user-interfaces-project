@@ -31,6 +31,7 @@ public class ViewUtil {
 	
 	public static JTextField getTextField(String text){
 		JTextField textField = new JTextField(text);
+		textField.setCaretPosition(0);
 		textField.setEditable(false);
 		textField.setColumns(10);
 		return textField;
