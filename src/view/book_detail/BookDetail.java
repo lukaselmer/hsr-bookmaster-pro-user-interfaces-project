@@ -211,7 +211,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		frmBookDetailView.getContentPane().add(pnlCopies, BorderLayout.CENTER);
 		pnlCopies.setLayout(new BorderLayout(0, 0));
 
-		FormLayout copyInformationLayout = new FormLayout("5dlu, pref, 5dlu, pref, pref:grow, pref, 5dlu, pref, 5dlu",
+		FormLayout copyInformationLayout = new FormLayout("5dlu, pref, 2dlu, pref, pref:grow, pref, 5dlu, pref, 5dlu",
 				"5dlu, pref, 5dlu, pref, 5dlu");
 		pnlCopyInformation = new JPanel(copyInformationLayout);
 		pnlCopies.add(pnlCopyInformation, BorderLayout.NORTH);

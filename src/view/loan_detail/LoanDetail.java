@@ -216,7 +216,7 @@ public class LoanDetail implements SubFrame<Customer> {
 	}
 
 	private void initReturnLoanPanel() {
-		FormLayout layout = new FormLayout("5dlu, pref, 3dlu, pref, 5dlu, pref:grow, 5dlu, pref, 5dlu", "pref, 5dlu, pref, 5dlu");
+		FormLayout layout = new FormLayout("5dlu, pref, 2dlu, pref, pref:grow, pref, 5dlu, pref, 5dlu", "pref, 5dlu, pref, 5dlu");
 		pnlReturnLoan = new JPanel(layout);
 		pnlLoan.add(pnlReturnLoan, BorderLayout.NORTH);
 		sprCustomer = ViewUtil.getSeparator("");
@@ -230,7 +230,7 @@ public class LoanDetail implements SubFrame<Customer> {
 
 		btnLoanIsLost = new JButton(actLoanIsLost);
 		actLoanIsLost.setEnabled(false);
-		pnlReturnLoan.add(btnLoanIsLost, cc.xy(6, 3, "right, bottom"));
+		pnlReturnLoan.add(btnLoanIsLost, cc.xy(6, 3));
 
 		btnReturnLoan = new JButton(actReturnLoan);
 		actReturnLoan.setEnabled(false);
