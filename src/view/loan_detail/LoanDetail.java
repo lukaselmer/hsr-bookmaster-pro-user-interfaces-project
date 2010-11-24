@@ -522,7 +522,7 @@ public class LoanDetail implements SubFrame<Customer> {
 		public void actionPerformed(ActionEvent arg0) {
 			List<Loan> list = getSelectedLoans();
 			if (JOptionPane.showConfirmDialog(frmLoanDetail, "Sind Sie sicher, dass Sie " + list.size() + " Ausleihe"
-					+ (list.size() > 1 ? "n" : "") + " als verloren markieren wollen? Das Exemplar wird ", "Selektierte Ausleihen als verloren markieren",
+					+ (list.size() > 1 ? "n" : "") + " als verloren markieren wollen? Das Exemplar und die Ausleihe wird dadurch entfernt.", "Selektierte Ausleihen als verloren markieren",
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 				for (Loan l : list) {
 					l.returnCopy();

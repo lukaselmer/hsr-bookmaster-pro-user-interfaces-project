@@ -382,8 +382,8 @@ public class BookDetail implements SubFrame<Book>, Observer {
 			if (JOptionPane
 					.showConfirmDialog(
 							frmBookDetailView,
-							"Sind Sie sicher, dass Sie die selektierten Kopien entfernen möchten? Damit wird auch die Ausleihe gelöscht, falls die Kopie ausgeliehen ist.",
-							"Selektierte Kopien Entfernen", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+							"Sind Sie sicher, dass Sie die selektierten Exemplare entfernen möchten? Damit wird auch die Ausleihe gelöscht, falls das Exemplar ausgeliehen ist.",
+							"Selektierte Exemplare Entfernen", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 				removeSelectedCopies();
 				updateBookInformation();
 			}
