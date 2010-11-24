@@ -147,7 +147,7 @@ public abstract class CustomerForm {
 	private void initialize() throws ParseException {
 		frmCustomerForm = new JFrame();
 		frmCustomerForm.setTitle(getWindowTitle());
-		frmCustomerForm.setBounds(100, 100, 450, 256);
+		frmCustomerForm.setBounds(100, 100, 450, 268);
 		frmCustomerForm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmCustomerForm.setResizable(false);
 
