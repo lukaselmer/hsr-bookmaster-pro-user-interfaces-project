@@ -7,12 +7,17 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
+import java.rmi.UnexpectedException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -22,6 +27,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.management.BadStringOperationException;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -158,6 +164,7 @@ public class BookMaster implements Observer {
 		updateCustomersStatistics();
 		frmBookmaster.setLocationByPlatform(true);
 		frmBookmaster.setVisible(true);
+		txtFilterBooks.requestFocusInWindow();
 	}
 
 	private void initMenu() {
@@ -262,6 +269,24 @@ public class BookMaster implements Observer {
 		tabbedPane.setMnemonicAt(INDEX_OF_BOOKS_TAB, KeyEvent.VK_B);
 		tabbedPane.setMnemonicAt(INDEX_OF_LOANS_TAB, KeyEvent.VK_U);
 		tabbedPane.setMnemonicAt(INDEX_OF_CUSTOMERS_TAB, KeyEvent.VK_K);
+
+		tabbedPane.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				switch (tabbedPane.getSelectedIndex()) {
+				case INDEX_OF_BOOKS_TAB:
+					txtFilterBooks.requestFocusInWindow();
+					break;
+				case INDEX_OF_LOANS_TAB:
+					txtFilterLoans.requestFocusInWindow();
+					break;
+				case INDEX_OF_CUSTOMERS_TAB:
+					txtFilterCustomers.requestFocusInWindow();
+					break;
+				default:
+					throw new RuntimeException("Undefined tab!");
+				}
+			}
+		});
 	}
 
 	private void initBooksPanel() {
