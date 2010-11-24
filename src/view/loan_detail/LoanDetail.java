@@ -17,10 +17,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -65,7 +68,7 @@ import domain.Customer;
 import domain.Library;
 import domain.Loan;
 
-public class LoanDetail implements SubFrame<Customer> {
+public class LoanDetail implements SubFrame<Customer>, Observer {
 
 	private JFrame frmLoanDetail;
 	private Library library;
@@ -137,6 +140,7 @@ public class LoanDetail implements SubFrame<Customer> {
 		frmLoanDetail.setLocationByPlatform(true);
 		frmLoanDetail.setVisible(true);
 		updateCustomerInformation();
+		library.addObserver(this);
 	}
 
 	/**
@@ -182,14 +186,7 @@ public class LoanDetail implements SubFrame<Customer> {
 		lblCustomer = new JLabel("Kunde:");
 		pnlCustomer.add(lblCustomer, cc.xy(2, 4));
 
-		customers = library.getCustomers().toArray();
-		Sort.quicksort(customers, new Compare() {
-			@Override
-			public int doCompare(Object o1, Object o2) {
-				Customer s1 = (Customer) o1, s2 = (Customer) o2;
-				return s1.toString().compareTo(s2.toString());
-			}
-		});
+		customers = getCustomerArray();
 		cmbCustomer = new JComboBox(customers);
 		cmbCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -461,6 +458,33 @@ public class LoanDetail implements SubFrame<Customer> {
 		frmLoanDetail.addWindowListener(windowAdapter);
 	}
 
+	private Object[] getCustomerArray(){
+		Object[] customers;
+		customers = library.getCustomers().toArray();
+		Sort.quicksort(customers, new Compare() {
+			@Override
+			public int doCompare(Object o1, Object o2) {
+				Customer s1 = (Customer) o1, s2 = (Customer) o2;
+				return s1.toString().compareTo(s2.toString());
+			}
+		});
+		return customers;
+	}
+	
+	@Override
+	public void update(Observable o, Object arg) {
+		customers = getCustomerArray();
+		Customer c = customer;
+		cmbCustomer.setModel(new DefaultComboBoxModel(customers));
+		cmbCustomer.setSelectedIndex(0);
+		customer = (Customer) cmbCustomer.getItemAt(0);
+		if(c != null){
+			cmbCustomer.setSelectedItem(c);
+			customer = c;
+		}
+		cmbCustomer.setSelectedItem(customer);
+	}
+
 	private class ActReturnLoan extends AbstractAction {
 		private static final long serialVersionUID = 5728087231118105568L;
 
@@ -521,9 +545,10 @@ public class LoanDetail implements SubFrame<Customer> {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			List<Loan> list = getSelectedLoans();
-			if (JOptionPane.showConfirmDialog(frmLoanDetail, "Sind Sie sicher, dass Sie " + list.size() + " Ausleihe"
-					+ (list.size() > 1 ? "n" : "") + " als verloren markieren wollen? Das Exemplar und die Ausleihe wird dadurch entfernt.", "Selektierte Ausleihen als verloren markieren",
-					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+			if (JOptionPane.showConfirmDialog(frmLoanDetail,
+					"Sind Sie sicher, dass Sie " + list.size() + " Ausleihe" + (list.size() > 1 ? "n" : "")
+							+ " als verloren markieren wollen? Das Exemplar und die Ausleihe wird dadurch entfernt.",
+					"Selektierte Ausleihen als verloren markieren", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 				for (Loan l : list) {
 					library.loanLost(l);
 				}
