@@ -2,7 +2,14 @@ package view;
 
 import java.awt.ComponentOrientation;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -19,7 +26,7 @@ public class ViewUtil {
 		separator.setTitle(text);
 		return separator;
 	}
-	
+
 	public static JTextArea getTextArea(String text) {
 		JTextArea textArea = new JTextArea(text);
 		textArea.setBorder(new JTextField().getBorder());
@@ -28,12 +35,30 @@ public class ViewUtil {
 		textArea.setLineWrap(true);
 		return textArea;
 	}
-	
-	public static JTextField getTextField(String text){
+
+	public static JTextField getTextField(String text) {
 		JTextField textField = new JTextField(text);
 		textField.setCaretPosition(0);
 		textField.setEditable(false);
 		textField.setColumns(10);
 		return textField;
+	}
+
+	public static JMenu getHelpMenu(JFrame frame) {
+		JMenu mnHelp = new JMenu("Hilfe");
+		JMenuItem mnItemHelp = new JMenuItem(getHelpAction(frame));
+		mnHelp.add(mnItemHelp);
+		return mnHelp;
+	}
+
+	private static Action getHelpAction(final JFrame frame) {
+		return new BookMasterActions.ActHelp() {
+			private static final long serialVersionUID = 4091420013220897849L;
+
+			@Override
+			public JFrame getFrame() {
+				return frame;
+			}
+		};
 	}
 }

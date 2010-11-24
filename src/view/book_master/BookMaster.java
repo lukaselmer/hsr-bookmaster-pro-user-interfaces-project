@@ -210,6 +210,8 @@ public class BookMaster implements Observer {
 
 		menuItem_4 = new JMenuItem(actLoanForSelectedCustomer);
 		mnClients.add(menuItem_4);
+		
+		menuBar.add(ViewUtil.getHelpMenu(frmBookmaster));
 	}
 
 	public BookMaster inst() {
