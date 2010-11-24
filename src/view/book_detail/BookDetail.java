@@ -63,7 +63,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	private BookDetailTableModel bookTableModel;
 	private JTextField txtShelf;
 	private JPanel pnlBookInformation;
-	private JLabel lblTitel;
+	private JLabel lblTitle;
 	private JLabel lblAuthor;
 	private JLabel lblPublisher;
 	private JLabel lblShelf;
@@ -180,7 +180,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 
 		initBookPanelParameters();
 
-		pnlBookInformation.add(lblTitel, cc.xy(2, 4));
+		pnlBookInformation.add(lblTitle, cc.xy(2, 4));
 		pnlBookInformation.add(lblAuthor, cc.xy(2, 6));
 		pnlBookInformation.add(lblPublisher, cc.xy(2, 8));
 		pnlBookInformation.add(lblShelf, cc.xy(2, 10));
@@ -194,15 +194,19 @@ public class BookDetail implements SubFrame<Book>, Observer {
 
 	private void initBookPanelParameters() {
 		pnlBookInformation.add(ViewUtil.getSeparator("Buch Information"), cc.xyw(2, 2, 3));
-		lblTitel = new JLabel("Titel:");
+		lblTitle = new JLabel("Titel:");
 		lblAuthor = new JLabel("Author:");
 		lblPublisher = new JLabel("Verlag:");
 		lblShelf = new JLabel("Regal:");
 
 		txtTitle = ViewUtil.getTextField(book.getName());
+		lblTitle.setLabelFor(txtTitle);
 		txtAuthor = ViewUtil.getTextField(book.getAuthor());
+		lblAuthor.setLabelFor(lblAuthor);
 		txtPublisher = ViewUtil.getTextField(book.getPublisher());
+		lblPublisher.setLabelFor(txtPublisher);
 		txtShelf = ViewUtil.getTextField(book.getShelf().toString());
+		lblShelf.setLabelFor(txtShelf);
 
 		btnEditBook = new JButton(actEditBook);
 	}
