@@ -64,6 +64,15 @@ public abstract class BookForm {
 		}
 	};
 	private final Action actSave = new ActSave();
+	private final Action actEnterPressed = new BookMasterActions.ActEnterPressed() {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			if (actSave.isEnabled()){
+				actSave.actionPerformed(arg0);
+			}
+		}
+	};
+	
 
 	/**
 	 * Launch the application.
@@ -195,7 +204,7 @@ public abstract class BookForm {
 		txtName = new JTextField();
 		txtName.setColumns(10);
 		txtName.setName("Buch.Buchtitel");
-//		txtName.setAction(actSave);
+		txtName.setAction(actEnterPressed);
 		ValidationComponentUtils.setMandatory(txtName, true);
 
 		lblName = new JLabel("Titel:");
@@ -206,6 +215,7 @@ public abstract class BookForm {
 		txtAuthor = new JTextField();
 		txtAuthor.setColumns(10);
 		txtAuthor.setName("Buch.Autor");
+		txtAuthor.setAction(actEnterPressed);
 		ValidationComponentUtils.setMandatory(txtAuthor, true);
 
 		lblAuthor = new JLabel("Autor:");
@@ -216,6 +226,7 @@ public abstract class BookForm {
 		txtPublisher = new JTextField();
 		txtPublisher.setColumns(10);
 		txtPublisher.setName("Buch.Verlag");
+		txtPublisher.setAction(actEnterPressed);
 		ValidationComponentUtils.setMandatory(txtPublisher, true);
 
 		lblPublisher = new JLabel("Verlag:");
@@ -225,6 +236,7 @@ public abstract class BookForm {
 		// Shelf cmbBox
 		cmbShelf = new JComboBox(Shelf.values());
 		cmbShelf.setName("Buch.Regal");
+		cmbShelf.setAction(actEnterPressed);
 
 		lblShelf = new JLabel("Regal:");
 		lblShelf.setDisplayedMnemonic('p');
