@@ -254,6 +254,9 @@ public class Library extends Observable implements Observer {
 	}
 
 	public void removeCopy(Copy copy) {
+		if(copy.isLent()){
+			copy.getCurrentLoan().returnCopy();
+		}
 		copies.remove(copy);
 		setChanged();
 		notifyObservers();

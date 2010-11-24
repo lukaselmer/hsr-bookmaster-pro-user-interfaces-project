@@ -23,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -122,6 +123,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		frmBookDetailView.setLocationByPlatform(true);
 		frmBookDetailView.setVisible(true);
 		book.addObserver(this);
+		library.addObserver(this);
 	}
 
 	public JFrame getFrame() {
@@ -326,18 +328,6 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	}
 
 	@Override
-	public void update(Observable arg0, Object arg1) {
-		txtTitle.setText(book.getName());
-		txtTitle.setCaretPosition(0);
-		txtAuthor.setText(book.getAuthor());
-		txtAuthor.setCaretPosition(0);
-		txtPublisher.setText(book.getPublisher());
-		txtPublisher.setCaretPosition(0);
-		txtShelf.setText(book.getShelf().toString());
-		txtShelf.setCaretPosition(0);
-	}
-
-	@Override
 	public boolean isValid() {
 		return frmBookDetailView.isValid();
 	}
@@ -345,6 +335,22 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	@Override
 	public void addWindowListener(WindowAdapter windowAdapter) {
 		frmBookDetailView.addWindowListener(windowAdapter);
+	}
+
+	@Override
+	public void update(Observable o, Object arg1) {
+		if (o instanceof Book) {
+			txtTitle.setText(book.getName());
+			txtTitle.setCaretPosition(0);
+			txtAuthor.setText(book.getAuthor());
+			txtAuthor.setCaretPosition(0);
+			txtPublisher.setText(book.getPublisher());
+			txtPublisher.setCaretPosition(0);
+			txtShelf.setText(book.getShelf().toString());
+			txtShelf.setCaretPosition(0);
+		} else {
+			bookTableModel.updateCopies(library.getCopiesOfBook(book));
+		}
 	}
 
 	private class ActEditBook extends AbstractAction {
@@ -373,8 +379,14 @@ public class BookDetail implements SubFrame<Book>, Observer {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			removeSelectedCopies();
-			updateBookInformation();
+			if (JOptionPane
+					.showConfirmDialog(
+							frmBookDetailView,
+							"Sind Sie sicher, dass Sie die selektierten Kopien entfernen möchten? Damit wird auch die Ausleihe gelöscht, falls die Kopie ausgeliehen ist.",
+							"Selektierte Kopien Entfernen", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+				removeSelectedCopies();
+				updateBookInformation();
+			}
 		}
 	}
 
