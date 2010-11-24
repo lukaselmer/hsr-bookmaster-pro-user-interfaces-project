@@ -11,6 +11,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -102,6 +103,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 	private final Action actClose = new BookMasterActions.ActClose() {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+			library.deleteObserver(LoanDetail.this);
 			frmLoanDetail.dispose();
 		}
 	};
@@ -150,7 +152,13 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		frmLoanDetail = new JFrame();
 		frmLoanDetail.setTitle("Ausleihe Detail");
 		frmLoanDetail.setBounds(100, 100, 600, 450);
-		frmLoanDetail.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmLoanDetail.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frmLoanDetail.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				actClose.actionPerformed(null);
+			}
+		});
 		frmLoanDetail.getContentPane().setLayout(new BorderLayout(0, 0));
 		frmLoanDetail.setMinimumSize(new Dimension(500, 450));
 		cc = new CellConstraints();
