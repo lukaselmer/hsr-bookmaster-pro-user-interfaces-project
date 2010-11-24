@@ -363,6 +363,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		ActEditBook() {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_B);
 			putValue(NAME, "Buch Bearbeiten...");
+			putValue(SHORT_DESCRIPTION, "Bearbeitet die Buchinformationen");
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.CTRL_MASK));
 		}
 
@@ -378,6 +379,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		public ActRemoveSelected() {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_E);
 			putValue(NAME, "Selektierte Entfernen");
+			putValue(SHORT_DESCRIPTION, "Entfernt die selektierten Bücher");
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
 		}
 
@@ -400,6 +402,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		public ActAddCopy() {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_H);
 			putValue(NAME, "Exemplar Hinzufügen");
+			putValue(SHORT_DESCRIPTION, "Fügt ein neues Exemplar hinzu");
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.CTRL_MASK));
 		}
 
