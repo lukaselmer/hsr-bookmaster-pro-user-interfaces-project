@@ -28,7 +28,7 @@ public class CustomerValidator implements Validator<Customer> {
 			support.addError("Strasse", "Länge muss zwischen 3 und 50 Zeichen lang sein");
 
 		if (customer.getZip() == null)
-			support.addError("PLZ", "Muss ausgefüllt werden");
+			support.addError("PLZ", "Muss mit einer Zahl zwischen 1000 und 9999 ausgefüllt werden");
 		else if (1000 > customer.getZip().intValue() || customer.getZip().intValue() > 9999)
 			support.addError("PLZ", "Zahl zwischen 1000 und 9999 muss eingegeben werden");
 
