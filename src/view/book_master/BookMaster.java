@@ -7,17 +7,12 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
-import java.rmi.UnexpectedException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -27,7 +22,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.management.BadStringOperationException;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -210,7 +204,7 @@ public class BookMaster implements Observer {
 
 		menuItem_4 = new JMenuItem(actLoanForSelectedCustomer);
 		mnClients.add(menuItem_4);
-		
+
 		menuBar.add(ViewUtil.getHelpMenu(frmBookmaster));
 	}
 
@@ -245,17 +239,23 @@ public class BookMaster implements Observer {
 				g2.drawImage(new ImageIcon("data/icons/logo2.png").getImage(), this.getWidth() - 227, 3, this);
 				// Demo: 2D Wolke zeichnen
 				// g2.setColor(new Color(100, 240, 240, 130));
-				// g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				// RenderingHints.VALUE_ANTIALIAS_ON);
-				// Ellipse2D cloudPuff1 = new Ellipse2D.Double(0, 40, 250, 70);
-				// Ellipse2D cloudPuff2 = new Ellipse2D.Double(25, 0, 100, 90);
-				// Ellipse2D cloudPuff3 = new Ellipse2D.Double(95, 10, 80, 60);
-				// Ellipse2D cloudPuff4 = new Ellipse2D.Double(145, 30, 80, 60);
-				// Area cloud = new Area(cloudPuff1);
-				// cloud.add(new Area(cloudPuff2));
-				// cloud.add(new Area(cloudPuff3));
-				// cloud.add(new Area(cloudPuff4));
-				// AffineTransform t = new AffineTransform();
+				// g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING,
+				// java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+				// java.awt.geom.Ellipse2D cloudPuff1 = new
+				// java.awt.geom.Ellipse2D.Double(0, 40, 250, 70);
+				// java.awt.geom.Ellipse2D cloudPuff2 = new
+				// java.awt.geom.Ellipse2D.Double(25, 0, 100, 90);
+				// java.awt.geom.Ellipse2D cloudPuff3 = new
+				// java.awt.geom.Ellipse2D.Double(95, 10, 80, 60);
+				// java.awt.geom.Ellipse2D cloudPuff4 = new
+				// java.awt.geom.Ellipse2D.Double(145, 30, 80, 60);
+				// java.awt.geom.Area cloud = new
+				// java.awt.geom.Area(cloudPuff1);
+				// cloud.add(new java.awt.geom.Area(cloudPuff2));
+				// cloud.add(new java.awt.geom.Area(cloudPuff3));
+				// cloud.add(new java.awt.geom.Area(cloudPuff4));
+				// java.awt.geom.AffineTransform t = new
+				// java.awt.geom.AffineTransform();
 				// t.translate(this.getWidth() - 350, 10);
 				// t.scale(0.4, 0.4);
 				// cloud.transform(t);
