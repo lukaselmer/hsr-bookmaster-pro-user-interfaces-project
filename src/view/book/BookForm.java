@@ -236,7 +236,6 @@ public abstract class BookForm {
 		// Shelf cmbBox
 		cmbShelf = new JComboBox(Shelf.values());
 		cmbShelf.setName("Buch.Regal");
-		cmbShelf.setAction(actEnterPressed);
 
 		lblShelf = new JLabel("Regal:");
 		lblShelf.setDisplayedMnemonic('p');
