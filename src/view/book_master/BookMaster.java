@@ -286,7 +286,7 @@ public class BookMaster implements Observer {
 	}
 
 	private JPanel getPnlBookFilter() {
-		JLabel lblBookTableDescription = new JLabel("Alle Bücher in der Bibliothek sind in der  unterstehenden Tabelle ersichtlich");
+		JLabel lblBookTableDescription = new JLabel("Alle Bücher in der Bibliothek sind in der unterstehenden Tabelle ersichtlich");
 
 		txtFilterBooks = new JTextField();
 		txtFilterBooks.setToolTipText("Filtern nach Exemplar-IDs, Buchtitel, Regal, Author oder Verlag");
