@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.ParseException;
 
 import javax.swing.AbstractAction;
@@ -143,7 +144,13 @@ public abstract class BookForm {
 		frmBookForm = new JFrame();
 		frmBookForm.setTitle(getWindowTitle());
 		frmBookForm.setBounds(100, 100, 450, 215);
-		frmBookForm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmBookForm.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frmBookForm.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				actClose.actionPerformed(null);
+			}
+		});
 		frmBookForm.setSize(new Dimension(500, 242));
 		frmBookForm.setMinimumSize(new Dimension(350, 242));
 		// frmBookForm.setMaximumSize(new Dimension(650, 322));
