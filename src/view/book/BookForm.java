@@ -195,6 +195,7 @@ public abstract class BookForm {
 		txtName = new JTextField();
 		txtName.setColumns(10);
 		txtName.setName("Buch.Buchtitel");
+//		txtName.setAction(actSave);
 		ValidationComponentUtils.setMandatory(txtName, true);
 
 		lblName = new JLabel("Titel:");
@@ -262,6 +263,7 @@ public abstract class BookForm {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			if(!isEnabled()) return;
 			savedObject = formValidator.validateForm(null);
 			if (savedObject == null)
 				throw new RuntimeException("Bad state");
