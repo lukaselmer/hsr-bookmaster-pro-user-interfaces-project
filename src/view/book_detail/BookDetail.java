@@ -124,6 +124,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		frmBookDetailView.setVisible(true);
 		book.addObserver(this);
 		library.addObserver(this);
+		btnAddCopy.requestFocusInWindow();
 	}
 
 	public JFrame getFrame() {
@@ -208,9 +209,14 @@ public class BookDetail implements SubFrame<Book>, Observer {
 
 	private void initCopiesPanel() {
 		pnlCopies = new JPanel();
-		frmBookDetailView.getContentPane().add(pnlCopies, BorderLayout.CENTER);
 		pnlCopies.setLayout(new BorderLayout(0, 0));
+		frmBookDetailView.getContentPane().add(pnlCopies, BorderLayout.CENTER);
+		
+		initCopyInformationPanel();
+		initBooksTable();
+	}
 
+	private void initCopyInformationPanel() {
 		FormLayout copyInformationLayout = new FormLayout("5dlu, pref, 2dlu, pref, pref:grow, pref, 5dlu, pref, 5dlu",
 				"5dlu, pref, 5dlu, pref, 5dlu");
 		pnlCopyInformation = new JPanel(copyInformationLayout);
@@ -222,8 +228,6 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		pnlCopyInformation.add(lblNumber, cc.xy(4, 4));
 		pnlCopyInformation.add(btnRemoveSelected, cc.xy(6, 4));
 		pnlCopyInformation.add(btnAddCopy, cc.xy(8, 4));
-
-		initBooksTable();
 	}
 
 	private void initBooksTable() {
