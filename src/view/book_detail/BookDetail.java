@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -106,9 +107,9 @@ public class BookDetail implements SubFrame<Book>, Observer {
 			public void run() {
 				Library l = LibraryApp.inst();
 				try {
-					// Random r = new Random();
-					// new BookDetail(new BookMasterUiManager(l),
-					// l.getBooks().get(r.nextInt(l.getBooks().size())));
+					 Random r = new Random();
+					 new BookDetail(new BookMasterUiManager(l),
+					 l.getBooks().get(r.nextInt(l.getBooks().size())));
 					new BookDetail(new BookMasterUiManager(l), l.getBooks().get(0));
 				} catch (Exception e) {
 					e.printStackTrace();
