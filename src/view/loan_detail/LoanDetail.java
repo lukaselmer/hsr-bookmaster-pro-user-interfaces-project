@@ -112,6 +112,11 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 	private final Action actReturnLoan = new ActReturnLoan();
 	private JButton btnLoanIsLost;
 	private final Action actLoanIsLost = new ActLoanIsLost();
+	private JMenu mnFile;
+	private JMenu mnEdit;
+	private JMenuItem mntClose;
+	private JMenuItem mntReturnLoan;
+	private JMenuItem mntLendNewCopy;
 
 	/**
 	 * Launch the application.
@@ -172,16 +177,16 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 	private void initMenu() {
 		menuBar = new JMenuBar();
 		frmLoanDetail.setJMenuBar(menuBar);
-		JMenu mnFile = new JMenu("Datei");
-		JMenu mnEdit = new JMenu("Bearbeiten");
+		mnFile = new JMenu("Datei");
+		mnEdit = new JMenu("Bearbeiten");
 		menuBar.add(mnFile);
 		menuBar.add(mnEdit);
-		JMenuItem mnClose = new JMenuItem(actClose);
-		JMenuItem mnReturnLoan = new JMenuItem(actReturnLoan);
-		JMenuItem mnLendNewCopy = new JMenuItem(actLendNewCopy);
-		mnFile.add(mnClose);
-		mnEdit.add(mnReturnLoan);
-		mnEdit.add(mnLendNewCopy);
+		mntClose = new JMenuItem(actClose);
+		mntReturnLoan = new JMenuItem(actReturnLoan);
+		mntLendNewCopy = new JMenuItem(actLendNewCopy);
+		mnFile.add(mntClose);
+		mnEdit.add(mntReturnLoan);
+		mnEdit.add(mntLendNewCopy);
 	}
 
 	private void initCustomerPanel() {

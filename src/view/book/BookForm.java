@@ -74,6 +74,9 @@ public abstract class BookForm {
 			}
 		}
 	};
+	private JMenu mnFile;
+	private JMenuItem mntSave;
+	private JMenuItem mntClose;
 
 	/**
 	 * Launch the application.
@@ -189,15 +192,15 @@ public abstract class BookForm {
 	private void initMenu() {
 		menuBar = new JMenuBar();
 		frmBookForm.setJMenuBar(menuBar);
-		JMenu mnFile = new JMenu("Datei");
+		mnFile = new JMenu("Datei");
 		menuBar.add(mnFile);
 
-		JMenuItem mnSave = new JMenuItem(actSave);
+		mntSave = new JMenuItem(actSave);
 
-		JMenuItem mnClose = new JMenuItem(actClose);
+		mntClose = new JMenuItem(actClose);
 
-		mnFile.add(mnSave);
-		mnFile.add(mnClose);
+		mnFile.add(mntSave);
+		mnFile.add(mntClose);
 	}
 
 	private Component getButtonsPanel() {

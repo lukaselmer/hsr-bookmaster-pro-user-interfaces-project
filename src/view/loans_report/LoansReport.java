@@ -48,10 +48,10 @@ public class LoansReport {
 	private List<Loan> loans;
 	private Library library;
 	private JMenuBar menuBar;
-	private JMenu mnDatei;
-	private JMenuItem mntmSchliessen;
-	private JMenu mnBearbeiten;
-	private JMenuItem mntmRckgngigUndSchliessen;
+	private JMenu mnFile;
+	private JMenuItem mntClose;
+	private JMenu mnEdit;
+	private JMenuItem mntUndoAndClose;
 	private final Action actUndo = new ActUndo();
 	private final Action actClose = new BookMasterActions.ActClose() {
 		private static final long serialVersionUID = 5525544072589710482L;
@@ -93,17 +93,17 @@ public class LoansReport {
 		menuBar = new JMenuBar();
 		frmLoansReportForm.setJMenuBar(menuBar);
 
-		mnDatei = new JMenu("Datei");
-		menuBar.add(mnDatei);
+		mnFile = new JMenu("Datei");
+		menuBar.add(mnFile);
 
-		mntmSchliessen = new JMenuItem(actClose);
-		mnDatei.add(mntmSchliessen);
+		mntClose = new JMenuItem(actClose);
+		mnFile.add(mntClose);
 
-		mnBearbeiten = new JMenu("Bearbeiten");
-		menuBar.add(mnBearbeiten);
+		mnEdit = new JMenu("Bearbeiten");
+		menuBar.add(mnEdit);
 
-		mntmRckgngigUndSchliessen = new JMenuItem(actUndo);
-		mnBearbeiten.add(mntmRckgngigUndSchliessen);
+		mntUndoAndClose = new JMenuItem(actUndo);
+		mnEdit.add(mntUndoAndClose);
 	}
 
 	/**

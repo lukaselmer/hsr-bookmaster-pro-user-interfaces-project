@@ -52,9 +52,9 @@ public abstract class CustomerForm {
 	protected FormValidator<Customer> formValidator;
 	private BookMasterUiManager uimanager;
 	private JMenuBar menuBar;
-	private JMenu mnDatei;
-	private JMenuItem mntmRckgngigUndSchliessen;
-	private JMenuItem mntmSchliessen;
+	private JMenu mnFile;
+	private JMenuItem mntUndoAndClose;
+	private JMenuItem mntClose;
 	private final Action actSave = new ActSave();
 	private final Action actClose = new BookMasterActions.ActClose() {
 		private static final long serialVersionUID = 5235844072589710482L;
@@ -112,14 +112,14 @@ public abstract class CustomerForm {
 		menuBar = new JMenuBar();
 		frmCustomerForm.setJMenuBar(menuBar);
 
-		mnDatei = new JMenu("Datei");
-		menuBar.add(mnDatei);
+		mnFile = new JMenu("Datei");
+		menuBar.add(mnFile);
 		
-		mntmRckgngigUndSchliessen = new JMenuItem(actSave);
-		mnDatei.add(mntmRckgngigUndSchliessen);
+		mntUndoAndClose = new JMenuItem(actSave);
+		mnFile.add(mntUndoAndClose);
 
-		mntmSchliessen = new JMenuItem(actClose);
-		mnDatei.add(mntmSchliessen);
+		mntClose = new JMenuItem(actClose);
+		mnFile.add(mntClose);
 	}
 
 	public boolean isValid() {

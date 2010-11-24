@@ -77,7 +77,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	private JScrollPane scrCopies;
 	private BookMasterUiManager uimanager;
 	private JMenuBar menuBar;
-	private JMenuItem mnRemoveSelected;
+	private JMenuItem mntRemoveSelected;
 	private final Action actClose = new BookMasterActions.ActClose() {
 		private static final long serialVersionUID = -3144068899843068828L;
 
@@ -91,6 +91,11 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	private final Action actEditBook = new ActEditBook();
 	private final Action actRemoveSelected = new ActRemoveSelected();
 	private final Action actAddCopy = new ActAddCopy();
+	private JMenu mnFile;
+	private JMenu mnEdit;
+	private JMenuItem mnClose;
+	private JMenuItem mnEditBook;
+	private JMenuItem mnAddCopy;
 
 	/**
 	 * Launch the application.
@@ -163,21 +168,21 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	private void initMenu() {
 		menuBar = new JMenuBar();
 		frmBookDetailView.setJMenuBar(menuBar);
-		JMenu mnFile = new JMenu("Datei");
-		JMenu mnEdit = new JMenu("Bearbeiten");
+		mnFile = new JMenu("Datei");
+		mnEdit = new JMenu("Bearbeiten");
 		menuBar.add(mnFile);
 		menuBar.add(mnEdit);
 
-		JMenuItem mnClose = new JMenuItem(actClose);
+		mnClose = new JMenuItem(actClose);
 		mnFile.add(mnClose);
 
-		JMenuItem mnEditBook = new JMenuItem(actEditBook);
-		mnRemoveSelected = new JMenuItem(actRemoveSelected);
+		mnEditBook = new JMenuItem(actEditBook);
+		mntRemoveSelected = new JMenuItem(actRemoveSelected);
 
-		JMenuItem mnAddCopy = new JMenuItem(actAddCopy);
+		mnAddCopy = new JMenuItem(actAddCopy);
 
 		mnEdit.add(mnEditBook);
-		mnEdit.add(mnRemoveSelected);
+		mnEdit.add(mntRemoveSelected);
 		mnEdit.add(mnAddCopy);
 	}
 
