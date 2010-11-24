@@ -105,6 +105,8 @@ public class LoanDetail implements SubFrame<Customer> {
 	private Action actLendNewCopy = new ActLendNewCopy();
 	private JMenuBar menuBar;
 	private final Action actReturnLoan = new ActReturnLoan();
+	private JButton btnLoanIsLost;
+	private final Action actLoanIsLost = new ActLoanIsLost();
 
 	/**
 	 * Launch the application.
@@ -171,12 +173,11 @@ public class LoanDetail implements SubFrame<Customer> {
 	}
 
 	private void initCustomerPanel() {
-		FormLayout layoutCustomer = new FormLayout("5dlu, pref, 5dlu, pref, 5dlu, pref:grow, 5dlu",
-				"3dlu, pref, 10dlu, pref, 5dlu, pref, 5dlu");
+		FormLayout layoutCustomer = new FormLayout("5dlu, pref, 5dlu, pref:grow, 5dlu", "3dlu, pref, 10dlu, pref, 5dlu, pref, 5dlu");
 		pnlCustomer = new JPanel(layoutCustomer);
 		frmLoanDetail.getContentPane().add(pnlCustomer, BorderLayout.NORTH);
 
-		pnlCustomer.add(ViewUtil.getSeparator("Kunden Information"), cc.xyw(2, 2, 5));
+		pnlCustomer.add(ViewUtil.getSeparator("Kunden Information"), cc.xyw(2, 2, 3));
 
 		lblCustomer = new JLabel("Kunde:");
 		pnlCustomer.add(lblCustomer, cc.xy(2, 4));
@@ -202,13 +203,7 @@ public class LoanDetail implements SubFrame<Customer> {
 			cmbCustomer.setSelectedIndex(0);
 			customer = (Customer) cmbCustomer.getItemAt(0);
 		}
-		pnlCustomer.add(cmbCustomer, cc.xyw(4, 4, 3));
-
-		lblNumberOfLoans = new JLabel("Anzahl Ausleihen:");
-		pnlCustomer.add(lblNumberOfLoans, cc.xy(2, 6));
-
-		lblNumber = new JLabel();
-		pnlCustomer.add(lblNumber, cc.xy(4, 6));
+		pnlCustomer.add(cmbCustomer, cc.xy(4, 4));
 	}
 
 	private void initLoanPanel() {
@@ -221,14 +216,25 @@ public class LoanDetail implements SubFrame<Customer> {
 	}
 
 	private void initReturnLoanPanel() {
-		FormLayout layout = new FormLayout("5dlu, pref:grow, 5dlu", "pref, 5dlu, pref, 5dlu");
+		FormLayout layout = new FormLayout("5dlu, pref, 3dlu, pref, 5dlu, pref:grow, 5dlu, pref, 5dlu", "pref, 5dlu, pref, 5dlu");
 		pnlReturnLoan = new JPanel(layout);
 		pnlLoan.add(pnlReturnLoan, BorderLayout.NORTH);
 		sprCustomer = ViewUtil.getSeparator("");
-		pnlReturnLoan.add(sprCustomer, cc.xy(2, 1));
+		pnlReturnLoan.add(sprCustomer, cc.xyw(2, 1, 7));
+
+		lblNumberOfLoans = new JLabel("Anzahl Ausleihen:");
+		pnlReturnLoan.add(lblNumberOfLoans, cc.xy(2, 3));
+
+		lblNumber = new JLabel();
+		pnlReturnLoan.add(lblNumber, cc.xy(4, 3));
+
+		btnLoanIsLost = new JButton(actLoanIsLost);
+		actLoanIsLost.setEnabled(false);
+		pnlReturnLoan.add(btnLoanIsLost, cc.xy(6, 3, "right, bottom"));
+
 		btnReturnLoan = new JButton(actReturnLoan);
 		actReturnLoan.setEnabled(false);
-		pnlReturnLoan.add(btnReturnLoan, cc.xy(2, 3, "right, bottom"));
+		pnlReturnLoan.add(btnReturnLoan, cc.xy(8, 3));
 	}
 
 	private void initLoanTable() {
@@ -300,7 +306,7 @@ public class LoanDetail implements SubFrame<Customer> {
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
 				actReturnLoan.setEnabled(tblLoans.getSelectedRowCount() > 0);
-
+				actLoanIsLost.setEnabled(tblLoans.getSelectedRowCount() > 0);
 			}
 		});
 	}
@@ -360,9 +366,9 @@ public class LoanDetail implements SubFrame<Customer> {
 			}
 		};
 
-		//Todo: Change to Document Listener
+		// Todo: Change to Document Listener
 		txtCopyId.getDocument().addDocumentListener(new DocumentListenerAdapter() {
-			
+
 			@Override
 			public void documentUpdate(DocumentEvent e) {
 				SearchResult<Copy> s = formValidator.validateForm(null);
@@ -380,24 +386,24 @@ public class LoanDetail implements SubFrame<Customer> {
 				}
 			}
 		});
-//		txtCopyId.addKeyListener(new KeyAdapter() {
-//			@Override
-//			public void keyReleased(KeyEvent arg0) {
-//				SearchResult<Copy> s = formValidator.validateForm(null);
-//				if (s == null) {
-//					txtBookTitle.setText("");
-//					txtBookAuthor.setText("");
-//					txtBookPublisher.setText("");
-//				} else {
-//					Copy c = s.getObject();
-//					if (c == null)
-//						throw new RuntimeException("Bad state");
-//					txtBookTitle.setText(c.getBook().getName());
-//					txtBookAuthor.setText(c.getBook().getAuthor());
-//					txtBookPublisher.setText(c.getBook().getPublisher());
-//				}
-//			}
-//		});
+		// txtCopyId.addKeyListener(new KeyAdapter() {
+		// @Override
+		// public void keyReleased(KeyEvent arg0) {
+		// SearchResult<Copy> s = formValidator.validateForm(null);
+		// if (s == null) {
+		// txtBookTitle.setText("");
+		// txtBookAuthor.setText("");
+		// txtBookPublisher.setText("");
+		// } else {
+		// Copy c = s.getObject();
+		// if (c == null)
+		// throw new RuntimeException("Bad state");
+		// txtBookTitle.setText(c.getBook().getName());
+		// txtBookAuthor.setText(c.getBook().getAuthor());
+		// txtBookPublisher.setText(c.getBook().getPublisher());
+		// }
+		// }
+		// });
 	}
 
 	protected void updateCustomerInformation() {
@@ -500,5 +506,31 @@ public class LoanDetail implements SubFrame<Customer> {
 			txtBookAuthor.setText("");
 			txtBookPublisher.setText("");
 		}
+	}
+
+	private class ActLoanIsLost extends AbstractAction {
+		private static final long serialVersionUID = 5015049695818151480L;
+
+		public ActLoanIsLost() {
+			putValue(MNEMONIC_KEY, KeyEvent.VK_V);
+			putValue(NAME, "Selektierte Als Verloren Markieren");
+			putValue(SHORT_DESCRIPTION, "Markiert selektierte Ausleihen als verloren und entfernt diese");
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.ALT_MASK));
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			List<Loan> list = getSelectedLoans();
+			if (JOptionPane.showConfirmDialog(frmLoanDetail, "Sind Sie sicher, dass Sie " + list.size() + " Ausleihe"
+					+ (list.size() > 1 ? "n" : "") + " als verloren markieren wollen? Das Exemplar wird ", "Selektierte Ausleihen als verloren markieren",
+					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+				for (Loan l : list) {
+					l.returnCopy();
+					library.removeCopy(l.getCopy());
+				}
+				updateLoanInformation();
+			}
+		}
+
 	}
 }
