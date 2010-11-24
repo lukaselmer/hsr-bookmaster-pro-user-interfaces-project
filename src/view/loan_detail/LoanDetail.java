@@ -517,7 +517,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 
 		public ActReturnLoan() {
 			putValue(NAME, "Selektierte Zurückgeben");
-			putValue(MNEMONIC_KEY, KeyEvent.VK_R);
+			putValue(MNEMONIC_KEY, KeyEvent.VK_Z);
 			putValue(SHORT_DESCRIPTION, "Gibt selektierte Bücher zurück");
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
 		}
@@ -569,7 +569,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_V);
 			putValue(NAME, "Selektierte Als Verloren Markieren");
 			putValue(SHORT_DESCRIPTION, "Markiert selektierte Ausleihen als verloren und entfernt diese");
-			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.ALT_MASK));
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
 		}
 
 		@Override

@@ -1048,7 +1048,8 @@ public class BookMaster implements Observer {
 		private static final long serialVersionUID = -4233519605516483378L;
 
 		public ActLoanForSelectedCustomer() {
-			putValue(NAME, "Ausleihe für Kunde erfassen...");
+			putValue(NAME, "Ausleihe Für Kunden Erfassen...");
+			putValue(MNEMONIC_KEY, KeyEvent.VK_E);
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_MASK));
 			putValue(SHORT_DESCRIPTION, "Zeigt Details zu den Ausleihen des selekierten Kunden");
 		}
