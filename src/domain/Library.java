@@ -9,16 +9,13 @@ import java.util.Observer;
 
 public class Library extends Observable implements Observer {
 
-	private List<Copy> copies;
-	private List<Customer> customers;
-	private List<Loan> loans;
-	private List<Book> books;
+	private List<Copy> copies = new ArrayList<Copy>();
+	private List<Customer> customers = new ArrayList<Customer>();
+	private List<Loan> loans = new ArrayList<Loan>();
+	private List<Book> books = new ArrayList<Book>();
+	private List<Loan> lostLoans = new ArrayList<Loan>();
 
 	public Library() {
-		copies = new ArrayList<Copy>();
-		customers = new ArrayList<Customer>();
-		loans = new ArrayList<Loan>();
-		books = new ArrayList<Book>();
 	}
 
 	public Loan createAndAddLoan(Customer customer, Copy copy) {
@@ -254,7 +251,7 @@ public class Library extends Observable implements Observer {
 	}
 
 	public void removeCopy(Copy copy) {
-		if(copy.isLent()){
+		if (copy.isLent()) {
 			copy.getCurrentLoan().returnCopy();
 		}
 		copies.remove(copy);
@@ -277,10 +274,11 @@ public class Library extends Observable implements Observer {
 		}
 		return null;
 	}
-	
-	public boolean hasCustomerOverdueBooks(Customer c){
-		for (Loan l : getCustomerLoans(c)){
-			if (l.isOverdue()) return true;
+
+	public boolean hasCustomerOverdueBooks(Customer c) {
+		for (Loan l : getCustomerLoans(c)) {
+			if (l.isOverdue())
+				return true;
 		}
 		return false;
 	}
@@ -309,6 +307,14 @@ public class Library extends Observable implements Observer {
 		s.append(ll.size() + " Ausleihe" + (ll.size() > 1 ? "n" : "") + "\n" + (overduesCount == 0 ? "Keine" : overduesCount)
 				+ " Überfällig" + (overduesCount != 1 ? "e" : "") + "\n\n");
 		return s;
+	}
+
+	public void loanLost(Loan l) {
+		lostLoans.add(l);
+		l.returnCopy();
+		removeCopy(l.getCopy());
+		setChanged();
+		notifyObservers();
 	}
 
 }

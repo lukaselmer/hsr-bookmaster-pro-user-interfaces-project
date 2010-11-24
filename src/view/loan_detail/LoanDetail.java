@@ -525,8 +525,7 @@ public class LoanDetail implements SubFrame<Customer> {
 					+ (list.size() > 1 ? "n" : "") + " als verloren markieren wollen? Das Exemplar und die Ausleihe wird dadurch entfernt.", "Selektierte Ausleihen als verloren markieren",
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 				for (Loan l : list) {
-					l.returnCopy();
-					library.removeCopy(l.getCopy());
+					library.loanLost(l);
 				}
 				updateLoanInformation();
 			}
