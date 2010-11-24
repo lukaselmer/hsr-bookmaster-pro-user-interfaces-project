@@ -164,8 +164,10 @@ public class LoanDetail implements SubFrame<Customer> {
 		menuBar.add(mnEdit);
 		JMenuItem mnClose = new JMenuItem(actClose);
 		JMenuItem mnReturnLoan = new JMenuItem(actReturnLoan);
+		JMenuItem mnLendNewCopy = new JMenuItem(actLendNewCopy);
 		mnFile.add(mnClose);
 		mnEdit.add(mnReturnLoan);
+		mnEdit.add(mnLendNewCopy);
 	}
 
 	private void initCustomerPanel() {
@@ -410,7 +412,7 @@ public class LoanDetail implements SubFrame<Customer> {
 	protected void updateLoanInformation() {
 		loanTableModel.updateLoans(library.getCustomerLoans(customer));
 		lblNumber.setText("" + library.getCustomerLoans(customer).size());
-		actLendNewCopy.setEnabled(library.getCurrentLoans().size() < 3);
+		actLendNewCopy.setEnabled(library.getCurrentLoans().size() < 3 && !(library.hasCustomerOverdueBooks(customer)));
 		txtCopyId.setEnabled(library.getCustomerLoans(customer).size() < 3 && !(library.hasCustomerOverdueBooks(customer)));
 		txtCopyId.setText(""
 				+ (txtCopyId.isEnabled() ? "" : (library.hasCustomerOverdueBooks(customer) ? "Überfällige Ausleihe"
@@ -459,6 +461,7 @@ public class LoanDetail implements SubFrame<Customer> {
 		public ActReturnLoan() {
 			putValue(NAME, "Selektierte Zurückgeben");
 			putValue(MNEMONIC_KEY, KeyEvent.VK_Z);
+			putValue(SHORT_DESCRIPTION, "Gibt selektierte Bücher zurück");
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.ALT_MASK));
 		}
 
@@ -482,9 +485,9 @@ public class LoanDetail implements SubFrame<Customer> {
 
 		public ActLendNewCopy() {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_A);
-			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.ALT_MASK));
+			putValue(SHORT_DESCRIPTION, "Leiht angegebenes Buch aus");
 			putValue(NAME, "Exemplar Ausleihen");
-			putValue(SHORT_DESCRIPTION, "Macht die Rückgabe der Ausleihen rückgängig und schliesst das Fenster");
 		}
 
 		public void actionPerformed(ActionEvent e) {

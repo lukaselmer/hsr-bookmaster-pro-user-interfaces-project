@@ -102,7 +102,7 @@ public abstract class FormValidator<T> {
 		ValidationResult validation = validator.validate(c);
 		btnSave.setToolTipText(validation.hasErrors() ? "<html>" + validation.getMessagesText().replaceAll("\n", "<br/>") + "</html>"
 				: null);
-		if (actSave == null) {
+		if (actSave != null) {
 			actSave.setEnabled(!validation.hasErrors());
 		} else {
 			btnSave.setEnabled(!validation.hasErrors());
