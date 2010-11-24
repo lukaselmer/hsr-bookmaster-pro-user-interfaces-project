@@ -106,11 +106,11 @@ public class BookMaster implements Observer {
 	private JTextField txtFilterLoans;
 	private BookMasterUiManager uimanager;
 	private JMenuBar menuBar;
-	private JMenu mnDatei;
-	private JMenu mnBcher;
+	private JMenu mnFile;
+	private JMenu mnBooks;
 	private JMenu mnLoans;
 	private JMenuItem mnClose;
-	private JMenuItem menuItem_1;
+	private JMenuItem mnShowSelectedBooks;
 	private JMenuItem mnNewBook;
 	private final Action actNewBook = new SwingAction();
 	private final Action actClose = new ActClose();
@@ -121,11 +121,11 @@ public class BookMaster implements Observer {
 	private final Action actShowSelectedBooks = new ActShowSelectedBooks();
 	private JMenu mnClients;
 	private final Action actOverduesOnly = new ActOverduesOnly();
-	private JMenuItem menuItem;
+	private JMenuItem mnShowSelectedLoans;
 	private JMenuItem menuItem_2;
 	private final Action actShowSelectedLoans = new ActShowSelectedLoans();
 	private final Action actReturnSelectedLoans = new ActReturnSelectedLoans();
-	private JMenuItem menuItem_3;
+	private JMenuItem mnShowSelectedCustomers;
 	private JMenuItem menuItem_4;
 	private final Action actShowSelectedCustomers = new ActShowSelectedCustomers();
 	private final Action actLoanForSelectedCustomer = new ActLoanForSelectedCustomer();
@@ -164,21 +164,21 @@ public class BookMaster implements Observer {
 		menuBar = new JMenuBar();
 		frmBookmaster.setJMenuBar(menuBar);
 
-		mnDatei = new JMenu("Datei");
-		mnDatei.setMnemonic('d');
-		menuBar.add(mnDatei);
+		mnFile = new JMenu("Datei");
+		mnFile.setMnemonic('d');
+		menuBar.add(mnFile);
 
 		mnClose = new JMenuItem(actClose);
-		mnDatei.add(mnClose);
+		mnFile.add(mnClose);
 
-		mnBcher = new JMenu("Bücher");
-		menuBar.add(mnBcher);
+		mnBooks = new JMenu("Bücher");
+		menuBar.add(mnBooks);
 
 		mnNewBook = new JMenuItem(actNewBook);
-		mnBcher.add(mnNewBook);
+		mnBooks.add(mnNewBook);
 
-		menuItem_1 = new JMenuItem(actShowSelectedBooks);
-		mnBcher.add(menuItem_1);
+		mnShowSelectedBooks = new JMenuItem(actShowSelectedBooks);
+		mnBooks.add(mnShowSelectedBooks);
 
 		mnLoans = new JMenu("Ausleihen");
 		menuBar.add(mnLoans);
@@ -186,8 +186,8 @@ public class BookMaster implements Observer {
 		mnNewLoan = new JMenuItem(actNewLoan);
 		mnLoans.add(mnNewLoan);
 
-		menuItem = new JMenuItem(actShowSelectedLoans);
-		mnLoans.add(menuItem);
+		mnShowSelectedLoans = new JMenuItem(actShowSelectedLoans);
+		mnLoans.add(mnShowSelectedLoans);
 
 		menuItem_2 = new JMenuItem(actReturnSelectedLoans);
 		mnLoans.add(menuItem_2);
@@ -198,8 +198,8 @@ public class BookMaster implements Observer {
 		mnNewCustomer = new JMenuItem(actNewCustomer);
 		mnClients.add(mnNewCustomer);
 
-		menuItem_3 = new JMenuItem(actShowSelectedCustomers);
-		mnClients.add(menuItem_3);
+		mnShowSelectedCustomers = new JMenuItem(actShowSelectedCustomers);
+		mnClients.add(mnShowSelectedCustomers);
 
 		menuItem_4 = new JMenuItem(actLoanForSelectedCustomer);
 		mnClients.add(menuItem_4);
