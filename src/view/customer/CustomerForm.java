@@ -53,7 +53,6 @@ public abstract class CustomerForm {
 	private BookMasterUiManager uimanager;
 	private JMenuBar menuBar;
 	private JMenu mnDatei;
-	private JMenu mnBearbeiten;
 	private JMenuItem mntmRckgngigUndSchliessen;
 	private JMenuItem mntmSchliessen;
 	private final Action actSave = new ActSave();
@@ -115,15 +114,12 @@ public abstract class CustomerForm {
 
 		mnDatei = new JMenu("Datei");
 		menuBar.add(mnDatei);
+		
+		mntmRckgngigUndSchliessen = new JMenuItem(actSave);
+		mnDatei.add(mntmRckgngigUndSchliessen);
 
 		mntmSchliessen = new JMenuItem(actClose);
 		mnDatei.add(mntmSchliessen);
-
-		mnBearbeiten = new JMenu("Bearbeiten");
-		menuBar.add(mnBearbeiten);
-
-		mntmRckgngigUndSchliessen = new JMenuItem(actSave);
-		mnBearbeiten.add(mntmRckgngigUndSchliessen);
 	}
 
 	public boolean isValid() {
