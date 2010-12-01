@@ -35,7 +35,7 @@ public class CustomerNew extends CustomerForm {
 
 	@Override
 	protected String getSaveButtonTitle() {
-		return "Kunde Erstellen";
+		return "Kunde Erfassen";
 	}
 
 	@Override

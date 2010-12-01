@@ -14,7 +14,7 @@ public class BookMasterActions {
 		private static final long serialVersionUID = -3249467952876507516L;
 
 		public ActClose() {
-			putValue(MNEMONIC_KEY, KeyEvent.VK_S);
+			putValue(MNEMONIC_KEY, KeyEvent.VK_L);
 			putValue(SHORT_DESCRIPTION, "Schliesst aktuelles Fenster");
 			putValue(NAME, "Schliessen");
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));

@@ -117,6 +117,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 	private JMenuItem mntClose;
 	private JMenuItem mntReturnLoan;
 	private JMenuItem mntLendNewCopy;
+	private JMenuItem mntMarkCopyAsLost;
 
 	/**
 	 * Launch the application.
@@ -182,9 +183,11 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		menuBar.add(mnFile);
 		menuBar.add(mnEdit);
 		mntClose = new JMenuItem(actClose);
+		mntMarkCopyAsLost = new JMenuItem(actLoanIsLost);
 		mntReturnLoan = new JMenuItem(actReturnLoan);
 		mntLendNewCopy = new JMenuItem(actLendNewCopy);
 		mnFile.add(mntClose);
+		mnEdit.add(mntMarkCopyAsLost);
 		mnEdit.add(mntReturnLoan);
 		mnEdit.add(mntLendNewCopy);
 	}
@@ -571,7 +574,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_V);
 			putValue(NAME, "Selektierte Als Verloren Markieren");
 			putValue(SHORT_DESCRIPTION, "Markiert selektierte Ausleihen als verloren und entfernt diese");
-			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK));
 		}
 
 		@Override
