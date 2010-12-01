@@ -12,15 +12,17 @@ public class SearchResultValidator implements Validator<SearchResult<Copy>> {
 	@Override
 	public ValidationResult validate(SearchResult<Copy> searchResult) {
 		PropertyValidationSupport support = new PropertyValidationSupport(searchResult, "Exemplar");
+		if (ValidationUtils.isBlank(searchResult.getSearchString())) {
+			support.addError("Exemplar-ID", "Muss ausgefüllt werden");
+			return support.getResult();
+		}
 		if (!searchResult.hasObject()) {
-			support.addError("Exemplar-ID", "Exemplar-ID nicht gefunden");
+			support.addError("Exemplar-ID", "Nicht gefunden");
 			return support.getResult();
 		}
 		Copy c = searchResult.getObject();
-		if (ValidationUtils.isBlank(searchResult.getSearchString())) {
-			support.addError("Exemplar-ID", "Muss ausgefüllt werden");
-		} else if (c.isLent()) {
-			//TODO: correct this
+		if (c.isLent()) {
+			// TODO: correct this
 			support.addError("Exemplar-ID", "Exemplar ist bereits ausgeliehen");
 		}
 		return support.getResult();
