@@ -427,9 +427,11 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 	protected void updateCustomerInformation() {
 		if (cmbCustomer != null && lblNumber != null) {
 			customer = (Customer) cmbCustomer.getSelectedItem();
-			lblNumber.setText("" + library.getCustomerLoans(customer).size());
-			sprCustomer.setTitle("Ausleihen von " + customer.getName() + " " + customer.getSurname());
-			updateLoanInformation();
+			if (customer != null) {
+				lblNumber.setText("" + library.getCustomerLoans(customer).size());
+				sprCustomer.setTitle("Ausleihen von " + customer.getName() + " " + customer.getSurname());
+				updateLoanInformation();
+			}
 		}
 	}
 
