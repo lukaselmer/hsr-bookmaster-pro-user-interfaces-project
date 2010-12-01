@@ -8,16 +8,11 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-
-import view.book_master.BookMaster;
-import application.LibraryApp;
 
 import com.jgoodies.animation.Animation;
 import com.jgoodies.animation.AnimationAdapter;
@@ -40,7 +35,6 @@ public class BookMasterSplashScreen {
 
 	private JWindow winMain;
 	private FanComponent fan;
-	private boolean bookMasterCreated;
 	private GlyphLabel glyphLabel;
 	private Animator fanAnimator;
 
