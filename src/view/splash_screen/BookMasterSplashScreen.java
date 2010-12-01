@@ -58,7 +58,7 @@ public class BookMasterSplashScreen {
 
 		JPanel pnlMainContent = (JPanel) winMain.getContentPane();
 		pnlMainContent.setLayout(new BorderLayout());
-		//pnlMainContent.setBackground(Color.WHITE);
+		pnlMainContent.setBackground(new Color(245, 245, 245));
 
 		int width = 500;
 		int height = 400;
