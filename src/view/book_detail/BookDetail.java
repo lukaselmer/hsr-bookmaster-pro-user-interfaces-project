@@ -383,7 +383,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_B);
 			putValue(NAME, "Buch Bearbeiten...");
 			putValue(SHORT_DESCRIPTION, "Bearbeitet die Buchinformationen");
-			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.CTRL_MASK));
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
 		}
 
 		@Override
