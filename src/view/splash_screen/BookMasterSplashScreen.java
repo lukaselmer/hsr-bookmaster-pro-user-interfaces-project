@@ -6,6 +6,7 @@ import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -29,7 +30,7 @@ import com.jgoodies.animation.animations.GlyphAnimation;
 import com.jgoodies.animation.components.FanComponent;
 import com.jgoodies.animation.components.GlyphLabel;
 
-public class SplashScreen {
+public class BookMasterSplashScreen {
 
 	private static final long serialVersionUID = 8914198159717627458L;
 
@@ -43,46 +44,18 @@ public class SplashScreen {
 	private GlyphLabel glyphLabel;
 	private Animator fanAnimator;
 
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-		} catch (Exception e) {
-		}
-		new SplashScreen();
-	}
-
-	public SplashScreen() {
+	public BookMasterSplashScreen() {
 		try {
 			showSplashScreen();
 		} catch (Exception ex) {
-			initBookMaster();
+			exitSplashScreen();
 		}
 	}
 
 	public void showSplashScreen() {
 		winMain = new JWindow();
-		winMain.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-			}
+		winMain.setAlwaysOnTop(true);
 
-			@Override
-			public void mousePressed(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				initBookMaster();
-			}
-		});
 		JPanel pnlMainContent = (JPanel) winMain.getContentPane();
 		pnlMainContent.setLayout(new BorderLayout());
 		pnlMainContent.setBackground(Color.WHITE);
@@ -100,51 +73,40 @@ public class SplashScreen {
 		glyphLabel.setPreferredSize(new Dimension(300, 100));
 		pnlMainContent.add(glyphLabel, BorderLayout.NORTH);
 
-		fan = new FanComponent(10, Color.GREEN);
+		fan = new FanComponent(10, new Color(143, 173, 255));
 		pnlMainContent.add(fan, BorderLayout.CENTER);
 
 		JLabel label = new JLabel("Intro überspringen");
 		Font f = label.getFont();
 		label.setFont(new Font(f.getName(), Font.BOLD, f.getSize()));
 		label.setBorder(new EmptyBorder(2, 5, 2, 5));
-        label.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+		label.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		pnlMainContent.add(label, BorderLayout.SOUTH);
-		
+		label.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				exitSplashScreen();
+			}
+		});
+
 		winMain.setVisible(true);
 
 		FanAnimation a4 = FanAnimation.defaultFan(fan, 40500);
 		fanAnimator = new Animator(a4, 1000);
 		fanAnimator.start();
-		
+
 		Animation animation = createAnimation();
 		animation.addAnimationListener(new AnimationListener() {
 			public void animationStarted(AnimationEvent e) {
 			}
 
 			public void animationStopped(AnimationEvent e) {
-				initBookMaster();
+				exitSplashScreen();
 			}
 		});
 
 		Animator ani1 = new Animator(animation, 30);
 		ani1.start();
-	}
-
-	protected synchronized void initBookMaster() {
-		try {
-			fanAnimator.stop();
-		} catch (Throwable t) {
-			// pass
-		}
-		try {
-			winMain.dispose();
-		} catch (Throwable t) {
-			// pass
-		}
-		if (!bookMasterCreated) {
-			new BookMaster(LibraryApp.inst());
-			bookMasterCreated = true;
-		}
 	}
 
 	private Animation createAnimation() {
@@ -155,7 +117,6 @@ public class SplashScreen {
 	}
 
 	private class StartStopHandler extends AnimationAdapter {
-
 		private String text;
 
 		public void animationStarted(AnimationEvent e) {
@@ -164,6 +125,31 @@ public class SplashScreen {
 
 		public void animationStopped(AnimationEvent e) {
 			glyphLabel.setText(text);
+		}
+	}
+
+	public boolean isSplashScreenActive() {
+		try {
+			return winMain.isVisible();
+		} catch (Throwable t) {
+			// pass
+		}
+		exitSplashScreen();
+		return false;
+	}
+
+	public synchronized void exitSplashScreen() {
+		try {
+			fanAnimator.stop();
+		} catch (Throwable t) {
+			// pass
+		}
+		try {
+			winMain.setAlwaysOnTop(false);
+			winMain.setVisible(false);
+			winMain.dispose();
+		} catch (Throwable t) {
+			// pass
 		}
 	}
 
