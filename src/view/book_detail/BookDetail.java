@@ -351,8 +351,8 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	}
 
 	@Override
-	public boolean isValid() {
-		return frmBookDetailView.isValid();
+	public boolean isVisible() {
+		return frmBookDetailView.isVisible();
 	}
 
 	@Override

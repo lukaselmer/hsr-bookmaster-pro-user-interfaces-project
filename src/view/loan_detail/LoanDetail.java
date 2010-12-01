@@ -476,8 +476,8 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 	}
 
 	@Override
-	public boolean isValid() {
-		return frmLoanDetail.isValid();
+	public boolean isVisible() {
+		return frmLoanDetail.isVisible();
 	}
 
 	@Override

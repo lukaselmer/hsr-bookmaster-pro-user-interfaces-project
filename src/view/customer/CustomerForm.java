@@ -122,8 +122,8 @@ public abstract class CustomerForm {
 		mnFile.add(mntClose);
 	}
 
-	public boolean isValid() {
-		return frmCustomerForm.isValid();
+	public boolean isVisible() {
+		return frmCustomerForm.isVisible();
 	}
 
 	public void toFront() {

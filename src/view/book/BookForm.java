@@ -59,6 +59,8 @@ public abstract class BookForm {
 	private BookMasterUiManager uimanager;
 	private JMenuBar menuBar;
 	private final Action actClose = new BookMasterActions.ActClose() {
+		private static final long serialVersionUID = -389975679735011338L;
+
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			beforeDispose();
@@ -67,6 +69,8 @@ public abstract class BookForm {
 	};
 	private final Action actSave = new ActSave();
 	private final Action actEnterPressed = new BookMasterActions.ActEnterPressed() {
+		private static final long serialVersionUID = -8465336848163118754L;
+
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			if (actSave.isEnabled()) {
@@ -129,8 +133,8 @@ public abstract class BookForm {
 		frmBookForm.setVisible(true);
 	}
 
-	public boolean isValid() {
-		return frmBookForm.isValid();
+	public boolean isVisible() {
+		return frmBookForm.isVisible();
 	}
 
 	public void toFront() {

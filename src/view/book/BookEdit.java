@@ -60,7 +60,7 @@ public class BookEdit extends BookForm implements SubFrame<Book>, Observer {
 
 	@Override
 	protected void saveBook(Book b) {
-		if (frmBookForm.isValid() && frmBookForm.isVisible()) {
+		if (frmBookForm.isVisible()) {
 			book.updateValues(b);
 			JOptionPane.showMessageDialog(frmBookForm, "Buchtitel wurde erfolgreich gespeichert.", "Hinweis",
 					JOptionPane.INFORMATION_MESSAGE);

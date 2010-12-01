@@ -7,7 +7,7 @@ public abstract interface SubFrame<T> {
 
 	public abstract void toFront();
 
-	public abstract boolean isValid();
+	public abstract boolean isVisible();
 
 	public abstract void addWindowListener(WindowAdapter windowAdapter);
 }
