@@ -64,6 +64,15 @@ public abstract class CustomerForm {
 			frmCustomerForm.dispose();
 		}
 	};
+	private final Action actEnterPressed = new BookMasterActions.ActEnterPressed() {
+		private static final long serialVersionUID = 8489606741555435162L;
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			if (actSave.isEnabled())
+				actSave.actionPerformed(arg0);
+		}
+	};
 
 	/**
 	 * Launch the application.
@@ -114,7 +123,7 @@ public abstract class CustomerForm {
 
 		mnFile = new JMenu("Datei");
 		menuBar.add(mnFile);
-		
+
 		mntUndoAndClose = new JMenuItem(actSave);
 		mnFile.add(mntUndoAndClose);
 
@@ -172,30 +181,35 @@ public abstract class CustomerForm {
 		lblName.setLabelFor(txtName);
 		txtName.setColumns(10);
 		txtName.setName("Kunde.Vorname");
+		txtName.setAction(actEnterPressed);
 		ValidationComponentUtils.setMandatory(txtName, true);
 
 		txtSurname = new JTextField();
 		lblSurname.setLabelFor(txtSurname);
 		txtSurname.setColumns(10);
 		txtSurname.setName("Kunde.Nachname");
+		txtSurname.setAction(actEnterPressed);
 		ValidationComponentUtils.setMandatory(txtSurname, true);
 
 		txtStreet = new JTextField();
 		lblStreet.setLabelFor(txtStreet);
 		txtStreet.setColumns(10);
 		txtStreet.setName("Kunde.Strasse");
+		txtStreet.setAction(actEnterPressed);
 		ValidationComponentUtils.setMandatory(txtStreet, true);
 
 		txtZip = new JTextField();
 		lblZip.setLabelFor(txtZip);
 		txtZip.setColumns(10);
 		txtZip.setName("Kunde.PLZ");
+		txtZip.setAction(actEnterPressed);
 		ValidationComponentUtils.setMandatory(txtZip, true);
 
 		txtCity = new JTextField();
 		lblCity.setLabelFor(txtCity);
 		txtCity.setColumns(10);
 		txtCity.setName("Kunde.Stadt");
+		txtCity.setAction(actEnterPressed);
 		ValidationComponentUtils.setMandatory(txtCity, true);
 
 		btnSave = new JButton(actSave);
