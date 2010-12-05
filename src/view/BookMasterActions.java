@@ -28,7 +28,6 @@ public class BookMasterActions {
 		private static final long serialVersionUID = -6339576504337199197L;
 
 		public ActEnterPressed() {
-			// putValue(SHORT_DESCRIPTION, "Schliesst aktuelles Fenster");
 			putValue(NAME, "Eingabe bestätigen");
 		}
 

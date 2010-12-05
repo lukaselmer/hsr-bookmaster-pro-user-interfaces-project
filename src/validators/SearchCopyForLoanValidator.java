@@ -7,7 +7,7 @@ import com.jgoodies.validation.util.ValidationUtils;
 
 import domain.Copy;
 
-public class SearchResultValidator implements Validator<SearchResult<Copy>> {
+public class SearchCopyForLoanValidator implements Validator<SearchResult<Copy>> {
 
 	@Override
 	public ValidationResult validate(SearchResult<Copy> searchResult) {

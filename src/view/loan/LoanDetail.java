@@ -49,7 +49,7 @@ import sun.misc.Compare;
 import sun.misc.Sort;
 import validators.FormValidator;
 import validators.SearchResult;
-import validators.SearchResultValidator;
+import validators.SearchCopyForLoanValidator;
 import view.BookMasterActions;
 import view.BookMasterUiManager;
 import view.DocumentListenerAdapter;
@@ -147,6 +147,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		frmLoanDetail.setLocationByPlatform(true);
 		frmLoanDetail.setVisible(true);
 		updateCustomerInformation();
+		updateLoanInformation();
 		library.addObserver(this);
 	}
 
@@ -314,7 +315,6 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		tblLoans.setRowSorter(rowSorter);
 
 		tblLoans.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
 				actReturnLoan.setEnabled(tblLoans.getSelectedRowCount() > 0);
@@ -335,8 +335,8 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		pnlNewLoan.add(lblCopyId, cc.xy(2, 4));
 
 		txtCopyId = new JTextField();
-		txtCopyId.setAction(new BookMasterActions.ActClose() {
-			private static final long serialVersionUID = -1404805435161087634L;
+		txtCopyId.setAction(new BookMasterActions.ActEnterPressed() {
+			private static final long serialVersionUID = -8435326848168118754L;
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -378,7 +378,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		pnlNewLoan.add(txtBookPublisher, cc.xyw(4, 10, 3));
 
 		JTextField[] fields = { txtCopyId };
-		formValidator = new FormValidator<SearchResult<Copy>>(frmLoanDetail, fields, new SearchResultValidator(), btnLendNewCopy,
+		formValidator = new FormValidator<SearchResult<Copy>>(frmLoanDetail, fields, new SearchCopyForLoanValidator(), btnLendNewCopy,
 				actLendNewCopy) {
 			@Override
 			public SearchResult<Copy> createObject() {
@@ -406,24 +406,6 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 				}
 			}
 		});
-		// txtCopyId.addKeyListener(new KeyAdapter() {
-		// @Override
-		// public void keyReleased(KeyEvent arg0) {
-		// SearchResult<Copy> s = formValidator.validateForm(null);
-		// if (s == null) {
-		// txtBookTitle.setText("");
-		// txtBookAuthor.setText("");
-		// txtBookPublisher.setText("");
-		// } else {
-		// Copy c = s.getObject();
-		// if (c == null)
-		// throw new RuntimeException("Bad state");
-		// txtBookTitle.setText(c.getBook().getName());
-		// txtBookAuthor.setText(c.getBook().getAuthor());
-		// txtBookPublisher.setText(c.getBook().getPublisher());
-		// }
-		// }
-		// });
 	}
 
 	protected void updateCustomerInformation() {
@@ -442,14 +424,19 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		lblNumber.setText("" + library.getCustomerLoans(customer).size());
 		actLendNewCopy.setEnabled(library.getCustomerLoans(customer).size() < 3 && !(library.hasCustomerOverdueBooks(customer)));
 		txtCopyId.setEnabled(library.getCustomerLoans(customer).size() < 3 && !(library.hasCustomerOverdueBooks(customer)));
-		if (!txtCopyId.isEnabled()) {
-			String s = (library.hasCustomerOverdueBooks(customer) ? "Überfällige Ausleihe" : "Maximale Anzahl Ausleihen erreicht");
-			txtCopyId.setText(s);
-			ValidationComponentUtils.setErrorBackground(txtCopyId);
-		} else {
+		if (txtCopyId.isEnabled()) {
 			txtCopyId.setText("");
-			txtCopyId.setToolTipText("");
+			txtCopyId.setToolTipText("Muss ausgefüllt werden");
 			ValidationComponentUtils.setMandatoryBackground(txtCopyId);
+			formValidator.enablePopups();
+			formValidator.validateForm(null);
+		} else {
+			formValidator.disablePopups();
+			txtCopyId.setToolTipText(null);
+			btnLendNewCopy.setToolTipText(null);
+			txtCopyId.setText(library.hasCustomerOverdueBooks(customer) ? "Überfällige Ausleihe" : "Maximale Anzahl Ausleihen erreicht");
+			ValidationComponentUtils.setErrorBackground(txtCopyId);
+			formValidator.validateForm(null);
 		}
 	}
 
@@ -589,6 +576,5 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 				updateLoanInformation();
 			}
 		}
-
 	}
 }

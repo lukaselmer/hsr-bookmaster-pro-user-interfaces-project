@@ -32,6 +32,7 @@ public abstract class FormValidator<T> {
 	private JComponent btnSave;
 	private JComponent currentComponent;
 	private Action actSave;
+	private boolean enablePopups = true;
 
 	public FormValidator(JFrame frame, JTextField[] fields, Validator<T> validator, JButton btnSave, Action actSave) {
 		this.validator = validator;
@@ -62,6 +63,10 @@ public abstract class FormValidator<T> {
 			}
 		});
 
+		addListenersToTextFields(fields);
+	}
+
+	private void addListenersToTextFields(JTextField[] fields) {
 		for (final JTextField f : fields) {
 			f.addKeyListener(new KeyAdapter() {
 				@Override
@@ -83,7 +88,8 @@ public abstract class FormValidator<T> {
 			});
 			if (ValidationComponentUtils.isMandatory(f) && f.getText().length() == 0) {
 				ValidationComponentUtils.setMandatoryBackground(f);
-				f.setToolTipText("Muss ausgefüllt werden");
+				if (enablePopups)
+					f.setToolTipText("Muss ausgefüllt werden");
 			}
 		}
 	}
@@ -100,8 +106,9 @@ public abstract class FormValidator<T> {
 	public T validateForm(JTextField f) {
 		T c = createObject();
 		ValidationResult validation = validator.validate(c);
-		btnSave.setToolTipText(validation.hasErrors() ? "<html>" + validation.getMessagesText().replaceAll("\n", "<br/>") + "</html>"
-				: null);
+		if (enablePopups)
+			btnSave.setToolTipText(validation.hasErrors() ? "<html>" + validation.getMessagesText().replaceAll("\n", "<br/>") + "</html>"
+					: null);
 		if (actSave != null) {
 			actSave.setEnabled(!validation.hasErrors());
 		} else {
@@ -111,13 +118,15 @@ public abstract class FormValidator<T> {
 			ValidationResult fieldValidation = validation.subResult(f.getName());
 			if (ValidationComponentUtils.isMandatory(f) && f.getText().length() == 0) {
 				ValidationComponentUtils.setMandatoryBackground(f);
-				f.setToolTipText("Muss ausgefüllt werden");
+				if (enablePopups)
+					f.setToolTipText("Muss ausgefüllt werden");
 				hidePopup();
 			} else if (fieldValidation.hasErrors()) {
 				ValidationComponentUtils.setErrorBackground(f);
 				String message = fieldValidation.getMessagesText().replaceFirst(f.getName() + " ", "");
-				f.setToolTipText(message);
-				if (f.hasFocus())
+				if (enablePopups)
+					f.setToolTipText(message.equals("") ? null : message);
+				if (f.hasFocus() && !message.equals(""))
 					showPopup(f, message);
 			} else {
 				f.setBackground(Color.WHITE);
@@ -128,7 +137,7 @@ public abstract class FormValidator<T> {
 		return validation.hasErrors() ? null : c;
 	}
 
-	protected void hidePopup() {
+	public void hidePopup() {
 		synchronized (popup) {
 			currentComponent = null;
 			popup.setVisible(false);
@@ -136,13 +145,16 @@ public abstract class FormValidator<T> {
 		}
 	}
 
-	protected void showPopup(JComponent f, String message) {
-		synchronized (popup) {
-			this.currentComponent = f;
-			popupMessage.setText(message);
-			popup.pack();
-			updatePopupPosition();
-			popup.setVisible(true);
+	public void showPopup(JComponent f, String message) {
+		if (enablePopups) {
+			synchronized (popup) {
+				this.currentComponent = f;
+				System.out.println(message);
+				popupMessage.setText(message);
+				popup.pack();
+				updatePopupPosition();
+				popup.setVisible(true);
+			}
 		}
 	}
 
@@ -157,6 +169,15 @@ public abstract class FormValidator<T> {
 		for (final JTextField f : fields) {
 			validateForm(f);
 		}
+	}
+
+	public void enablePopups() {
+		enablePopups = true;
+	}
+
+	public void disablePopups() {
+		enablePopups = false;
+		hidePopup();
 	}
 
 }
