@@ -106,9 +106,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 			public void run() {
 				Library l = LibraryApp.inst();
 				try {
-					 Random r = new Random();
-					 new BookDetail(new BookMasterUiManager(l),
-					 l.getBooks().get(r.nextInt(l.getBooks().size())));
+					//new BookDetail(new BookMasterUiManager(l), l.getBooks().get(new Random().nextInt(l.getBooks().size())));
 					new BookDetail(new BookMasterUiManager(l), l.getBooks().get(0));
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -229,7 +227,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		pnlCopies = new JPanel();
 		pnlCopies.setLayout(new BorderLayout(0, 0));
 		frmBookDetailView.getContentPane().add(pnlCopies, BorderLayout.CENTER);
-		
+
 		initCopyInformationPanel();
 		initBooksTable();
 	}
