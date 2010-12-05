@@ -207,7 +207,6 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		pnlBookInformation.add(txtPublisher, cc.xy(4, 8));
 		pnlBookInformation.add(txtShelf, cc.xy(4, 10));
 		pnlBookInformation.add(btnEditBook, cc.xy(4, 12, "right, bottom"));
-
 	}
 
 	private void initBookPanelParameters() {
@@ -259,19 +258,19 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		tblCopies = new JTable(bookTableModel);
 		tblCopies.getColumn("" + BookDetailTableModel.ColumnName.INVENTORY_NUMBER).setMinWidth(80);
 		tblCopies.getColumn("" + BookDetailTableModel.ColumnName.INVENTORY_NUMBER).setMaxWidth(80);
+		tblCopies.getColumn("" + BookDetailTableModel.ColumnName.COPY_CONDITION).setMinWidth(80);
+		tblCopies.getColumn("" + BookDetailTableModel.ColumnName.COPY_CONDITION).setMaxWidth(80);
 		tblCopies.setColumnSelectionAllowed(false);
 		tblCopies.setRowSelectionAllowed(true);
+		
 		TableRowSorter<BookDetailTableModel> rowSorter = new TableRowSorter<BookDetailTableModel>(bookTableModel);
-		rowSorter.setComparator(0, new Comparator<Long>() {
-
+		rowSorter.setComparator(BookDetailTableModel.ColumnName.INVENTORY_NUMBER.ordinal(), new Comparator<Long>() {
 			@Override
 			public int compare(Long l1, Long l2) {
 				return l1.compareTo(l2);
 			}
-
 		});
-		rowSorter.setComparator(1, new Comparator<String>() {
-
+		rowSorter.setComparator(BookDetailTableModel.ColumnName.AVAILABILITY.ordinal(), new Comparator<String>() {
 			@Override
 			public int compare(String s1, String s2) {
 				if (s1.startsWith("Ausgeliehen bis ") && s2.startsWith("Ausgeliehen bis ")) {
