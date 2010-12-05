@@ -58,7 +58,8 @@ public class BookMasterTableModelLoan extends BookMasterTableModel<Loan> {
 		} else if (getColumnName(col).equals(ColumnName.LOAN_TO.toString())) {
 			return l.getCustomer();
 		} else {
-			throw new RuntimeException("Undefined column name!");
+			assert false; // Execution should never reach this point: Undefined column name!
+			return null;
 		}
 	}
 

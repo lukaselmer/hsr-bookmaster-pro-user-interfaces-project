@@ -67,7 +67,8 @@ public class BookMasterTableModelBook extends BookMasterTableModel<Book> {
 				}
 			}
 		} else {
-			throw new RuntimeException("Undefined column name!");
+			assert false; // Execution should never reach this point: Undefined column name!
+			return null;
 		}
 	}
 

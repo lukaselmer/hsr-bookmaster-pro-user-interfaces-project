@@ -67,7 +67,8 @@ public class LoanDetailTableModel extends AbstractTableModel {
 		} else if (getColumnName(col).equals(ColumnName.AUTHOR.toString())){
 			return b.getAuthor();
 		} else {
-			throw new RuntimeException("Undefined column name!");
+			assert false; // Execution should never reach this point: Undefined column name!
+			return null;
 		}
 	}
 	

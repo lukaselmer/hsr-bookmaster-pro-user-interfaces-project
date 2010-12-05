@@ -326,7 +326,7 @@ public abstract class CustomerForm {
 		public void actionPerformed(ActionEvent e) {
 			Customer c = formValidator.validateForm(null);
 			if (c == null) {
-				throw new RuntimeException("Bad state");
+				assert false; // Execution should never reach this point
 			}
 			saveCustomer(c);
 			frmCustomerForm.dispose();

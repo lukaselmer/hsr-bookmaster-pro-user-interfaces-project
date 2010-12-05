@@ -149,7 +149,6 @@ public abstract class FormValidator<T> {
 		if (enablePopups) {
 			synchronized (popup) {
 				this.currentComponent = f;
-				System.out.println(message);
 				popupMessage.setText(message);
 				popup.pack();
 				updatePopupPosition();

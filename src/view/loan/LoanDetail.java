@@ -23,11 +23,14 @@ import java.util.Random;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -37,8 +40,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
+import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
@@ -216,6 +221,22 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 			cmbCustomer.setSelectedIndex(0);
 			customer = (Customer) cmbCustomer.getItemAt(0);
 		}
+
+		cmbCustomer.setRenderer(new DefaultListCellRenderer() {
+			private static final long serialVersionUID = 6545912658140960348L;
+
+			@Override
+			public Component getListCellRendererComponent(JList list, Object customerObject, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				Customer c = (Customer) customerObject;
+				int loanAmount = library.getCustomerLoans(c).size();
+				String loanAmountDescription = loanAmount == 1 ? "1 Ausleihe" : ((loanAmount == 0 ? "keine" : loanAmount) + " Ausleihen");
+
+				String value = c.toString() + " (" + loanAmountDescription + ")";
+				return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+			}
+		});
+
 		pnlCustomer.add(cmbCustomer, cc.xy(4, 4));
 	}
 
@@ -399,7 +420,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 				} else {
 					Copy c = s.getObject();
 					if (c == null)
-						throw new RuntimeException("Bad state");
+						assert false; // Execution should never reach this point
 					txtBookTitle.setText(c.getBook().getName());
 					txtBookAuthor.setText(c.getBook().getAuthor());
 					txtBookPublisher.setText(c.getBook().getPublisher());
@@ -544,7 +565,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 			}
 			Copy c = formValidator.validateForm(null).getObject();
 			if (c == null)
-				throw new RuntimeException("Bad state");
+				assert false; // Execution should never reach this point
 			library.createAndAddLoan(customer, c);
 			updateCustomerInformation();
 			txtBookTitle.setText("");

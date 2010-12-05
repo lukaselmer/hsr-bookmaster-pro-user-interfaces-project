@@ -285,7 +285,7 @@ public class BookMaster implements Observer {
 					txtFilterCustomers.requestFocusInWindow();
 					break;
 				default:
-					throw new RuntimeException("Undefined tab!");
+					assert false; // Execution should never reach this point: Undefined tab!");
 				}
 			}
 		});
@@ -400,7 +400,8 @@ public class BookMaster implements Observer {
 	}
 
 	private Component getPnlLoanFilter() {
-		JLabel lblAlleAusleighen = new JLabel("Alle zurzeit ausgeliehenen Exemplare für alle Kunden sind in der untenstehenden Tabelle ersichtlich");
+		JLabel lblAlleAusleighen = new JLabel(
+				"Alle zurzeit ausgeliehenen Exemplare für alle Kunden sind in der untenstehenden Tabelle ersichtlich");
 
 		JLabel lblFilterLoans = new JLabel("Filter:");
 		lblFilterLoans.setDisplayedMnemonic('f');
@@ -658,7 +659,7 @@ public class BookMaster implements Observer {
 					Integer i2 = Integer.parseInt(s2.split(" ")[0]);
 					return i1.compareTo(i2);
 				}
-				System.out.println(":-((");
+				assert (false);
 				return 0;
 			}
 		});
@@ -861,7 +862,7 @@ public class BookMaster implements Observer {
 			filterAndUpdateCustomers();
 			updateCustomersStatistics();
 		} else {
-			throw new RuntimeException("Unexpected observed object: " + observable.getClass());
+			assert false; // Execution should never reach this point: Unexpected observed object: observable.getClass();
 		}
 	}
 

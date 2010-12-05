@@ -44,7 +44,8 @@ public class BookMasterTableModelCustomer extends BookMasterTableModel<Customer>
 		} else if (getColumnName(col).equals(ColumnName.ZIP.toString())) {
 			return c.getZip();
 		} else {
-			throw new RuntimeException("Undefined column name!");
+			assert false; // Execution should never reach this point: Undefined column name!
+			return null;
 		}
 	}
 
