@@ -682,7 +682,7 @@ public class BookMaster implements Observer {
 			}
 		});
 
-		TableColumn shelfColumn = tblBooks.getColumnModel().getColumn(1);
+		TableColumn shelfColumn = tblBooks.getColumn("" + BookMasterTableModelBook.ColumnName.SHELF);
 		final JComboBox comboBox = new JComboBox(Shelf.values());
 		shelfColumn.setCellEditor(new ComboBoxCellEditor(comboBox) {
 			private static final long serialVersionUID = -3380337751981718537L;

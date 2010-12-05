@@ -312,6 +312,7 @@ public class Library extends Observable implements Observer {
 	public void loanLost(Loan l) {
 		lostLoans.add(l);
 		l.returnCopy();
+		l.setLost();
 		removeCopy(l.getCopy());
 		setChanged();
 		notifyObservers();

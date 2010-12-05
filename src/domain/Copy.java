@@ -5,8 +5,17 @@ import java.util.Observable;
 public class Copy extends Observable {
 
 	public enum Condition {
-		//TODO: Implement this?
-		NEW, GOOD, DAMAGED, WASTE, LOST
+		NEW("Neu"), GOOD("Gut"), DAMAGED("Beschädigt"), WASTE("Schlecht"); // LOST("Verloren")
+		private String name;
+
+		private Condition(String name) {
+			this.name = name;
+		}
+
+		@Override
+		public String toString() {
+			return name;
+		}
 	}
 
 	public static long nextInventoryNumber = 1;
@@ -15,6 +24,7 @@ public class Copy extends Observable {
 	private final Book book;
 	private Condition condition = Condition.NEW;
 	private Loan currentLoan;
+	private boolean lost;
 
 	public Copy(Book book) {
 		this.book = book;
@@ -63,6 +73,16 @@ public class Copy extends Observable {
 	@Override
 	public String toString() {
 		return getBook() + (currentLoan == null ? "" : " - " + currentLoan);
+	}
+
+	public void setLost() {
+		this.lost = true;
+		setChanged();
+		notifyObservers();
+	}
+
+	public boolean isLost() {
+		return lost;
 	}
 
 }

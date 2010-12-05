@@ -138,4 +138,10 @@ public class Loan extends Observable {
 	public boolean wasOverdue() {
 		return wasOverdue;
 	}
+
+	public void setLost() {
+		getCopy().setLost();
+		setChanged();
+		notifyObservers();
+	}
 }

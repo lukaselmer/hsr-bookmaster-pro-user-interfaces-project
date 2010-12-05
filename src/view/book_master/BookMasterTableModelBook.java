@@ -9,7 +9,6 @@ import domain.Loan;
 import domain.Shelf;
 
 public class BookMasterTableModelBook extends BookMasterTableModel<Book> {
-
 	private static final long serialVersionUID = -9213162719594224055L;
 
 	public enum ColumnName implements AbstractColumnName {

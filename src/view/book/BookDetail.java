@@ -15,11 +15,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Random;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -34,7 +34,10 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
+
+import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
 
 import view.BookMasterActions;
 import view.BookMasterUiManager;
@@ -47,6 +50,7 @@ import com.jgoodies.forms.layout.FormLayout;
 
 import domain.Book;
 import domain.Copy;
+import domain.Copy.Condition;
 import domain.Library;
 
 public class BookDetail implements SubFrame<Book>, Observer {
@@ -106,7 +110,9 @@ public class BookDetail implements SubFrame<Book>, Observer {
 			public void run() {
 				Library l = LibraryApp.inst();
 				try {
-					//new BookDetail(new BookMasterUiManager(l), l.getBooks().get(new Random().nextInt(l.getBooks().size())));
+					// new BookDetail(new BookMasterUiManager(l),
+					// l.getBooks().get(new
+					// Random().nextInt(l.getBooks().size())));
 					new BookDetail(new BookMasterUiManager(l), l.getBooks().get(0));
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -293,6 +299,23 @@ public class BookDetail implements SubFrame<Book>, Observer {
 				actRemoveSelected.setEnabled(tblCopies.getSelectedRowCount() > 0);
 			}
 		});
+
+		TableColumn conditionColumn = tblCopies.getColumnModel().getColumn(BookDetailTableModel.ColumnName.COPY_CONDITION.ordinal());
+		final JComboBox comboBox = new JComboBox(Copy.Condition.values());
+		conditionColumn.setCellEditor(new ComboBoxCellEditor(comboBox) {
+			private static final long serialVersionUID = 3065741776646890482L;
+
+			@Override
+			public boolean stopCellEditing() {
+				Copy c = getSelectedCopy();
+				if (c == null || comboBox == null)
+					return true;
+				comboBox.getSelectedItem();
+				c.setCondition((Condition) comboBox.getSelectedItem());
+				return super.stopCellEditing();
+			}
+
+		});
 	}
 
 	private void initCopiesPanelParameters() {
@@ -308,7 +331,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	protected void addNewCopy() {
 		library.createAndAddCopy(book);
 		lblNumber.setText("" + library.getCopiesOfBook(book).size());
-		bookTableModel.updateCopies(library.getCopiesOfBook(book));
+		bookTableModel.updateObjects(book);
 	}
 
 	protected void removeSelectedCopies() {
@@ -321,7 +344,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 
 	protected void updateBookInformation() {
 		lblNumber.setText("" + library.getCopiesOfBook(book).size());
-		bookTableModel.updateCopies(library.getCopiesOfBook(book));
+		bookTableModel.updateObjects(book);
 	}
 
 	protected List<Copy> getSelectedCopies() {
@@ -332,9 +355,21 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		return list;
 	}
 
+	protected Copy getSelectedCopy() {
+		if (tblCopies == null) {
+			return null;
+		}
+		int row = tblCopies.getSelectedRow();
+		if (row != -1) {
+			return getCopyOfRow(row);
+		}
+		return null;
+	}
+
 	protected Copy getCopyOfRow(int row) {
-		// row = tblCopies.convertRowIndexToModel(row);
-		return (Copy) tblCopies.getValueAt(row, -1);
+		row = tblCopies.convertRowIndexToModel(row);
+		tblCopies.getModel().getValueAt(row, -1);
+		return (Copy) tblCopies.getModel().getValueAt(row, -1);
 	}
 
 	public void toFront() {
@@ -369,7 +404,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 			txtShelf.setText(book.getShelf().toString());
 			txtShelf.setCaretPosition(0);
 		} else {
-			bookTableModel.updateCopies(library.getCopiesOfBook(book));
+			bookTableModel.updateObjects(book);
 		}
 	}
 
