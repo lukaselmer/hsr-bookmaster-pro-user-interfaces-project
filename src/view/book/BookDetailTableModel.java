@@ -1,4 +1,4 @@
-package view.book_detail;
+package view.book;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package view.book_detail;
+package view.book;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -39,7 +39,6 @@ import javax.swing.table.TableRowSorter;
 import view.BookMasterActions;
 import view.BookMasterUiManager;
 import view.ViewUtil;
-import view.book.BookEdit;
 import view.book_master.SubFrame;
 import application.LibraryApp;
 

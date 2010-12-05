@@ -1,4 +1,4 @@
-package view.loans_report;
+package view.loan;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

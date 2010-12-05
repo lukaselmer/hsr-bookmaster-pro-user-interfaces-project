@@ -5,14 +5,14 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import view.book.BookDetail;
 import view.book.BookEdit;
 import view.book.BookNew;
-import view.book_detail.BookDetail;
 import view.book_master.SubFrame;
 import view.customer.CustomerEdit;
 import view.customer.CustomerNew;
-import view.loan_detail.LoanDetail;
-import view.loans_report.LoansReport;
+import view.loan.LoanDetail;
+import view.loan.LoansReport;
 import domain.Book;
 import domain.Customer;
 import domain.Library;

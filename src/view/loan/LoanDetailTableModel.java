@@ -1,4 +1,4 @@
-package view.loan_detail;
+package view.loan;
 
 import java.util.List;
 

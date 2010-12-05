@@ -1,4 +1,4 @@
-package view.loan_detail;
+package view.loan;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -57,7 +57,7 @@ import view.BookMasterUiManager;
 import view.DocumentListenerAdapter;
 import view.ViewUtil;
 import view.book_master.SubFrame;
-import view.loan_detail.LoanDetailTableModel;
+import view.loan.LoanDetailTableModel;
 import application.LibraryApp;
 
 import com.jgoodies.forms.layout.CellConstraints;
