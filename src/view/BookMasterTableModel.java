@@ -53,4 +53,10 @@ public abstract class BookMasterTableModel<T> extends AbstractTableModel {
 	public String getColumnName(int column) {
 		return "" + columnNames[column];
 	}
+
+	@Override
+	public Class<?> getColumnClass(int columnIndex) {
+		// TODO: Exception!?
+		return getValueAt(0, columnIndex).getClass();
+	}
 }

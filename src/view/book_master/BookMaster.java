@@ -400,7 +400,7 @@ public class BookMaster implements Observer {
 	}
 
 	private Component getPnlLoanFilter() {
-		JLabel lblAlleAusleighen = new JLabel("Alle Ausleihen für jeden Kunden sind in der untenstehenden Tabelle ersichtlich");
+		JLabel lblAlleAusleighen = new JLabel("Alle zurzeit ausgeliehenen Exemplare für alle Kunden sind in der untenstehenden Tabelle ersichtlich");
 
 		JLabel lblFilterLoans = new JLabel("Filter:");
 		lblFilterLoans.setDisplayedMnemonic('f');
@@ -431,7 +431,7 @@ public class BookMaster implements Observer {
 				"3dlu, pref, 5dlu, pref, 5dlu, pref, 8dlu");
 		JPanel panel = new JPanel(layout);
 		CellConstraints cc = new CellConstraints();
-		panel.add(ViewUtil.getSeparator("Erfasste Ausleihen"), cc.xyw(2, 2, 11));
+		panel.add(ViewUtil.getSeparator("Aktuelle Ausleihen"), cc.xyw(2, 2, 11));
 		panel.add(lblAlleAusleighen, cc.xyw(2, 4, 9));
 		panel.add(lblFilterLoans, cc.xy(2, 6));
 		panel.add(txtFilterLoans, cc.xy(4, 6));

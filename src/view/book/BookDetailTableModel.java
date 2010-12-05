@@ -91,12 +91,6 @@ public class BookDetailTableModel extends BookMasterTableModel<Copy> {
 		return columnIndex == ColumnName.COPY_CONDITION.ordinal();
 	}
 
-	@Override
-	public Class<?> getColumnClass(int columnIndex) {
-		// TODO: Exception!?
-		return getValueAt(0, columnIndex).getClass();
-	}
-
 	public void updateObjects(Book book) {
 		this.book = book;
 		updateObjects(library.getCopiesOfBook(book));
