@@ -41,7 +41,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -55,7 +54,6 @@ import javax.swing.table.TableRowSorter;
 
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
 
-import sun.swing.SwingUtilities2;
 import view.BookMasterUiManager;
 import view.DocumentListenerAdapter;
 import view.DoubleClickMouseAdapter;

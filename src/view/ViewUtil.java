@@ -2,11 +2,8 @@ package view;
 
 import java.awt.ComponentOrientation;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;

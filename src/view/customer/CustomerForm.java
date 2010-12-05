@@ -50,6 +50,7 @@ public abstract class CustomerForm {
 	protected JTextField txtCity;
 	protected JButton btnSave;
 	protected FormValidator<Customer> formValidator;
+	@SuppressWarnings("unused")
 	private BookMasterUiManager uimanager;
 	private JMenuBar menuBar;
 	private JMenu mnFile;

@@ -2,10 +2,9 @@ package main;
 
 import javax.swing.UIManager;
 
-import application.LibraryApp;
-
 import view.book_master.BookMaster;
 import view.splash_screen.BookMasterSplashScreen;
+import application.LibraryApp;
 
 public class Main {
 

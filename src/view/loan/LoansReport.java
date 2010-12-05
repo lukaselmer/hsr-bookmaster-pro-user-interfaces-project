@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.util.List;
 
@@ -19,6 +21,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 
@@ -32,9 +35,6 @@ import com.jgoodies.forms.layout.FormLayout;
 
 import domain.Library;
 import domain.Loan;
-import javax.swing.KeyStroke;
-import java.awt.event.KeyEvent;
-import java.awt.event.InputEvent;
 
 public class LoansReport {
 
@@ -42,11 +42,11 @@ public class LoansReport {
 	protected JTextArea txtAreaReport;
 	protected JButton btnCancel;
 	protected JButton btnUndo;
+	@SuppressWarnings("unused")
 	private BookMasterUiManager uimanager;
 	private String report;
 	private JScrollPane sclPane;
 	private List<Loan> loans;
-	private Library library;
 	private JMenuBar menuBar;
 	private JMenu mnFile;
 	private JMenuItem mntClose;
@@ -81,7 +81,6 @@ public class LoansReport {
 
 	public LoansReport(BookMasterUiManager uimanager, List<Loan> loans) {
 		this.uimanager = uimanager;
-		this.library = uimanager.getLibrary();
 		this.loans = loans;
 		this.report = uimanager.getLibrary().generateReportForLoansReturn(loans);
 		initialize();
@@ -149,11 +148,11 @@ public class LoansReport {
 		txtAreaReport.setEditable(false);
 		txtAreaReport.setBackground(Color.WHITE);
 		txtAreaReport.setCaretPosition(0);
-		
+
 		sclPane = new JScrollPane(txtAreaReport);
 		sclPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		sclPane.setPreferredSize(new Dimension(10, 10));
-		
+
 		btnCancel = new JButton(actClose);
 		btnUndo = new JButton(actUndo);
 	}

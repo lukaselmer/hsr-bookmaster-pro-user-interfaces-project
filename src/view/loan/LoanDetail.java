@@ -8,7 +8,6 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -40,7 +39,6 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
@@ -57,7 +55,6 @@ import view.BookMasterUiManager;
 import view.DocumentListenerAdapter;
 import view.ViewUtil;
 import view.book_master.SubFrame;
-import view.loan.LoanDetailTableModel;
 import application.LibraryApp;
 
 import com.jgoodies.forms.layout.CellConstraints;
@@ -101,6 +98,8 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 	private JButton btnReturnLoan;
 	private BookMasterUiManager uimanager;
 	private final Action actClose = new BookMasterActions.ActClose() {
+		private static final long serialVersionUID = -3204995704840266054L;
+
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			library.deleteObserver(LoanDetail.this);

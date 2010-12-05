@@ -56,6 +56,7 @@ public abstract class BookForm {
 	protected JLabel lblPublisher;
 	protected JLabel lblShelf;
 	protected Book savedObject;
+	@SuppressWarnings("unused")
 	private BookMasterUiManager uimanager;
 	private JMenuBar menuBar;
 	private final Action actClose = new BookMasterActions.ActClose() {
