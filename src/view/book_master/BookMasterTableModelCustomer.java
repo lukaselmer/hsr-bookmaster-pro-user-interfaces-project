@@ -30,6 +30,9 @@ public class BookMasterTableModelCustomer extends BookMasterTableModel<Customer>
 
 	@Override
 	public Object getValueAt(int row, int col) {
+		if (currentObjects.size() == 0) {
+			return new Customer("", "");
+		}
 		Customer c = currentObjects.get(row);
 		if (col == -1) {
 			return c;
@@ -44,7 +47,8 @@ public class BookMasterTableModelCustomer extends BookMasterTableModel<Customer>
 		} else if (getColumnName(col).equals(ColumnName.ZIP.toString())) {
 			return c.getZip();
 		} else {
-			assert false; // Execution should never reach this point: Undefined column name!
+			assert false; // Execution should never reach this point: Undefined
+							// column name!
 			return null;
 		}
 	}

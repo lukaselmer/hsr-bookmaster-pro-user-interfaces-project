@@ -5,8 +5,10 @@ import java.util.List;
 import view.BookMasterTableModel;
 import domain.Book;
 import domain.Copy;
+import domain.Customer;
 import domain.Library;
 import domain.Loan;
+import domain.Shelf;
 
 public class BookMasterTableModelLoan extends BookMasterTableModel<Loan> {
 
@@ -42,6 +44,8 @@ public class BookMasterTableModelLoan extends BookMasterTableModel<Loan> {
 
 	@Override
 	public Object getValueAt(int row, int col) {
+		if (currentObjects.size() == 0)
+			return new Loan(new Customer("", ""), new Copy(new Book("", "", "", Shelf.A1)));
 		Loan l = currentObjects.get(row);
 		Copy c = l.getCopy();
 		Book b = c.getBook();
@@ -58,7 +62,8 @@ public class BookMasterTableModelLoan extends BookMasterTableModel<Loan> {
 		} else if (getColumnName(col).equals(ColumnName.LOAN_TO.toString())) {
 			return l.getCustomer();
 		} else {
-			assert false; // Execution should never reach this point: Undefined column name!
+			assert false; // Execution should never reach this point: Undefined
+							// column name!
 			return null;
 		}
 	}
