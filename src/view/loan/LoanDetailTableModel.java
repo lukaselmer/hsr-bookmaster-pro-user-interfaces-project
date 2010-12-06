@@ -1,8 +1,13 @@
 package view.loan;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
+
+import view.BookMasterTableModel;
+import view.BookMasterTableModel.AbstractColumnName;
+import view.book.BookDetailTableModel.ColumnName;
 
 import domain.Book;
 import domain.Copy;
@@ -11,11 +16,13 @@ import domain.Library;
 import domain.Loan;
 import domain.Shelf;
 
-public class LoanDetailTableModel extends AbstractTableModel {
+public class LoanDetailTableModel extends BookMasterTableModel<Loan> {
 
-	private static final long serialVersionUID = 5453188403390577160L;
+	private static final long serialVersionUID = 3423188203390577160L;
 
-	public enum ColumnName {
+	private Customer customer;
+
+	public enum ColumnName implements AbstractColumnName {
 		STATUS("Status"), LOAN_UNTIL("Ausgeliehen Bis"), INVENTORY_NUMBER("Exemplar-ID"), TITLE("Titel"), AUTHOR("Author");
 		private String name;
 
@@ -29,32 +36,28 @@ public class LoanDetailTableModel extends AbstractTableModel {
 		}
 	}
 
-	ColumnName[] columnNames = ColumnName.values();
-	Library library;
-	List<Loan> currentLoans;
-
 	public LoanDetailTableModel(Library library, Customer customer) {
-		this.library = library;
-		currentLoans = library.getCustomerLoans(customer);
+		super(library);
+		this.customer = customer;
+		currentObjects = new ArrayList<Loan>(getInitialObjects());
 	}
 
 	@Override
-	public int getColumnCount() {
-		return columnNames.length;
+	protected List<Loan> getInitialObjects() {
+		return library.getCustomerLoans(customer);
 	}
 
 	@Override
-	public int getRowCount() {
-		return currentLoans.size();
+	protected AbstractColumnName[] getColumnNames() {
+		return ColumnName.values();
 	}
 
 	@Override
 	public Object getValueAt(int row, int col) {
-		// if (currentObjects.size() == 0) {
-		// return new Loan(new Customer("", ""), new Copy(new Book("", "", "",
-		// Shelf.A1)));
-		// }
-		Loan l = currentLoans.get(row);
+		if (currentObjects.size() == 0) {
+			return new Loan(new Customer("", ""), new Copy(new Book("", "", "", Shelf.A1)));
+		}
+		Loan l = currentObjects.get(row);
 		Copy c = l.getCopy();
 		Book b = l.getBook();
 		if (col == -1) {
@@ -77,13 +80,12 @@ public class LoanDetailTableModel extends AbstractTableModel {
 	}
 
 	@Override
-	public String getColumnName(int col) {
-		return "" + columnNames[col];
+	public int getDefaultSortedColumn() {
+		return ColumnName.INVENTORY_NUMBER.ordinal();
 	}
 
-	public void updateLoans(List<Loan> newLoans) {
-		currentLoans = newLoans;
-		fireTableDataChanged();
+	public void updateObjects(Customer customer) {
+		this.customer = customer;
+		updateObjects(getInitialObjects());
 	}
-
 }

@@ -231,8 +231,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 				Customer c = (Customer) customerObject;
 				int loanAmount = library.getCustomerLoans(c).size();
 				String loanAmountDescription = loanAmount == 1 ? "1 Ausleihe" : ((loanAmount == 0 ? "keine" : loanAmount) + " Ausleihen");
-
-				String value = c.toString() + " (" + loanAmountDescription + ")";
+				String value = (c == null ? "" : (c.toString() + " (" + loanAmountDescription + ")"));
 				return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			}
 		});
@@ -441,7 +440,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 	}
 
 	protected void updateLoanInformation() {
-		loanTableModel.updateLoans(library.getCustomerLoans(customer));
+		loanTableModel.updateObjects(customer);
 		lblNumber.setText("" + library.getCustomerLoans(customer).size());
 		actLendNewCopy.setEnabled(library.getCustomerLoans(customer).size() < 3 && !(library.hasCustomerOverdueBooks(customer)));
 		txtCopyId.setEnabled(library.getCustomerLoans(customer).size() < 3 && !(library.hasCustomerOverdueBooks(customer)));

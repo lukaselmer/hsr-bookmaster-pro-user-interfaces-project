@@ -94,7 +94,7 @@ public class BookDetailTableModel extends BookMasterTableModel<Copy> {
 
 	public void updateObjects(Book book) {
 		this.book = book;
-		updateObjects(library.getCopiesOfBook(book));
+		updateObjects(getInitialObjects());
 	}
 
 	// public void updateCopies(List<Copy> newCopies) {

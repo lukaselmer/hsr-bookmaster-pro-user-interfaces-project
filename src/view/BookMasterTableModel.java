@@ -59,4 +59,10 @@ public abstract class BookMasterTableModel<T> extends AbstractTableModel {
 		// TODO: Exception!?
 		return getValueAt(0, columnIndex).getClass();
 	}
+
+	@Override
+	public boolean isCellEditable(int rowIndex, int columnIndex) {
+		return false;
+	}
+
 }
