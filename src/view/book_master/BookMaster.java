@@ -601,7 +601,7 @@ public class BookMaster implements Observer {
 	private void initTblBooks() {
 		tblBooks = new JTable() {
 			private static final long serialVersionUID = -6660470510160948438L;
-			
+
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
@@ -615,7 +615,7 @@ public class BookMaster implements Observer {
 				}
 				return c;
 			}
-			
+
 			private Color colorForRow(int row) {
 				Book b = (Book) getModel().getValueAt(convertRowIndexToModel(row), -1);
 				return library.getAvailibleCopiesOfBook(b).size() == 0 ? Color.ORANGE : null;
