@@ -46,6 +46,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
@@ -72,7 +73,7 @@ import domain.Customer;
 import domain.Library;
 import domain.Loan;
 
-public class LoanDetail implements SubFrame<Customer>, Observer {
+public class LoanDetailWithCellRenderer implements SubFrame<Customer>, Observer {
 
 	private JFrame frmLoanDetail;
 	private Library library;
@@ -108,7 +109,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			library.deleteObserver(LoanDetail.this);
+			library.deleteObserver(LoanDetailWithCellRenderer.this);
 			frmLoanDetail.dispose();
 		}
 	};
@@ -134,7 +135,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 				Library l = LibraryApp.inst();
 				try {
 					Random r = new Random();
-					new LoanDetail(new BookMasterUiManager(l), l.getCustomers().get(r.nextInt(l.getCustomers().size())));
+					new LoanDetailWithCellRenderer(new BookMasterUiManager(l), l.getCustomers().get(r.nextInt(l.getCustomers().size())));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -145,7 +146,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 	/**
 	 * Create the application.
 	 */
-	public LoanDetail(BookMasterUiManager uimanager, Customer customer) {
+	public LoanDetailWithCellRenderer(BookMasterUiManager uimanager, Customer customer) {
 		this.uimanager = uimanager;
 		this.library = uimanager.getLibrary();
 		this.customer = customer;
@@ -277,33 +278,37 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		pnlLoan.add(scrollPane, BorderLayout.CENTER);
 
 		loanTableModel = new LoanDetailTableModel(library, customer);
-		tblLoans = new JTable() {
+		tblLoans = new JTable();
+		tblLoans.setModel(loanTableModel);
 
-			private static final long serialVersionUID = -3462714108092442892L;
+		for (int i = 0; i < tblLoans.getColumnModel().getColumnCount(); ++i) {
+			tblLoans.getColumnModel().getColumn(i).setCellRenderer(new DefaultTableCellRenderer() {
+				private static final long serialVersionUID = 439302311044429919L;
 
-			@Override
-			public Component prepareRenderer(javax.swing.table.TableCellRenderer renderer, int row, int column) {
-				Component c = super.prepareRenderer(renderer, row, column);
-				if (!isCellSelected(row, column)) {
-					Color col = colorForRow(row);
-					c.setBackground(col != null ? col : UIManager.getColor("Table.background"));
-					c.setForeground(UIManager.getColor("Table.foreground"));
-				} else {
-					c.setBackground(UIManager.getColor("Table.selectionBackground"));
-					c.setForeground(UIManager.getColor("Table.selectionForeground"));
+				@Override
+				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row,
+						int column) {
+					Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+					if (!isSelected) {
+						Color col = colorForRow((Loan) loanTableModel.getValueAt(row, -1));
+						c.setBackground(col != null ? col : UIManager.getColor("Table.background"));
+						c.setForeground(UIManager.getColor("Table.foreground"));
+					} else {
+						c.setBackground(UIManager.getColor("Table.selectionBackground"));
+						c.setForeground(UIManager.getColor("Table.selectionForeground"));
+					}
+					return c;
 				}
-				return c;
-			}
 
-			private Color colorForRow(int row) {
-				Loan l = (Loan) getModel().getValueAt(convertRowIndexToModel(row), -1);
-				return l.isOverdue() ? Color.ORANGE : null;
-			};
-		};
-		
+				private Color colorForRow(Loan l) {
+					return l.isOverdue() ? Color.ORANGE : null;
+				};
+
+			});
+		}
+
 		tblLoans.setColumnSelectionAllowed(false);
 		tblLoans.setRowSelectionAllowed(true);
-		tblLoans.setModel(loanTableModel);
 		scrollPane.setViewportView(tblLoans);
 		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.STATUS).setMinWidth(50);
 		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.STATUS).setMaxWidth(50);
@@ -313,7 +318,6 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.LOAN_UNTIL).setMaxWidth(100);
 		tblLoans.setColumnSelectionAllowed(false);
 		tblLoans.setRowSelectionAllowed(true);
-		
 		TableRowSorter<LoanDetailTableModel> rowSorter = new TableRowSorter<LoanDetailTableModel>(loanTableModel);
 		rowSorter.setComparator(1, new Comparator<String>() {
 
@@ -345,7 +349,6 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 				actLoanIsLost.setEnabled(tblLoans.getSelectedRowCount() > 0);
 			}
 		});
-		
 	}
 
 	private void initAddNewLoanPanel() {

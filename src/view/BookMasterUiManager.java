@@ -23,6 +23,8 @@ public class BookMasterUiManager {
 	@SuppressWarnings("rawtypes")
 	protected List<SubFrame> subFrames = new ArrayList<SubFrame>();
 	protected LoanDetail loanDetailFrame;
+	// Demo: CellRenderer
+	// protected LoanDetailWithCellRenderer loanDetailFrame;
 	private CustomerNew customerNewFrame;
 	private BookNew bookNewFrame;
 
@@ -88,6 +90,8 @@ public class BookMasterUiManager {
 	public void openLoanWindow(Customer c) {
 		if (loanDetailFrame == null) {
 			loanDetailFrame = new LoanDetail(this, c);
+			// Demo: CellRenderer
+			// loanDetailFrame = new LoanDetailWithCellRenderer(this, c);
 			loanDetailFrame.addWindowListener(new WindowAdapter() {
 				@Override
 				public void windowClosed(WindowEvent arg0) {

@@ -24,7 +24,6 @@ import java.util.Observer;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.CellRendererPane;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -48,7 +47,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
@@ -603,7 +601,7 @@ public class BookMaster implements Observer {
 	private void initTblBooks() {
 		tblBooks = new JTable() {
 			private static final long serialVersionUID = -6660470510160948438L;
-
+			
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
@@ -617,7 +615,7 @@ public class BookMaster implements Observer {
 				}
 				return c;
 			}
-
+			
 			private Color colorForRow(int row) {
 				Book b = (Book) getModel().getValueAt(convertRowIndexToModel(row), -1);
 				return library.getAvailibleCopiesOfBook(b).size() == 0 ? Color.ORANGE : null;
