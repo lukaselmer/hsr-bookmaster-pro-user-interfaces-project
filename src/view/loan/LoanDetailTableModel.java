@@ -3,12 +3,7 @@ package view.loan;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.table.AbstractTableModel;
-
 import view.BookMasterTableModel;
-import view.BookMasterTableModel.AbstractColumnName;
-import view.book.BookDetailTableModel.ColumnName;
-
 import domain.Book;
 import domain.Copy;
 import domain.Customer;

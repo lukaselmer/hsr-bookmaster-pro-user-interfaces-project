@@ -8,7 +8,6 @@ import javax.swing.UIManager;
 import view.BookMasterUiManager;
 import application.LibraryApp;
 import domain.Book;
-import domain.Copy;
 
 public class BookNew extends BookForm {
 
