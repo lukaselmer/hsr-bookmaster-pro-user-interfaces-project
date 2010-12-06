@@ -262,7 +262,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		tblCopies.getColumn("" + BookDetailTableModel.ColumnName.COPY_CONDITION).setMaxWidth(80);
 		tblCopies.setColumnSelectionAllowed(false);
 		tblCopies.setRowSelectionAllowed(true);
-		
+
 		TableRowSorter<BookDetailTableModel> rowSorter = new TableRowSorter<BookDetailTableModel>(bookTableModel);
 		rowSorter.setComparator(BookDetailTableModel.ColumnName.INVENTORY_NUMBER.ordinal(), new Comparator<Long>() {
 			@Override

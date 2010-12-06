@@ -299,7 +299,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 				return l.isOverdue() ? Color.ORANGE : null;
 			};
 		};
-		
+
 		tblLoans.setColumnSelectionAllowed(false);
 		tblLoans.setRowSelectionAllowed(true);
 		tblLoans.setModel(loanTableModel);
@@ -312,7 +312,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		tblLoans.getColumn("" + LoanDetailTableModel.ColumnName.LOAN_UNTIL).setMaxWidth(100);
 		tblLoans.setColumnSelectionAllowed(false);
 		tblLoans.setRowSelectionAllowed(true);
-		
+
 		TableRowSorter<LoanDetailTableModel> rowSorter = new TableRowSorter<LoanDetailTableModel>(loanTableModel);
 		rowSorter.setComparator(1, new Comparator<String>() {
 
@@ -344,7 +344,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 				actLoanIsLost.setEnabled(tblLoans.getSelectedRowCount() > 0);
 			}
 		});
-		
+
 	}
 
 	private void initAddNewLoanPanel() {

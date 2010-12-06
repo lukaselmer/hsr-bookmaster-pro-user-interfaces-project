@@ -77,7 +77,8 @@ public class BookDetailTableModel extends BookMasterTableModel<Copy> {
 		} else if (getColumnName(col).equals(ColumnName.COPY_CONDITION.toString())) {
 			return c.getCondition();
 		} else {
-			assert false; // Execution should never reach this point: Undefined column name!
+			assert false; // Execution should never reach this point: Undefined
+							// column name!
 			return null;
 		}
 	}
