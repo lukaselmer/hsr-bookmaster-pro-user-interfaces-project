@@ -8,6 +8,7 @@ import javax.swing.UIManager;
 import view.BookMasterUiManager;
 import application.LibraryApp;
 import domain.Book;
+import domain.Copy;
 
 public class BookNew extends BookForm {
 
@@ -36,6 +37,7 @@ public class BookNew extends BookForm {
 	@Override
 	protected void saveBook(Book b) {
 		library.addBook(b);
+		library.createAndAddCopy(b);
 		JOptionPane.showMessageDialog(frmBookForm, "Buchtitel wurde erfolgreich erstellt und der Buchtiteltabelle hinzugefügt.", "Hinweis",
 				JOptionPane.INFORMATION_MESSAGE);
 	}

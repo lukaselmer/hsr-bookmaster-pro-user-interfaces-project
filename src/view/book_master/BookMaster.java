@@ -227,7 +227,7 @@ public class BookMaster implements Observer {
 			}
 		});
 		frmBookmaster.getContentPane().setLayout(new BorderLayout(0, 0));
-		frmBookmaster.setMinimumSize(new Dimension(675, 400));
+		frmBookmaster.setMinimumSize(new Dimension(775, 400));
 		initMenu();
 
 		tabbedPane = new JTabbedPane(SwingConstants.TOP) {
@@ -1051,7 +1051,7 @@ public class BookMaster implements Observer {
 		private static final long serialVersionUID = -4233519605516483378L;
 
 		public ActLoanForSelectedCustomer() {
-			putValue(NAME, "Ausleihe Für Kunden Erfassen...");
+			putValue(NAME, "Ausleihe Detail Für Kunden Anzeigen...");
 			putValue(MNEMONIC_KEY, KeyEvent.VK_E);
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_MASK));
 			putValue(SHORT_DESCRIPTION, "Zeigt Details zu den Ausleihen des selekierten Kunden");
