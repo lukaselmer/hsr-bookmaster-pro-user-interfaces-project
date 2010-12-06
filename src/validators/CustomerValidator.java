@@ -9,6 +9,7 @@ import domain.Customer;
 
 public class CustomerValidator implements Validator<Customer> {
 
+	@Override
 	public ValidationResult validate(Customer customer) {
 		PropertyValidationSupport support = new PropertyValidationSupport(customer, "Kunde");
 

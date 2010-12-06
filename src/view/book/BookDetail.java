@@ -3,6 +3,7 @@ package view.book;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -32,6 +33,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
@@ -107,6 +109,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	public static void main(String[] args) throws Exception {
 		UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				Library l = LibraryApp.inst();
 				try {
@@ -155,7 +158,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		frmBookDetailView.setTitle("Buch Detailansicht");
 		frmBookDetailView.setBounds(100, 100, 550, 400);
 		frmBookDetailView.setMinimumSize(new Dimension(500, 400));
-		frmBookDetailView.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frmBookDetailView.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		frmBookDetailView.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -368,8 +371,9 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		return (Copy) tblCopies.getModel().getValueAt(row, -1);
 	}
 
+	@Override
 	public void toFront() {
-		getFrame().setState(JFrame.NORMAL);
+		getFrame().setState(Frame.NORMAL);
 		getFrame().toFront();
 	}
 

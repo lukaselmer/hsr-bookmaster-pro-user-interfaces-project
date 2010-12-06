@@ -12,6 +12,7 @@ public abstract class BookMasterTableModel<T> extends AbstractTableModel {
 	private static final long serialVersionUID = -6388775570907555337L;
 
 	public interface AbstractColumnName {
+		@Override
 		public String toString();
 	}
 

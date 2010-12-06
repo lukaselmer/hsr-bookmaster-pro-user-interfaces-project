@@ -40,6 +40,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -126,6 +127,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 	public static void main(String[] args) throws Exception {
 		UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				Library l = LibraryApp.inst();
 				try {
@@ -160,7 +162,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		frmLoanDetail = new JFrame();
 		frmLoanDetail.setTitle("Ausleihe Detail");
 		frmLoanDetail.setBounds(100, 100, 600, 450);
-		frmLoanDetail.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frmLoanDetail.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		frmLoanDetail.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -208,6 +210,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		customers = getCustomerArray();
 		cmbCustomer = new JComboBox(customers);
 		cmbCustomer.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				updateCustomerInformation();
 			}
@@ -559,6 +562,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 			putValue(NAME, "Exemplar Ausleihen");
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (!isEnabled()) {
 				return;

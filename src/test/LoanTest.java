@@ -1,5 +1,6 @@
 package test;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import junit.framework.TestCase;
@@ -42,7 +43,7 @@ public class LoanTest extends TestCase {
 		assertEquals(0, l.getDaysOfLoanDuration());
 
 		GregorianCalendar returnDate = (GregorianCalendar) l.getPickupDate().clone();
-		returnDate.add(GregorianCalendar.DAY_OF_YEAR, 12);
+		returnDate.add(Calendar.DAY_OF_YEAR, 12);
 
 		l.returnCopy(returnDate);
 

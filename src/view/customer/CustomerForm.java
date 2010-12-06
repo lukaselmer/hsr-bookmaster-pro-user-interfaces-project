@@ -2,6 +2,7 @@ package view.customer;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -24,6 +25,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 
 import org.jdesktop.swingx.JXTitledSeparator;
 
@@ -80,6 +82,7 @@ public abstract class CustomerForm {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
@@ -135,7 +138,7 @@ public abstract class CustomerForm {
 	}
 
 	public void toFront() {
-		frmCustomerForm.setState(JFrame.NORMAL);
+		frmCustomerForm.setState(Frame.NORMAL);
 		frmCustomerForm.toFront();
 	}
 
@@ -152,7 +155,7 @@ public abstract class CustomerForm {
 		frmCustomerForm = new JFrame();
 		frmCustomerForm.setTitle(getWindowTitle());
 		frmCustomerForm.setBounds(100, 100, 450, 268);
-		frmCustomerForm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmCustomerForm.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frmCustomerForm.setResizable(false);
 
 		initMenu();
@@ -229,6 +232,7 @@ public abstract class CustomerForm {
 
 		JButton btnCancel = new JButton("Abbrechen");
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				frmCustomerForm.dispose();
 			}
@@ -321,6 +325,7 @@ public abstract class CustomerForm {
 			putValue(SHORT_DESCRIPTION, getSaveButtonTitle());
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			Customer c = formValidator.validateForm(null);
 			if (c == null) {

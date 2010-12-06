@@ -91,9 +91,11 @@ public class BookMasterSplashScreen {
 
 		Animation animation = createAnimation();
 		animation.addAnimationListener(new AnimationListener() {
+			@Override
 			public void animationStarted(AnimationEvent e) {
 			}
 
+			@Override
 			public void animationStopped(AnimationEvent e) {
 				exitSplashScreen();
 			}
@@ -113,10 +115,12 @@ public class BookMasterSplashScreen {
 	private class StartStopHandler extends AnimationAdapter {
 		private String text;
 
+		@Override
 		public void animationStarted(AnimationEvent e) {
 			text = glyphLabel.getText();
 		}
 
+		@Override
 		public void animationStopped(AnimationEvent e) {
 			glyphLabel.setText(text);
 		}

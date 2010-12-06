@@ -20,6 +20,7 @@ public class BookEdit extends BookForm implements SubFrame<Book>, Observer {
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
@@ -76,6 +77,7 @@ public class BookEdit extends BookForm implements SubFrame<Book>, Observer {
 		return getBook();
 	}
 
+	@Override
 	public void update(Observable o, Object obj) {
 		// if(true)return;
 		Book bookByDataInForm = formValidator.validateForm(null);

@@ -18,6 +18,7 @@ public class CustomerEdit extends CustomerForm implements SubFrame<Customer> {
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");

@@ -9,6 +9,7 @@ import domain.Book;
 
 public class BookValidator implements Validator<Book> {
 
+	@Override
 	public ValidationResult validate(Book book) {
 		PropertyValidationSupport support = new PropertyValidationSupport(book, "Buch");
 

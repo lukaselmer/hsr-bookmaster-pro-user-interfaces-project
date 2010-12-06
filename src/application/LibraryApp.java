@@ -2,6 +2,7 @@ package application;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Random;
 
@@ -139,18 +140,18 @@ public class LibraryApp {
 		for (int i = count; i > 1; i--) {
 			Loan l = library.createAndAddLoan(getCustomer(library, position + i), copy);
 			GregorianCalendar pickup = l.getPickupDate();
-			pickup.add(GregorianCalendar.MONTH, -i);
-			pickup.add(GregorianCalendar.DAY_OF_MONTH, position % 10);
+			pickup.add(Calendar.MONTH, -i);
+			pickup.add(Calendar.DAY_OF_MONTH, position % 10);
 			l.setPickupDate(pickup);
 			GregorianCalendar ret = (GregorianCalendar) pickup.clone();
-			ret.add(GregorianCalendar.DAY_OF_YEAR, position % 10 + i * 2);
+			ret.add(Calendar.DAY_OF_YEAR, position % 10 + i * 2);
 			l.returnCopy(ret);
 		}
 		// Create actual open loans
 		if (position % 2 == 0) {
 			Loan l = library.createAndAddLoan(getCustomer(library, position), copy);
 			GregorianCalendar pickup = l.getPickupDate();
-			pickup.add(GregorianCalendar.DAY_OF_MONTH, -position % 10);
+			pickup.add(Calendar.DAY_OF_MONTH, -position % 10);
 			l.setPickupDate(pickup);
 		}
 	}
@@ -158,8 +159,8 @@ public class LibraryApp {
 	private static void createOverdueLoanForCopy(Library library, Copy copy, int position) throws IllegalLoanOperationException {
 		Loan l = library.createAndAddLoan(getCustomer(library, position), copy);
 		GregorianCalendar pickup = l.getPickupDate();
-		pickup.add(GregorianCalendar.MONTH, -1);
-		pickup.add(GregorianCalendar.DAY_OF_MONTH, -position % 15);
+		pickup.add(Calendar.MONTH, -1);
+		pickup.add(Calendar.DAY_OF_MONTH, -position % 15);
 		l.setPickupDate(pickup);
 	}
 

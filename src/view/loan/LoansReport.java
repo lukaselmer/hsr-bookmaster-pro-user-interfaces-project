@@ -24,6 +24,7 @@ import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 
 import view.BookMasterActions;
 import view.BookMasterUiManager;
@@ -67,6 +68,7 @@ public class LoansReport {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
@@ -110,7 +112,7 @@ public class LoansReport {
 	private void initialize() {
 		frmLoansReportForm = new JFrame();
 		frmLoansReportForm.setTitle("Ausleihe Rückgabe Report");
-		frmLoansReportForm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmLoansReportForm.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frmLoansReportForm.setSize(new Dimension(700, 600));
 		frmLoansReportForm.setMinimumSize(new Dimension(350, 242));
 
@@ -164,6 +166,7 @@ public class LoansReport {
 			putValue(SHORT_DESCRIPTION, "Macht die Rückgabe der Ausleihen rückgängig und schliesst das Fenster");
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			for (Loan l : loans) {
 				l.undoReturnCopy();

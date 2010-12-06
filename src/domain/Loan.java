@@ -1,7 +1,7 @@
 package domain;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Observable;
 
@@ -86,7 +86,7 @@ public class Loan extends Observable {
 
 	public static String getFormattedDate(GregorianCalendar date) {
 		if (date != null) {
-			DateFormat f = SimpleDateFormat.getDateInstance();
+			DateFormat f = DateFormat.getDateInstance();
 			return f.format(date.getTime());
 		}
 		return "00.00.00";
@@ -107,7 +107,7 @@ public class Loan extends Observable {
 
 	public GregorianCalendar getDueDate() {
 		GregorianCalendar dueDate = (GregorianCalendar) pickupDate.clone();
-		dueDate.add(GregorianCalendar.DAY_OF_YEAR, DAYS_TO_RETURN_BOOK);
+		dueDate.add(Calendar.DAY_OF_YEAR, DAYS_TO_RETURN_BOOK);
 		return dueDate;
 	}
 
@@ -123,10 +123,10 @@ public class Loan extends Observable {
 			return false;
 
 		GregorianCalendar dueDate = (GregorianCalendar) pickupDate.clone();
-		dueDate.add(GregorianCalendar.DAY_OF_YEAR, DAYS_TO_RETURN_BOOK);
-		dueDate.add(GregorianCalendar.HOUR_OF_DAY, 23);
-		dueDate.add(GregorianCalendar.MINUTE, 59);
-		dueDate.add(GregorianCalendar.SECOND, 59);
+		dueDate.add(Calendar.DAY_OF_YEAR, DAYS_TO_RETURN_BOOK);
+		dueDate.add(Calendar.HOUR_OF_DAY, 23);
+		dueDate.add(Calendar.MINUTE, 59);
+		dueDate.add(Calendar.SECOND, 59);
 
 		return (new GregorianCalendar().after(dueDate));
 	}

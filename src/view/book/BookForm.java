@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -24,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 
 import validators.BookValidator;
 import validators.FormValidator;
@@ -88,6 +90,7 @@ public abstract class BookForm {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
@@ -139,7 +142,7 @@ public abstract class BookForm {
 	}
 
 	public void toFront() {
-		frmBookForm.setState(JFrame.NORMAL);
+		frmBookForm.setState(Frame.NORMAL);
 		frmBookForm.toFront();
 	}
 
@@ -152,7 +155,7 @@ public abstract class BookForm {
 		frmBookForm = new JFrame();
 		frmBookForm.setTitle(getWindowTitle());
 		frmBookForm.setBounds(100, 100, 450, 215);
-		frmBookForm.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frmBookForm.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		frmBookForm.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -265,6 +268,7 @@ public abstract class BookForm {
 		btnCancel = new JButton("Abbrechen");
 		btnCancel.setMnemonic(KeyEvent.VK_A);
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				beforeDispose();
 				frmBookForm.dispose();
