@@ -176,18 +176,15 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		mnEdit = new JMenu("Bearbeiten");
 		menuBar.add(mnFile);
 		menuBar.add(mnEdit);
-
 		mnClose = new JMenuItem(actClose);
 		mnFile.add(mnClose);
-
 		mnEditBook = new JMenuItem(actEditBook);
 		mntRemoveSelected = new JMenuItem(actRemoveSelected);
-
 		mnAddCopy = new JMenuItem(actAddCopy);
-
 		mnEdit.add(mnEditBook);
 		mnEdit.add(mntRemoveSelected);
 		mnEdit.add(mnAddCopy);
+		menuBar.add(ViewUtil.getHelpMenu(frmBookDetailView));
 	}
 
 	private void initBookPanel() {

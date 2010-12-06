@@ -91,18 +91,15 @@ public class LoansReport {
 	protected void initMenu() {
 		menuBar = new JMenuBar();
 		frmLoansReportForm.setJMenuBar(menuBar);
-
 		mnFile = new JMenu("Datei");
 		menuBar.add(mnFile);
-
 		mntClose = new JMenuItem(actClose);
 		mnFile.add(mntClose);
-
 		mnEdit = new JMenu("Bearbeiten");
 		menuBar.add(mnEdit);
-
 		mntUndoAndClose = new JMenuItem(actUndo);
 		mnEdit.add(mntUndoAndClose);
+		menuBar.add(ViewUtil.getHelpMenu(frmLoansReportForm));
 	}
 
 	/**

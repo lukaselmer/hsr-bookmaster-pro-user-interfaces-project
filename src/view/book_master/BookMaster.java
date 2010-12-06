@@ -24,6 +24,7 @@ import java.util.Observer;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.CellRendererPane;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -47,6 +48,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
@@ -285,7 +287,8 @@ public class BookMaster implements Observer {
 					txtFilterCustomers.requestFocusInWindow();
 					break;
 				default:
-					assert false; // Execution should never reach this point: Undefined tab!");
+					assert false; // Execution should never reach this point:
+									// Undefined tab!");
 				}
 			}
 		});
@@ -602,7 +605,7 @@ public class BookMaster implements Observer {
 			private static final long serialVersionUID = -6660470510160948438L;
 
 			@Override
-			public Component prepareRenderer(javax.swing.table.TableCellRenderer renderer, int row, int column) {
+			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				Component c = super.prepareRenderer(renderer, row, column);
 				if (!isCellSelected(row, column)) {
 					Color col = colorForRow(row);
@@ -862,7 +865,8 @@ public class BookMaster implements Observer {
 			filterAndUpdateCustomers();
 			updateCustomersStatistics();
 		} else {
-			assert false; // Execution should never reach this point: Unexpected observed object: observable.getClass();
+			assert false; // Execution should never reach this point: Unexpected
+							// observed object: observable.getClass();
 		}
 	}
 

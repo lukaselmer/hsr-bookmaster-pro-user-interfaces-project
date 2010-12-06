@@ -195,6 +195,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		mnEdit.add(mntMarkCopyAsLost);
 		mnEdit.add(mntReturnLoan);
 		mnEdit.add(mntLendNewCopy);
+		menuBar.add(ViewUtil.getHelpMenu(frmLoanDetail));
 	}
 
 	private void initCustomerPanel() {

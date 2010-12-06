@@ -199,13 +199,11 @@ public abstract class BookForm {
 		frmBookForm.setJMenuBar(menuBar);
 		mnFile = new JMenu("Datei");
 		menuBar.add(mnFile);
-
 		mntSave = new JMenuItem(actSave);
-
 		mntClose = new JMenuItem(actClose);
-
 		mnFile.add(mntSave);
 		mnFile.add(mntClose);
+		menuBar.add(ViewUtil.getHelpMenu(frmBookForm));
 	}
 
 	private Component getButtonsPanel() {

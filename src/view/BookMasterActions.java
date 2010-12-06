@@ -46,8 +46,9 @@ public class BookMasterActions {
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent arg0){
-			JOptionPane.showMessageDialog(getFrame(), "TODO: Zeige Hilfe an", "Hilfe", JOptionPane.INFORMATION_MESSAGE);
+		public void actionPerformed(ActionEvent arg0) {
+			String s = "Zeige hier die Hilfe an... (es wurde keine Benutzerhilfe geschrieben, deshalb wird hier nicht auf die Hilfe verlinkt)";
+			JOptionPane.showMessageDialog(getFrame(), s, "Hilfe", JOptionPane.INFORMATION_MESSAGE);
 		}
 
 		public abstract JFrame getFrame();

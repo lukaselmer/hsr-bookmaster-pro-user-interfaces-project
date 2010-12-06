@@ -121,15 +121,13 @@ public abstract class CustomerForm {
 	private void initMenu() {
 		menuBar = new JMenuBar();
 		frmCustomerForm.setJMenuBar(menuBar);
-
 		mnFile = new JMenu("Datei");
 		menuBar.add(mnFile);
-
 		mntUndoAndClose = new JMenuItem(actSave);
 		mnFile.add(mntUndoAndClose);
-
 		mntClose = new JMenuItem(actClose);
 		mnFile.add(mntClose);
+		menuBar.add(ViewUtil.getHelpMenu(frmCustomerForm));
 	}
 
 	public boolean isVisible() {
