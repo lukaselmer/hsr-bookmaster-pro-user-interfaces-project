@@ -486,10 +486,7 @@ public class BookMaster implements Observer {
 		tblCustomers.addMouseListener(new DoubleClickMouseAdapter() {
 			@Override
 			public void leftDoubleClick(MouseEvent mouseEvent) {
-				Customer c = getSelectedCustomer();
-				if (c != null) {
-					createOrShowCustomerDetailFrame(c);
-				}
+				actLoanForSelectedCustomer.actionPerformed(null);
 			}
 		});
 		scrollTblCustomers.setViewportView(tblCustomers);
