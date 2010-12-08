@@ -1,7 +1,6 @@
 package main;
 
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import view.book_master.BookMaster;
 import view.splash_screen.BookMasterSplashScreen;
