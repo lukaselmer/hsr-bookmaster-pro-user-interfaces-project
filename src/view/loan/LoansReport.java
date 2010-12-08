@@ -64,23 +64,11 @@ public class LoansReport {
 	};
 
 	/**
-	 * Launch the application.
+	 * This view reports the results when a loan has been returned
+	 * 
+	 * @param uimanager
+	 * @param loans
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-					Library l = LibraryApp.inst();
-					new LoansReport(new BookMasterUiManager(l), l.getLoans());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	public LoansReport(BookMasterUiManager uimanager, List<Loan> loans) {
 		this.uimanager = uimanager;
 		this.loans = loans;

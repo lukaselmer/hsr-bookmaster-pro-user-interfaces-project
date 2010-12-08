@@ -18,21 +18,11 @@ public class BookEdit extends BookForm implements SubFrame<Book>, Observer {
 	protected final Book book;
 	protected Book originalBook;
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-					Library l = LibraryApp.inst();
-					new BookEdit(new BookMasterUiManager(l), l.getBooks().get(new Random().nextInt(l.getBooks().size())));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	/**
+	 * The view to edit a book
+	 * @param uimanager
+	 * @param book
+	 */
 	public BookEdit(BookMasterUiManager uimanager, Book book) {
 		super(uimanager);
 		this.book = book;

@@ -123,26 +123,9 @@ public class LoanDetailWithCellRenderer implements SubFrame<Customer>, Observer 
 	private JMenuItem mntMarkCopyAsLost;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) throws Exception {
-		UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				Library l = LibraryApp.inst();
-				try {
-					Random r = new Random();
-					new LoanDetailWithCellRenderer(new BookMasterUiManager(l), l.getCustomers().get(r.nextInt(l.getCustomers().size())));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
+	 * Demo for loan detail with CellRenderer implementation
+	 * @param uimanager
+	 * @param customer
 	 */
 	public LoanDetailWithCellRenderer(BookMasterUiManager uimanager, Customer customer) {
 		this.uimanager = uimanager;

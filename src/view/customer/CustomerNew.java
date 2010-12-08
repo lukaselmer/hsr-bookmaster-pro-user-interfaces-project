@@ -1,30 +1,16 @@
 package view.customer;
 
-import java.awt.EventQueue;
-
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 
 import view.BookMasterUiManager;
-import application.LibraryApp;
 import domain.Customer;
 
 public class CustomerNew extends CustomerForm {
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-					new CustomerNew(new BookMasterUiManager(LibraryApp.inst()));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	/**
+	 * View to create a new customer
+	 * @param uimanager
+	 */
 	public CustomerNew(BookMasterUiManager uimanager) {
 		super(uimanager);
 	}

@@ -77,23 +77,6 @@ public abstract class CustomerForm {
 		}
 	};
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-					new CustomerNew(new BookMasterUiManager(LibraryApp.inst()));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	protected abstract String getWindowTitle();
 
 	protected abstract String getSaveButtonTitle();
@@ -101,12 +84,8 @@ public abstract class CustomerForm {
 	protected abstract void saveCustomer(Customer c);
 
 	/**
-	 * Create the application.
-	 * 
-	 * @param bookMaster
-	 * 
-	 * @param library
-	 * @wbp.parser.entryPoint
+	 * The abstract customer form
+	 * @param uimanager
 	 */
 	public CustomerForm(BookMasterUiManager uimanager) {
 		this.uimanager = uimanager;
