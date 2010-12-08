@@ -169,40 +169,31 @@ public class BookMaster implements Observer {
 		mnFile = new JMenu("Datei");
 		mnFile.setMnemonic('d');
 		menuBar.add(mnFile);
-
 		mntClose = new JMenuItem(actClose);
 		mnFile.add(mntClose);
 
 		mnBooks = new JMenu("Bücher");
 		menuBar.add(mnBooks);
-
-		mntNewBook = new JMenuItem(actNewBook);
-		mnBooks.add(mntNewBook);
-
 		mntShowSelectedBooks = new JMenuItem(actShowSelectedBooks);
 		mnBooks.add(mntShowSelectedBooks);
-
+		mntNewBook = new JMenuItem(actNewBook);
+		mnBooks.add(mntNewBook);
 		mnLoans = new JMenu("Ausleihen");
 		menuBar.add(mnLoans);
 
 		mnNewLoan = new JMenuItem(actNewLoan);
 		mnLoans.add(mnNewLoan);
-
 		mntShowSelectedLoans = new JMenuItem(actShowSelectedLoans);
 		mnLoans.add(mntShowSelectedLoans);
-
 		mntReturnSelectedLoans = new JMenuItem(actReturnSelectedLoans);
 		mnLoans.add(mntReturnSelectedLoans);
 
 		mnClients = new JMenu("Kunden");
 		menuBar.add(mnClients);
-
 		mntNewCustomer = new JMenuItem(actNewCustomer);
 		mnClients.add(mntNewCustomer);
-
 		mntShowSelectedCustomers = new JMenuItem(actShowSelectedCustomers);
 		mnClients.add(mntShowSelectedCustomers);
-
 		mntLoansForSelectedCustomer = new JMenuItem(actLoanForSelectedCustomer);
 		mnClients.add(mntLoansForSelectedCustomer);
 
