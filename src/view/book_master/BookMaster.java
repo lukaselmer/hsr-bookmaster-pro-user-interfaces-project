@@ -308,13 +308,7 @@ public class BookMaster implements Observer {
 	private JPanel getPnlBookFilter() {
 		JLabel lblBookTableDescription = new JLabel("Alle Bücher in der Bibliothek sind in der unterstehenden Tabelle ersichtlich");
 
-		txtFilterBooks = new JTextField() {
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				Graphics2D g2 = (Graphics2D) g;
-				g2.drawImage(new ImageIcon("data/icons/search.png").getImage(), 0, 0, this);
-			};
-		};
+		txtFilterBooks = new JTextField();
 		txtFilterBooks.setToolTipText("Filtern nach Exemplar-IDs, Buchtitel, Regal, Author oder Verlag");
 		txtFilterBooks.getDocument().addDocumentListener(new DocumentListenerAdapter() {
 			@Override
