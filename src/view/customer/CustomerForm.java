@@ -12,8 +12,6 @@ import java.text.ParseException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,10 +22,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.WindowConstants;
-
-import org.jdesktop.swingx.JXTitledSeparator;
 
 import validators.CustomerValidator;
 import validators.FormValidator;
@@ -243,7 +238,7 @@ public abstract class CustomerForm {
 			}
 		});
 	}
-	
+
 	private Component getButtonsPanel() {
 		FormLayout layout = new FormLayout("pref:grow, 5dlu, pref:grow", "pref");
 		JPanel panel = new JPanel(layout);

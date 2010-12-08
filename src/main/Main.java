@@ -34,12 +34,14 @@ public class Main {
 		// Use system look and feel
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e1) {
+		} catch (Exception e) {
+			// Pass
 		}
 		// Whenever possible, use the jgoodies look and feel
 		try {
 			UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
 		} catch (Exception e) {
+			// Pass
 		}
 	}
 
