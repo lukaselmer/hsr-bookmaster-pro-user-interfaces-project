@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -19,7 +18,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Random;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -58,7 +56,6 @@ import view.BookMasterUiManager;
 import view.DocumentListenerAdapter;
 import view.ViewUtil;
 import view.book_master.SubFrame;
-import application.LibraryApp;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;

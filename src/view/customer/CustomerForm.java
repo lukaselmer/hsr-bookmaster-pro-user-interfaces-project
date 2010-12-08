@@ -1,7 +1,6 @@
 package view.customer;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,7 +23,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
 import org.jdesktop.swingx.JXTitledSeparator;
@@ -34,7 +32,6 @@ import validators.FormValidator;
 import view.BookMasterActions;
 import view.BookMasterUiManager;
 import view.ViewUtil;
-import application.LibraryApp;
 
 import com.jgoodies.validation.view.ValidationComponentUtils;
 

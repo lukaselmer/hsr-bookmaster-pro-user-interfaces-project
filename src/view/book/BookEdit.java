@@ -1,18 +1,13 @@
 package view.book;
 
-import java.awt.EventQueue;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Random;
 
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 
 import view.BookMasterUiManager;
 import view.book_master.SubFrame;
-import application.LibraryApp;
 import domain.Book;
-import domain.Library;
 
 public class BookEdit extends BookForm implements SubFrame<Book>, Observer {
 	protected final Book book;
