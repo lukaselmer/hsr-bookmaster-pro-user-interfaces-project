@@ -178,24 +178,24 @@ public class BookMaster implements Observer {
 		mnBooks.add(mntShowSelectedBooks);
 		mntNewBook = new JMenuItem(actNewBook);
 		mnBooks.add(mntNewBook);
+		
 		mnLoans = new JMenu("Ausleihen");
 		menuBar.add(mnLoans);
-
-		mnNewLoan = new JMenuItem(actNewLoan);
-		mnLoans.add(mnNewLoan);
-		mntShowSelectedLoans = new JMenuItem(actShowSelectedLoans);
-		mnLoans.add(mntShowSelectedLoans);
 		mntReturnSelectedLoans = new JMenuItem(actReturnSelectedLoans);
 		mnLoans.add(mntReturnSelectedLoans);
+		mntShowSelectedLoans = new JMenuItem(actShowSelectedLoans);
+		mnLoans.add(mntShowSelectedLoans);
+		mnNewLoan = new JMenuItem(actNewLoan);
+		mnLoans.add(mnNewLoan);
 
 		mnClients = new JMenu("Kunden");
 		menuBar.add(mnClients);
-		mntNewCustomer = new JMenuItem(actNewCustomer);
-		mnClients.add(mntNewCustomer);
-		mntShowSelectedCustomers = new JMenuItem(actShowSelectedCustomers);
-		mnClients.add(mntShowSelectedCustomers);
 		mntLoansForSelectedCustomer = new JMenuItem(actLoanForSelectedCustomer);
 		mnClients.add(mntLoansForSelectedCustomer);
+		mntShowSelectedCustomers = new JMenuItem(actShowSelectedCustomers);
+		mnClients.add(mntShowSelectedCustomers);
+		mntNewCustomer = new JMenuItem(actNewCustomer);
+		mnClients.add(mntNewCustomer);		
 
 		menuBar.add(ViewUtil.getHelpMenu(frmBookmaster));
 	}
