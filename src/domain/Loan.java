@@ -99,10 +99,7 @@ public class Loan extends Observable {
 	}
 
 	public int getDaysOfExpectedLeftLoanDuration() {
-		int days = DAYS_TO_RETURN_BOOK - getDaysOfLoanDuration();
-		// if (days < 0)
-		// return -1;
-		return days;
+		return DAYS_TO_RETURN_BOOK - getDaysOfLoanDuration();
 	}
 
 	public GregorianCalendar getDueDate() {

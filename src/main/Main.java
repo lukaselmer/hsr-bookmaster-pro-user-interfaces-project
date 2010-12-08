@@ -4,7 +4,6 @@ import javax.swing.UIManager;
 
 import view.book_master.BookMaster;
 import view.splash_screen.BookMasterSplashScreen;
-import application.LibraryApp;
 import application.LibraryLoader;
 
 public class Main {
