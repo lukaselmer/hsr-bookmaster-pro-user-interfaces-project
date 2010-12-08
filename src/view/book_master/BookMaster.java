@@ -128,11 +128,8 @@ public class BookMaster implements Observer {
 	private final Action actShowSelectedCustomers = new ActShowSelectedCustomers();
 	private final Action actLoanForSelectedCustomer = new ActLoanForSelectedCustomer();
 
-	
-	//TODO: allli mains löschä
-	
 	/**
-	 * Create the application.
+	 * The main view for the BookMaster
 	 * 
 	 * @param library
 	 */
