@@ -25,12 +25,6 @@ import domain.Shelf;
 
 public class LibraryApp {
 
-	// public static void main(String[] args) throws Exception {
-	// UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-	// Library library = inst();
-	// new BookMaster(library);
-	// }
-
 	public static Library inst() {
 		Library library = new Library();
 		try {
@@ -58,27 +52,6 @@ public class LibraryApp {
 
 		// create pseudo random books and loans
 		createBooksAndLoans(library);
-
-		// System.out.println("Initialisation of the library was successful!\n");
-		// System.out.println("Books in library: " + library.getBooks().size());
-		// System.out.println("Customers: " + library.getCustomers().size() +
-		// "\n");
-		// System.out.println("Copies in library: " +
-		// library.getCopies().size());
-		// System.out.println("Copies currently on loan: " +
-		// library.getLentOutBooks().size());
-		// int lentBooksPercentage = (int) (((double)
-		// library.getLentOutBooks().size()) / library.getCopies().size() *
-		// 100);
-		// System.out.println("Percent copies on loan: " + lentBooksPercentage +
-		// "%");
-		// System.out.println("Copies currently overdue: " +
-		// library.getOverdueLoans().size());
-		//
-		// for (Loan l : library.getOverdueLoans())
-		// System.out.println(l.getDaysOverdue());
-		// for (Loan l : library.getLoans())
-		// System.out.println(l.getDaysOfExpectedLeftLoanDuration());
 	}
 
 	private static void createBooksAndLoans(Library library) throws IllegalLoanOperationException {

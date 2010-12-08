@@ -104,31 +104,9 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	private JMenuItem mnAddCopy;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) throws Exception {
-		UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				Library l = LibraryApp.inst();
-				try {
-					// new BookDetail(new BookMasterUiManager(l),
-					// l.getBooks().get(new
-					// Random().nextInt(l.getBooks().size())));
-					new BookDetail(new BookMasterUiManager(l), l.getBooks().get(0));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 * 
+	 * The book detail frame. Copies of a book may be added here.
+	 * @param uimanager
 	 * @param book
-	 * @param l
 	 */
 	public BookDetail(BookMasterUiManager uimanager, Book book) {
 		this.uimanager = uimanager;

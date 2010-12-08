@@ -130,19 +130,9 @@ public class BookMaster implements Observer {
 	private final Action actShowSelectedCustomers = new ActShowSelectedCustomers();
 	private final Action actLoanForSelectedCustomer = new ActLoanForSelectedCustomer();
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) throws Exception {
-		UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				new BookMaster(LibraryApp.inst());
-			}
-		});
-	}
-
+	
+	//TODO: allli mains löschä
+	
 	/**
 	 * Create the application.
 	 * 

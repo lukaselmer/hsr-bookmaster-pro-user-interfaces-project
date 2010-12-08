@@ -5,6 +5,7 @@ import javax.swing.UIManager;
 import view.book_master.BookMaster;
 import view.splash_screen.BookMasterSplashScreen;
 import application.LibraryApp;
+import application.LibraryLoader;
 
 public class Main {
 
@@ -13,6 +14,8 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		boolean showSplashScreen = getShowSplashScreen(args);
+		LibraryLoader ll = new LibraryLoader();
+		ll.start();
 		try {
 			UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
 		} catch (Exception e) {
@@ -20,9 +23,17 @@ public class Main {
 			// not implemented. Pass.
 		}
 		if (showSplashScreen) {
-			showSplashScreenAndWait();
+			try {
+				showSplashScreenAndWait();
+			} catch (Throwable t) {
+				// If anything with the animation goes wrong: no problem. Pass.
+			}
 		}
-		new BookMaster(LibraryApp.inst());
+		try {
+			ll.join();
+		} catch (InterruptedException e) {
+		}
+		new BookMaster(ll.getLibrary());
 	}
 
 	private static void showSplashScreenAndWait() {
