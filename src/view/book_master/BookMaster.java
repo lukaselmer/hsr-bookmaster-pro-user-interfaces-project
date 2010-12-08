@@ -138,7 +138,7 @@ public class BookMaster implements Observer {
 	private final Action actOverduesOnly = new ActOverduesOnly();
 	private JMenuItem mntShowSelectedLoans;
 	private JMenuItem mntReturnSelectedLoans;
-	private final Action actShowSelectedLoans = new ActShowSelectedLoans();
+	private final ActShowSelectedLoans actShowSelectedLoans = new ActShowSelectedLoans();
 	private final Action actReturnSelectedLoans = new ActReturnSelectedLoans();
 	private JMenuItem mntShowSelectedCustomers;
 	private JMenuItem mntLoansForSelectedCustomer;
@@ -766,7 +766,7 @@ public class BookMaster implements Observer {
 		tblLoans.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				actShowSelectedLoans.setEnabled(tblLoans.getSelectedRowCount() > 0);
+				actShowSelectedLoans.setEnabled(tblLoans.getSelectedRowCount() == 1);
 				actReturnSelectedLoans.setEnabled(tblLoans.getSelectedRowCount() > 0);
 			}
 		});
@@ -944,8 +944,14 @@ public class BookMaster implements Observer {
 
 		public void actionPerformed(ActionEvent e) {
 			List<Book> books = getSelectedBooks();
-			for (Book b : books) {
-				createOrShowBookDetailFrame(b);
+			if (books.size() <= 5
+					|| JOptionPane.showConfirmDialog(frmBookmaster, "Sind Sie sicher, dass Sie " + books.size() + " Bücher "
+							+ "anzeigen wollen?", "Selektierte Bücher Anzeigen", JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+
+				for (Book b : books) {
+					createOrShowBookDetailFrame(b);
+				}
 			}
 		}
 	}
@@ -974,15 +980,25 @@ public class BookMaster implements Observer {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_A);
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_MASK));
 			putValue(NAME, "Selektierte Anzeigen...");
-			putValue(SHORT_DESCRIPTION, "Zeigt Details zu den selektierten Ausleihen an");
 			putValue(SMALL_ICON, new ImageIcon("data/icons/view.gif"));
+			setEnabled(isEnabled());
 		}
 
 		public void actionPerformed(ActionEvent e) {
 			List<Loan> loans = getSelectedLoans();
-			for (Loan l : loans) {
-				createOrShowLoanDetailFrame(l);
+			if (loans.size() == 1) {
+				createOrShowLoanDetailFrame(loans.get(0));
+			} else {
+				JOptionPane.showMessageDialog(frmBookmaster, "Bitte wählen Sie genau eine Ausleihe aus.", "Warnung",
+						JOptionPane.WARNING_MESSAGE);
 			}
+		}
+
+		@Override
+		public void setEnabled(boolean newValue) {
+			super.setEnabled(newValue);
+			putValue(AbstractAction.SHORT_DESCRIPTION, enabled ? "Zeigt Details zu einer selektierten Ausleihen an"
+					: "Bitte wählen Sie genau eine Ausleihe aus");
 		}
 	}
 
@@ -1023,8 +1039,13 @@ public class BookMaster implements Observer {
 
 		public void actionPerformed(ActionEvent e) {
 			List<Customer> customers = getSelectedCustomers();
-			for (Customer b : customers) {
-				createOrShowCustomerDetailFrame(b);
+			if (customers.size() <= 5
+					|| JOptionPane.showConfirmDialog(frmBookmaster, "Sind Sie sicher, dass Sie " + customers.size() + " Kunden "
+							+ "bearbeiten wollen?", "Selektierte Kunden Bearbeiten", JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+				for (Customer b : customers) {
+					createOrShowCustomerDetailFrame(b);
+				}
 			}
 		}
 	}
