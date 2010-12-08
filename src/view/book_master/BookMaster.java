@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -308,7 +309,13 @@ public class BookMaster implements Observer {
 	private JPanel getPnlBookFilter() {
 		JLabel lblBookTableDescription = new JLabel("Alle Bücher in der Bibliothek sind in der unterstehenden Tabelle ersichtlich");
 
-		txtFilterBooks = new JTextField();
+		txtFilterBooks = new JTextField() {
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Graphics2D g2 = (Graphics2D) g;
+				g2.drawImage(new ImageIcon("data/icons/search.png").getImage(), 0, 0, this);
+			};
+		};
 		txtFilterBooks.setToolTipText("Filtern nach Exemplar-IDs, Buchtitel, Regal, Author oder Verlag");
 		txtFilterBooks.getDocument().addDocumentListener(new DocumentListenerAdapter() {
 			@Override
@@ -318,7 +325,7 @@ public class BookMaster implements Observer {
 		});
 		txtFilterBooks.setColumns(10);
 
-		JLabel lblFilterBooks = new JLabel("Filter:");
+		JLabel lblFilterBooks = new JLabel("Filter:", new ImageIcon("data/icons/filter.png"), JLabel.LEADING);
 		lblFilterBooks.setDisplayedMnemonic('f');
 		lblFilterBooks.setLabelFor(txtFilterBooks);
 		lblFilterBooks.setToolTipText("Filtern nach Exemplar-IDs, Buchtitel, Regal, Author oder Verlag");
@@ -396,7 +403,7 @@ public class BookMaster implements Observer {
 		JLabel lblAlleAusleighen = new JLabel(
 				"Alle zurzeit ausgeliehenen Exemplare für alle Kunden sind in der untenstehenden Tabelle ersichtlich");
 
-		JLabel lblFilterLoans = new JLabel("Filter:");
+		JLabel lblFilterLoans = new JLabel("Filter:", new ImageIcon("data/icons/filter.png"), JLabel.LEADING);
 		lblFilterLoans.setDisplayedMnemonic('f');
 		lblFilterLoans.setToolTipText("Filtern nach Status, Exemplar-ID, Buchtitel, Ausgeliehen Bis oder Ausgeliehen An");
 
@@ -487,7 +494,7 @@ public class BookMaster implements Observer {
 	private Component getPnlCustomerFilter() {
 		JLabel lblAlleAusleighen = new JLabel("Alle Kunden sind in der untenstehenden Tabelle ersichtlich");
 
-		JLabel lblFilterCustomers = new JLabel("Filter:");
+		JLabel lblFilterCustomers = new JLabel("Filter:", new ImageIcon("data/icons/filter.png"), JLabel.LEADING);
 		lblFilterCustomers.setDisplayedMnemonic('f');
 		lblFilterCustomers.setToolTipText("Filtern nach Vorname, Nachname, Strasse, Stadt oder PLZ");
 

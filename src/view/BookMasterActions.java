@@ -41,10 +41,11 @@ public class BookMasterActions {
 		private static final long serialVersionUID = -6338712504337199197L;
 
 		public ActHelp() {
+			putValue(NAME, "Hilfe");
 			putValue(MNEMONIC_KEY, KeyEvent.VK_H);
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 			putValue(SHORT_DESCRIPTION, "Zeigt die Hilfe an");
-			putValue(NAME, "Hilfe");
+			putValue(SMALL_ICON, new ImageIcon("data/icons/help.png"));
 		}
 
 		@Override

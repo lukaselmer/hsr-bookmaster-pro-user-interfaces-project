@@ -23,6 +23,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -517,6 +518,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_Z);
 			putValue(SHORT_DESCRIPTION, "Gibt selektierte Bücher zurück");
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
+			putValue(SMALL_ICON, new ImageIcon("data/icons/return.png"));
 		}
 
 		@Override
@@ -538,10 +540,11 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		private static final long serialVersionUID = 7524200258063461521L;
 
 		public ActLendNewCopy() {
+			putValue(NAME, "Exemplar Ausleihen");
 			putValue(MNEMONIC_KEY, KeyEvent.VK_A);
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
 			putValue(SHORT_DESCRIPTION, "Leiht angegebenes Buch aus");
-			putValue(NAME, "Exemplar Ausleihen");
+			putValue(SMALL_ICON, new ImageIcon("data/icons/loan_it.png"));
 		}
 
 		@Override
@@ -568,6 +571,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 			putValue(NAME, "Selektierte Als Verloren Markieren");
 			putValue(SHORT_DESCRIPTION, "Markiert selektierte Ausleihen als verloren und entfernt diese");
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK));
+			putValue(SMALL_ICON, new ImageIcon("data/icons/lightning.png"));
 		}
 
 		@Override
