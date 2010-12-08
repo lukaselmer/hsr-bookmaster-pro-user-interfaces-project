@@ -57,7 +57,6 @@ public abstract class BookMasterTableModel<T> extends AbstractTableModel {
 
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
-		// TODO: Exception!?
 		return getValueAt(0, columnIndex).getClass();
 	}
 

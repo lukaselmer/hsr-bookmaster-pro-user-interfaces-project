@@ -22,7 +22,6 @@ public class SearchCopyForLoanValidator implements Validator<SearchResult<Copy>>
 		}
 		Copy c = searchResult.getObject();
 		if (c.isLent()) {
-			// TODO: correct this
 			support.addError("Exemplar-ID", "Exemplar ist bereits ausgeliehen");
 		}
 		return support.getResult();
