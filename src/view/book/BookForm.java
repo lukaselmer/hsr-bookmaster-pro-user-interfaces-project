@@ -13,6 +13,7 @@ import java.text.ParseException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -86,7 +87,7 @@ public abstract class BookForm {
 
 	protected abstract void saveBook(Book c);
 
-	protected abstract String getSaveButtonString();
+	protected abstract String getSaveButtonTitle();
 
 	protected void beforeDispose() {
 	}
@@ -265,9 +266,11 @@ public abstract class BookForm {
 		private static final long serialVersionUID = 6075552530373572839L;
 
 		public ActSave() {
-			putValue(NAME, getSaveButtonString());
+			putValue(NAME, getSaveButtonTitle());
 			putValue(MNEMONIC_KEY, KeyEvent.VK_S);
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+			putValue(SHORT_DESCRIPTION, getSaveButtonTitle());
+			putValue(SMALL_ICON, new ImageIcon("data/icons/save.png"));
 		}
 
 		@Override

@@ -14,6 +14,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -256,10 +257,11 @@ public abstract class CustomerForm {
 		private static final long serialVersionUID = 7524200258063461521L;
 
 		public ActSave() {
+			putValue(NAME, getSaveButtonTitle());
 			putValue(MNEMONIC_KEY, KeyEvent.VK_S);
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
-			putValue(NAME, getSaveButtonTitle());
 			putValue(SHORT_DESCRIPTION, getSaveButtonTitle());
+			putValue(SMALL_ICON, new ImageIcon("data/icons/save.png"));
 		}
 
 		@Override

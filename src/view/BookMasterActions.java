@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
@@ -18,6 +19,7 @@ public class BookMasterActions {
 			putValue(SHORT_DESCRIPTION, "Schliesst aktuelles Fenster");
 			putValue(NAME, "Schliessen");
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
+			putValue(SMALL_ICON, new ImageIcon("data/icons/false.png"));
 		}
 
 		@Override

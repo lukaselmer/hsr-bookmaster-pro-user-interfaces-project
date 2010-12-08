@@ -884,6 +884,7 @@ public class BookMaster implements Observer {
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_MASK));
 			putValue(NAME, "Neuer Buchtitel Erfassen...");
 			putValue(SHORT_DESCRIPTION, "Erfasst einen neuen Buchtitel");
+			putValue(SMALL_ICON, new ImageIcon("data/icons/add.png"));
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -899,6 +900,7 @@ public class BookMaster implements Observer {
 			putValue(NAME, "Neue Ausleihe Erfassen...");
 			putValue(SHORT_DESCRIPTION, "Erfasst eine neue Ausleihe");
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_MASK));
+			putValue(SMALL_ICON, new ImageIcon("data/icons/add.png"));
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -914,6 +916,7 @@ public class BookMaster implements Observer {
 			putValue(NAME, "Neuer Kunde Erfassen...");
 			putValue(SHORT_DESCRIPTION, "Erfasst einen neuen Kunden");
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_K, InputEvent.CTRL_MASK));
+			putValue(SMALL_ICON, new ImageIcon("data/icons/add.png"));
 		}
 
 		public void actionPerformed(ActionEvent e) {

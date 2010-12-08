@@ -29,7 +29,7 @@ public class BookNew extends BookForm {
 	}
 
 	@Override
-	protected String getSaveButtonString() {
+	protected String getSaveButtonTitle() {
 		return "Buchtitel Erfassen";
 	}
 }

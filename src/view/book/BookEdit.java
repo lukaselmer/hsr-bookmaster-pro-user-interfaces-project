@@ -90,7 +90,7 @@ public class BookEdit extends BookForm implements SubFrame<Book>, Observer {
 	}
 
 	@Override
-	protected String getSaveButtonString() {
+	protected String getSaveButtonTitle() {
 		return "Änderungen Speichern";
 	}
 }
