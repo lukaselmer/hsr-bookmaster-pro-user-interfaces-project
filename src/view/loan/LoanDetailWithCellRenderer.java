@@ -121,6 +121,7 @@ public class LoanDetailWithCellRenderer implements SubFrame<Customer>, Observer 
 
 	/**
 	 * Demo for loan detail with CellRenderer implementation
+	 * 
 	 * @param uimanager
 	 * @param customer
 	 */

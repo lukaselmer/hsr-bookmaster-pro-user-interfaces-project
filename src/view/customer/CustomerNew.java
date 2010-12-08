@@ -9,6 +9,7 @@ public class CustomerNew extends CustomerForm {
 
 	/**
 	 * View to create a new customer
+	 * 
 	 * @param uimanager
 	 */
 	public CustomerNew(BookMasterUiManager uimanager) {

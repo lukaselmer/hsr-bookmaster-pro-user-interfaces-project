@@ -15,6 +15,7 @@ public class BookEdit extends BookForm implements SubFrame<Book>, Observer {
 
 	/**
 	 * The view to edit a book
+	 * 
 	 * @param uimanager
 	 * @param book
 	 */

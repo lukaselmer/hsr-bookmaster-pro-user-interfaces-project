@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -70,6 +69,15 @@ public abstract class CustomerForm {
 		public void actionPerformed(ActionEvent arg0) {
 			if (actSave.isEnabled())
 				actSave.actionPerformed(arg0);
+		}
+	};
+
+	private final Action actCancel = new BookMasterActions.ActCancel() {
+		private static final long serialVersionUID = -389975679735011338L;
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			frmCustomerForm.dispose();
 		}
 	};
 	private JLabel lblName;
@@ -230,13 +238,7 @@ public abstract class CustomerForm {
 			}
 		};
 
-		btnCancel = new JButton("Abbrechen");
-		btnCancel.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				frmCustomerForm.dispose();
-			}
-		});
+		btnCancel = new JButton(actCancel);
 	}
 
 	private Component getButtonsPanel() {

@@ -18,6 +18,7 @@ import java.util.Observer;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -102,6 +103,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 
 	/**
 	 * The book detail frame. Copies of a book may be added here.
+	 * 
 	 * @param uimanager
 	 * @param book
 	 */
@@ -391,6 +393,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 			putValue(NAME, "Buch Bearbeiten...");
 			putValue(SHORT_DESCRIPTION, "Bearbeitet die Buchinformationen");
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
+			putValue(SMALL_ICON, new ImageIcon("data/icons/edit.gif"));
 		}
 
 		@Override
@@ -407,6 +410,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 			putValue(NAME, "Selektierte Entfernen");
 			putValue(SHORT_DESCRIPTION, "Entfernt die selektierten Bücher");
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
+			putValue(SMALL_ICON, new ImageIcon("data/icons/delete.png"));
 		}
 
 		@Override
@@ -430,6 +434,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 			putValue(NAME, "Exemplar Hinzufügen");
 			putValue(SHORT_DESCRIPTION, "Fügt ein neues Exemplar hinzu");
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.CTRL_MASK));
+			putValue(SMALL_ICON, new ImageIcon("data/icons/add.png"));
 		}
 
 		@Override

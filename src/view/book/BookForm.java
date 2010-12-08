@@ -5,7 +5,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -60,6 +59,15 @@ public abstract class BookForm {
 	private BookMasterUiManager uimanager;
 	private JMenuBar menuBar;
 	private final Action actClose = new BookMasterActions.ActClose() {
+		private static final long serialVersionUID = -389975679735011338L;
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			beforeDispose();
+			frmBookForm.dispose();
+		}
+	};
+	private final Action actCancel = new BookMasterActions.ActCancel() {
 		private static final long serialVersionUID = -389975679735011338L;
 
 		@Override
@@ -142,8 +150,8 @@ public abstract class BookForm {
 		});
 		frmBookForm.setSize(new Dimension(500, 242));
 		frmBookForm.setMinimumSize(new Dimension(350, 242));
-//		 frmBookForm.setMaximumSize(new Dimension(650, 322));
-//		 frmBookForm.setResizable(false);
+		// frmBookForm.setMaximumSize(new Dimension(650, 322));
+		// frmBookForm.setResizable(false);
 
 		initMenu();
 		initComponents();
@@ -243,15 +251,7 @@ public abstract class BookForm {
 		actSave.setEnabled(false);
 
 		// Cancel button
-		btnCancel = new JButton("Abbrechen");
-		btnCancel.setMnemonic(KeyEvent.VK_A);
-		btnCancel.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				beforeDispose();
-				frmBookForm.dispose();
-			}
-		});
+		btnCancel = new JButton(actCancel);
 	}
 
 	public Book getSavedObject() {

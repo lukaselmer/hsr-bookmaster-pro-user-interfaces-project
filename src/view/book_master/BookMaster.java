@@ -113,7 +113,7 @@ public class BookMaster implements Observer {
 	private JMenuItem mntNewBook;
 	private final Action actNewBook = new SwingAction();
 	private final Action actClose = new BookMasterActions.ActClose() {
-		
+
 		private static final long serialVersionUID = -1552611178018631110L;
 
 		@Override
@@ -178,7 +178,7 @@ public class BookMaster implements Observer {
 		mnBooks.add(mntShowSelectedBooks);
 		mntNewBook = new JMenuItem(actNewBook);
 		mnBooks.add(mntNewBook);
-		
+
 		mnLoans = new JMenu("Ausleihen");
 		menuBar.add(mnLoans);
 		mntReturnSelectedLoans = new JMenuItem(actReturnSelectedLoans);
@@ -195,7 +195,7 @@ public class BookMaster implements Observer {
 		mntShowSelectedCustomers = new JMenuItem(actShowSelectedCustomers);
 		mnClients.add(mntShowSelectedCustomers);
 		mntNewCustomer = new JMenuItem(actNewCustomer);
-		mnClients.add(mntNewCustomer);		
+		mnClients.add(mntNewCustomer);
 
 		menuBar.add(ViewUtil.getHelpMenu(frmBookmaster));
 	}
@@ -932,6 +932,7 @@ public class BookMaster implements Observer {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_A);
 			putValue(NAME, "Selektierte Bücher Anzeigen...");
 			putValue(SHORT_DESCRIPTION, "Zeigt die selektierten Bücher an");
+			putValue(SMALL_ICON, new ImageIcon("data/icons/view.gif"));
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -967,6 +968,7 @@ public class BookMaster implements Observer {
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_MASK));
 			putValue(NAME, "Selektierte Anzeigen...");
 			putValue(SHORT_DESCRIPTION, "Zeigt Details zu den selektierten Ausleihen an");
+			putValue(SMALL_ICON, new ImageIcon("data/icons/view.gif"));
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -985,6 +987,7 @@ public class BookMaster implements Observer {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_R);
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK));
 			putValue(SHORT_DESCRIPTION, "Gibt die selektieren Ausleihen zurück");
+			putValue(SMALL_ICON, new ImageIcon("data/icons/return.png"));
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -1008,6 +1011,7 @@ public class BookMaster implements Observer {
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_MASK));
 			putValue(NAME, "Selektierte Bearbeiten...");
 			putValue(SHORT_DESCRIPTION, "Bearbeitet die ausgewählten Kunden");
+			putValue(SMALL_ICON, new ImageIcon("data/icons/edit.gif"));
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -1026,6 +1030,7 @@ public class BookMaster implements Observer {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_E);
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_MASK));
 			putValue(SHORT_DESCRIPTION, "Zeigt Details zu den Ausleihen des selekierten Kunden");
+			putValue(SMALL_ICON, new ImageIcon("data/icons/view.gif"));
 		}
 
 		public void actionPerformed(ActionEvent e) {

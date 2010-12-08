@@ -54,6 +54,16 @@ public class BookMasterActions {
 		}
 
 		public abstract JFrame getFrame();
+	}
 
+	public static abstract class ActCancel extends AbstractAction {
+		private static final long serialVersionUID = 8540992059127356091L;
+
+		public ActCancel() {
+			putValue(MNEMONIC_KEY, KeyEvent.VK_A);
+			putValue(SHORT_DESCRIPTION, "Abbrechen");
+			putValue(NAME, "Bricht aktuelle Aktion ab");
+			putValue(SMALL_ICON, new ImageIcon("data/icons/cancel.png"));
+		}
 	}
 }
