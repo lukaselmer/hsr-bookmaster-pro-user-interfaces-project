@@ -53,6 +53,7 @@ import javax.swing.table.TableRowSorter;
 
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
 
+import view.BookMasterActions;
 import view.BookMasterUiManager;
 import view.DocumentListenerAdapter;
 import view.DoubleClickMouseAdapter;
@@ -111,7 +112,22 @@ public class BookMaster implements Observer {
 	private JMenuItem mntShowSelectedBooks;
 	private JMenuItem mntNewBook;
 	private final Action actNewBook = new SwingAction();
-	private final Action actClose = new ActClose();
+	private final Action actClose = new BookMasterActions.ActClose() {
+		
+		private static final long serialVersionUID = -1552611178018631110L;
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			if (JOptionPane.showConfirmDialog(frmBookmaster, "Sind Sie sicher? Alle Unterfenster werden geschlossen.",
+					"BookMasterPro Schliessen", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+				frmBookmaster.setVisible(false);
+				library.deleteObserver(BookMaster.this);
+				frmBookmaster.dispose();
+				System.exit(0);
+
+			}
+		}
+	};
 	private JMenuItem mnNewLoan;
 	private final Action actNewLoan = new ActNewLoan();
 	private JMenuItem mntNewCustomer;
@@ -881,27 +897,6 @@ public class BookMaster implements Observer {
 
 		public void actionPerformed(ActionEvent e) {
 			uimanager.openBookNewFrame();
-		}
-	}
-
-	private class ActClose extends AbstractAction {
-		private static final long serialVersionUID = -6063045550224278740L;
-
-		public ActClose() {
-			putValue(MNEMONIC_KEY, KeyEvent.VK_S);
-			putValue(NAME, "Schliessen");
-			putValue(SHORT_DESCRIPTION, "Schliesst BookMasterPro");
-			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_W, InputEvent.CTRL_MASK));
-		}
-
-		public void actionPerformed(ActionEvent e) {
-			if (JOptionPane.showConfirmDialog(frmBookmaster, "Sind Sie sicher? Alle Unterfenster werden geschlossen.",
-					"BookMasterPro Schliessen", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-				frmBookmaster.setVisible(false);
-				library.deleteObserver(BookMaster.this);
-				frmBookmaster.dispose();
-				System.exit(0);
-			}
 		}
 	}
 
