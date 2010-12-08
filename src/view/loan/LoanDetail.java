@@ -144,7 +144,6 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 	private void initialize() {
 		frmLoanDetail = new JFrame();
 		frmLoanDetail.setTitle("Ausleihe Detail");
-		frmLoanDetail.setBounds(100, 100, 600, 450);
 		frmLoanDetail.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		frmLoanDetail.addWindowListener(new WindowAdapter() {
 			@Override
@@ -153,7 +152,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 			}
 		});
 		frmLoanDetail.getContentPane().setLayout(new BorderLayout(0, 0));
-		frmLoanDetail.setMinimumSize(new Dimension(500, 450));
+		frmLoanDetail.setMinimumSize(new Dimension(600, 450));
 		cc = new CellConstraints();
 
 		initMenu();
@@ -514,7 +513,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		private static final long serialVersionUID = 5728087231118105568L;
 
 		public ActReturnLoan() {
-			putValue(NAME, "Selektierte Zurückgeben");
+			putValue(NAME, "Selektierte Zurückgeben...");
 			putValue(MNEMONIC_KEY, KeyEvent.VK_Z);
 			putValue(SHORT_DESCRIPTION, "Gibt selektierte Bücher zurück");
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));

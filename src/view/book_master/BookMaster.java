@@ -211,7 +211,7 @@ public class BookMaster implements Observer {
 	private void initialize() {
 		frmBookmaster = new JFrame();
 		frmBookmaster.setTitle("BookMasterPro");
-		frmBookmaster.setBounds(100, 100, 950, 600);
+		frmBookmaster.setBounds(100, 100, 1000, 600);
 		frmBookmaster.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frmBookmaster.addWindowListener(new WindowAdapter() {
 			@Override
@@ -220,7 +220,7 @@ public class BookMaster implements Observer {
 			}
 		});
 		frmBookmaster.getContentPane().setLayout(new BorderLayout(0, 0));
-		frmBookmaster.setMinimumSize(new Dimension(775, 400));
+		frmBookmaster.setMinimumSize(new Dimension(875, 400));
 		initMenu();
 
 		tabbedPane = new JTabbedPane(SwingConstants.TOP) {
@@ -990,7 +990,7 @@ public class BookMaster implements Observer {
 		private static final long serialVersionUID = -4887278482096384896L;
 
 		public ActReturnSelectedLoans() {
-			putValue(NAME, "Selektierte Zurückgeben");
+			putValue(NAME, "Selektierte Zurückgeben...");
 			putValue(MNEMONIC_KEY, KeyEvent.VK_R);
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK));
 			putValue(SHORT_DESCRIPTION, "Gibt die selektieren Ausleihen zurück");

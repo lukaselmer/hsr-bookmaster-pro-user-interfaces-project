@@ -515,7 +515,7 @@ public class LoanDetailWithCellRenderer implements SubFrame<Customer>, Observer 
 		private static final long serialVersionUID = 5728087231118105568L;
 
 		public ActReturnLoan() {
-			putValue(NAME, "Selektierte Zurückgeben");
+			putValue(NAME, "Selektierte Zurückgeben...");
 			putValue(MNEMONIC_KEY, KeyEvent.VK_Z);
 			putValue(SHORT_DESCRIPTION, "Gibt selektierte Bücher zurück");
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));

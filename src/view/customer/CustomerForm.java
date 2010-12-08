@@ -2,6 +2,7 @@ package view.customer;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -144,9 +145,9 @@ public abstract class CustomerForm {
 	private void initialize() throws ParseException {
 		frmCustomerForm = new JFrame();
 		frmCustomerForm.setTitle(getWindowTitle());
-		frmCustomerForm.setBounds(100, 100, 450, 268);
+		frmCustomerForm.setBounds(100, 100, 500, 270);
 		frmCustomerForm.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		frmCustomerForm.setResizable(false);
+		frmCustomerForm.setMinimumSize(new Dimension(350, 270));
 
 		initMenu();
 		initComponents();

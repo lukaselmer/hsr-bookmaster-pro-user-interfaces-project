@@ -140,7 +140,7 @@ public abstract class BookForm {
 	private void initialize() throws ParseException {
 		frmBookForm = new JFrame();
 		frmBookForm.setTitle(getWindowTitle());
-		frmBookForm.setBounds(100, 100, 450, 215);
+		frmBookForm.setBounds(100, 100, 500, 242);
 		frmBookForm.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		frmBookForm.addWindowListener(new WindowAdapter() {
 			@Override
@@ -148,10 +148,7 @@ public abstract class BookForm {
 				actClose.actionPerformed(null);
 			}
 		});
-		frmBookForm.setSize(new Dimension(500, 242));
 		frmBookForm.setMinimumSize(new Dimension(350, 242));
-		// frmBookForm.setMaximumSize(new Dimension(650, 322));
-		// frmBookForm.setResizable(false);
 
 		initMenu();
 		initComponents();
