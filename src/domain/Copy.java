@@ -5,7 +5,7 @@ import java.util.Observable;
 public class Copy extends Observable {
 
 	public enum Condition {
-		NEW("Neu"), GOOD("Gut"), DAMAGED("Beschädigt"), WASTE("Schlecht"); // LOST("Verloren")
+		NEW("Neu"), GOOD("Gut"), DAMAGED("Beschädigt"), WASTE("Schlecht");
 		private String name;
 
 		private Condition(String name) {

@@ -8,10 +8,6 @@ public class Book extends Observable implements Observer {
 	private String name, author, publisher;
 	private Shelf shelf;
 
-	// public Book(String name) {
-	// this(name, null, null, null);
-	// }
-
 	public Book(String name, String author, String publisher, Shelf shelf) {
 		this.name = name;
 		this.author = author;

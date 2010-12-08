@@ -23,6 +23,10 @@ import domain.Library;
 import domain.Loan;
 import domain.Shelf;
 
+/**
+ * The library application is responsible for loading the library data from the
+ * XML files
+ */
 public class LibraryApp {
 
 	public static Library inst() {

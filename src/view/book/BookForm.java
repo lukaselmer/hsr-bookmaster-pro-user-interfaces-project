@@ -85,23 +85,6 @@ public abstract class BookForm {
 	private JMenuItem mntSave;
 	private JMenuItem mntClose;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-					new BookNew(new BookMasterUiManager(LibraryApp.inst()));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	protected abstract String getWindowTitle();
 
 	protected abstract void saveBook(Book c);
@@ -116,12 +99,9 @@ public abstract class BookForm {
 	}
 
 	/**
-	 * Create the application.
+	 * The abstract book form
 	 * 
-	 * @param bookMaster
-	 * 
-	 * @param library
-	 * @wbp.parser.entryPoint
+	 * @param uimanager
 	 */
 	public BookForm(BookMasterUiManager uimanager) {
 		this.uimanager = uimanager;

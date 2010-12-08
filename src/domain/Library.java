@@ -15,9 +15,6 @@ public class Library extends Observable implements Observer {
 	private List<Book> books = new ArrayList<Book>();
 	private List<Loan> lostLoans = new ArrayList<Loan>();
 
-	public Library() {
-	}
-
 	public Loan createAndAddLoan(Customer customer, Copy copy) {
 		if (!isCopyLent(copy)) {
 			Loan l = new Loan(customer, copy);
@@ -30,23 +27,6 @@ public class Library extends Observable implements Observer {
 			return null;
 		}
 	}
-
-	// public Customer createAndAddCustomer(String name, String surname) {
-	// Customer c = new Customer(name, surname);
-	// customers.add(c);
-	// setChanged();
-	// notifyObservers();
-	// return c;
-	// }
-
-	// public Book createAndAddBook(String name) {
-	// Book b = new Book(name);
-	// books.add(b);
-	// b.addObserver(this);
-	// setChanged();
-	// notifyObservers();
-	// return b;
-	// }
 
 	public Book addBook(Book b) {
 		books.add(b);

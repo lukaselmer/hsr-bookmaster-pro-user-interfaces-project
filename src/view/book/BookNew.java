@@ -1,30 +1,16 @@
 package view.book;
 
-import java.awt.EventQueue;
-
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 
 import view.BookMasterUiManager;
-import application.LibraryApp;
 import domain.Book;
 
 public class BookNew extends BookForm {
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-					new BookNew(new BookMasterUiManager(LibraryApp.inst()));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	/**
+	 * The view to create a new book
+	 * 
+	 * @param uimanager
+	 */
 	public BookNew(BookMasterUiManager uimanager) {
 		super(uimanager);
 	}
