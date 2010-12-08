@@ -141,14 +141,14 @@ public abstract class BookForm {
 		});
 		frmBookForm.setSize(new Dimension(500, 242));
 		frmBookForm.setMinimumSize(new Dimension(350, 242));
-		// frmBookForm.setMaximumSize(new Dimension(650, 322));
-		// frmBookForm.setResizable(false);
+//		 frmBookForm.setMaximumSize(new Dimension(650, 322));
+//		 frmBookForm.setResizable(false);
 
 		initMenu();
 		initComponents();
 
 		FormLayout layout = new FormLayout("5dlu, pref, 5dlu, pref:grow, 5dlu",
-				"4dlu, pref, 4dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu");
+				"5dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu");
 		layout.setRowGroups(new int[][] { { 2, 4, 6, 8, 10 } });
 		JPanel panel = new JPanel(layout);
 		CellConstraints cc = new CellConstraints();

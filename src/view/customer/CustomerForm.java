@@ -1,6 +1,7 @@
 package view.customer;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +34,8 @@ import view.BookMasterActions;
 import view.BookMasterUiManager;
 import view.ViewUtil;
 
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.validation.view.ValidationComponentUtils;
 
 import domain.Customer;
@@ -73,6 +76,12 @@ public abstract class CustomerForm {
 				actSave.actionPerformed(arg0);
 		}
 	};
+	private JLabel lblName;
+	private JLabel lblSurname;
+	private JLabel lblStreet;
+	private JLabel lblZip;
+	private JLabel lblCity;
+	private JButton btnCancel;
 
 	protected abstract String getWindowTitle();
 
@@ -82,6 +91,7 @@ public abstract class CustomerForm {
 
 	/**
 	 * The abstract customer form
+	 * 
 	 * @param uimanager
 	 */
 	public CustomerForm(BookMasterUiManager uimanager) {
@@ -135,24 +145,42 @@ public abstract class CustomerForm {
 		frmCustomerForm.setResizable(false);
 
 		initMenu();
+		initComponents();
 
-		JPanel panel = new JPanel();
-		panel.setBorder(null);
+		FormLayout layout = new FormLayout("5dlu, pref, 5dlu, pref:grow, 5dlu",
+				"5dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu, pref, 5dlu");
+		JPanel panel = new JPanel(layout);
 		frmCustomerForm.getContentPane().add(panel, BorderLayout.CENTER);
+		CellConstraints cc = new CellConstraints();
+		panel.add(ViewUtil.getSeparator(getWindowTitle()), cc.xyw(2, 2, 3));
+		panel.add(lblName, cc.xy(2, 4));
+		panel.add(txtName, cc.xy(4, 4));
+		panel.add(lblSurname, cc.xy(2, 6));
+		panel.add(txtSurname, cc.xy(4, 6));
+		panel.add(lblStreet, cc.xy(2, 8));
+		panel.add(txtStreet, cc.xy(4, 8));
+		panel.add(lblZip, cc.xy(2, 10));
+		panel.add(txtZip, cc.xy(4, 10));
+		panel.add(lblCity, cc.xy(2, 12));
+		panel.add(txtCity, cc.xy(4, 12));
+		panel.add(getButtonsPanel(), cc.xyw(2, 14, 3));
+	}
 
-		JLabel lblName = new JLabel("Vorname:");
+	private void initComponents() {
+
+		lblName = new JLabel("Vorname:");
 		lblName.setDisplayedMnemonic('v');
 
-		JLabel lblSurname = new JLabel("Nachname:");
+		lblSurname = new JLabel("Nachname:");
 		lblSurname.setDisplayedMnemonic('n');
 
-		JLabel lblStreet = new JLabel("Strasse:");
+		lblStreet = new JLabel("Strasse:");
 		lblStreet.setDisplayedMnemonic('s');
 
-		JLabel lblZip = new JLabel("PLZ:");
+		lblZip = new JLabel("PLZ:");
 		lblZip.setDisplayedMnemonic('p');
 
-		JLabel lblCity = new JLabel("Ort:");
+		lblCity = new JLabel("Ort:");
 		lblCity.setDisplayedMnemonic('o');
 
 		txtName = new JTextField();
@@ -206,89 +234,22 @@ public abstract class CustomerForm {
 			}
 		};
 
-		JButton btnCancel = new JButton("Abbrechen");
+		btnCancel = new JButton("Abbrechen");
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				frmCustomerForm.dispose();
 			}
 		});
-
-		JXTitledSeparator label = ViewUtil.getSeparator(getWindowTitle());
-		// JLabel label = new JLabel("XXX");
-
-		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(gl_panel.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_panel.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								gl_panel.createParallelGroup(Alignment.LEADING)
-										.addGroup(
-												gl_panel.createSequentialGroup()
-														.addGroup(
-																gl_panel.createParallelGroup(Alignment.LEADING, false)
-																		.addComponent(lblSurname, Alignment.TRAILING,
-																				GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-																				Short.MAX_VALUE).addComponent(lblStreet)
-																		.addComponent(lblZip).addComponent(lblCity).addComponent(lblName))
-														.addGap(18)
-														.addGroup(
-																gl_panel.createParallelGroup(Alignment.TRAILING)
-																		.addGroup(
-																				gl_panel.createSequentialGroup()
-																						.addComponent(btnSave, GroupLayout.DEFAULT_SIZE,
-																								164, Short.MAX_VALUE)
-																						.addPreferredGap(ComponentPlacement.RELATED)
-																						.addComponent(btnCancel,
-																								GroupLayout.PREFERRED_SIZE, 170,
-																								GroupLayout.PREFERRED_SIZE))
-																		.addComponent(txtStreet, GroupLayout.DEFAULT_SIZE, 340,
-																				Short.MAX_VALUE)
-																		.addComponent(txtZip, GroupLayout.DEFAULT_SIZE, 340,
-																				Short.MAX_VALUE)
-																		.addComponent(txtName, GroupLayout.DEFAULT_SIZE, 340,
-																				Short.MAX_VALUE)
-																		.addComponent(txtSurname, GroupLayout.DEFAULT_SIZE, 340,
-																				Short.MAX_VALUE)
-																		.addComponent(txtCity, GroupLayout.DEFAULT_SIZE, 340,
-																				Short.MAX_VALUE))).addComponent(label)).addContainerGap()));
-		gl_panel.setVerticalGroup(gl_panel.createParallelGroup(Alignment.LEADING).addGroup(
-				gl_panel.createSequentialGroup()
-						.addContainerGap()
-						.addComponent(label)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								gl_panel.createParallelGroup(Alignment.BASELINE)
-										.addComponent(lblName)
-										.addComponent(txtName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								gl_panel.createParallelGroup(Alignment.BASELINE)
-										.addComponent(lblSurname)
-										.addComponent(txtSurname, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								gl_panel.createParallelGroup(Alignment.BASELINE)
-										.addComponent(lblStreet)
-										.addComponent(txtStreet, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								gl_panel.createParallelGroup(Alignment.BASELINE)
-										.addComponent(lblZip)
-										.addComponent(txtZip, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								gl_panel.createParallelGroup(Alignment.BASELINE)
-										.addComponent(lblCity)
-										.addComponent(txtCity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)).addPreferredGap(ComponentPlacement.UNRELATED)
-						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE).addComponent(btnSave).addComponent(btnCancel))
-						.addContainerGap(32, Short.MAX_VALUE)));
-		panel.setLayout(gl_panel);
+	}
+	
+	private Component getButtonsPanel() {
+		FormLayout layout = new FormLayout("pref:grow, 5dlu, pref:grow", "pref");
+		JPanel panel = new JPanel(layout);
+		CellConstraints cc = new CellConstraints();
+		panel.add(btnSave, cc.xy(1, 1));
+		panel.add(btnCancel, cc.xy(3, 1));
+		return panel;
 	}
 
 	private class ActSave extends AbstractAction {
