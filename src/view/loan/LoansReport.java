@@ -184,10 +184,7 @@ public class LoansReport {
 			try {
 				MessageFormat headerFormat = new MessageFormat("BookMasterPro - Ausleihe Rückgabe Report");
 				MessageFormat footerFormat = new MessageFormat("- {0} -");
-				if (!txtAreaReport.print(headerFormat, footerFormat)) {
-					JOptionPane.showMessageDialog(frmLoansReportForm, "Druckvorgang wurde abgebrochen.", "Information",
-							JOptionPane.INFORMATION_MESSAGE);
-				}
+				txtAreaReport.print(headerFormat, footerFormat);
 			} catch (PrinterException ex) {
 				JOptionPane.showMessageDialog(frmLoansReportForm, "Dokument konnte nicht gedruckt werden: " + ex.getLocalizedMessage(),
 						"Warnung", JOptionPane.WARNING_MESSAGE);

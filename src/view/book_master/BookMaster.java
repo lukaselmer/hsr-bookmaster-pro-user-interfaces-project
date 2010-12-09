@@ -1101,10 +1101,7 @@ public class BookMaster implements Observer {
 				if (t != null) {
 					MessageFormat headerFormat = new MessageFormat("BookMasterPro - " + title);
 					MessageFormat footerFormat = new MessageFormat("- {0} -");
-					if (!t.print(JTable.PrintMode.FIT_WIDTH, headerFormat, footerFormat)) {
-						JOptionPane.showMessageDialog(frmBookmaster, "Druckvorgang wurde abgebrochen.", "Information",
-								JOptionPane.INFORMATION_MESSAGE);
-					}
+					t.print(JTable.PrintMode.FIT_WIDTH, headerFormat, footerFormat);
 				}
 			} catch (PrinterException ex) {
 				JOptionPane.showMessageDialog(frmBookmaster, "Dokument konnte nicht gedruckt werden: " + ex.getLocalizedMessage(),
