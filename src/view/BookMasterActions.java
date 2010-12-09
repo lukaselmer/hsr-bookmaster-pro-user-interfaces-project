@@ -62,8 +62,8 @@ public class BookMasterActions {
 
 		public ActCancel() {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_A);
-			putValue(SHORT_DESCRIPTION, "Abbrechen");
-			putValue(NAME, "Bricht aktuelle Aktion ab");
+			putValue(SHORT_DESCRIPTION, "Bricht aktuelle Aktion ab");
+			putValue(NAME, "Abbrechen");
 			putValue(SMALL_ICON, new ImageIcon("data/icons/cancel.png"));
 		}
 	}

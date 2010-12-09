@@ -393,7 +393,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 			putValue(NAME, "Buch Bearbeiten...");
 			putValue(SHORT_DESCRIPTION, "Bearbeitet die Buchinformationen");
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
-			putValue(SMALL_ICON, new ImageIcon("data/icons/edit.gif"));
+			putValue(SMALL_ICON, new ImageIcon("data/icons/edit.png"));
 		}
 
 		@Override

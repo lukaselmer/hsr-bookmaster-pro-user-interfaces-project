@@ -1027,7 +1027,7 @@ public class BookMaster implements Observer {
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_MASK));
 			putValue(NAME, "Selektierte Bearbeiten...");
 			putValue(SHORT_DESCRIPTION, "Bearbeitet die ausgewählten Kunden");
-			putValue(SMALL_ICON, new ImageIcon("data/icons/edit.gif"));
+			putValue(SMALL_ICON, new ImageIcon("data/icons/edit.png"));
 		}
 
 		public void actionPerformed(ActionEvent e) {

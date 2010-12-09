@@ -73,6 +73,7 @@ public class LoansReport {
 		initialize();
 		frmLoansReportForm.setLocationByPlatform(true);
 		frmLoansReportForm.setVisible(true);
+		btnCancel.requestFocusInWindow();
 	}
 
 	protected void initMenu() {
