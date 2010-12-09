@@ -224,7 +224,7 @@ public class BookMaster implements Observer {
 			}
 		});
 		frmBookmaster.getContentPane().setLayout(new BorderLayout(0, 0));
-		frmBookmaster.setMinimumSize(new Dimension(875, 400));
+		frmBookmaster.setMinimumSize(new Dimension(950, 400));
 		initMenu();
 
 		tabbedPane = new JTabbedPane(SwingConstants.TOP) {

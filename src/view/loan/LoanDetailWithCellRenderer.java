@@ -153,7 +153,7 @@ public class LoanDetailWithCellRenderer implements SubFrame<Customer>, Observer 
 			}
 		});
 		frmLoanDetail.getContentPane().setLayout(new BorderLayout(0, 0));
-		frmLoanDetail.setMinimumSize(new Dimension(500, 450));
+		frmLoanDetail.setMinimumSize(new Dimension(650, 450));
 		cc = new CellConstraints();
 
 		initMenu();

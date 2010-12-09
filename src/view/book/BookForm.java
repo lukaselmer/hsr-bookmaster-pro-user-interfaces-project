@@ -149,7 +149,7 @@ public abstract class BookForm {
 				actClose.actionPerformed(null);
 			}
 		});
-		frmBookForm.setMinimumSize(new Dimension(350, 242));
+		frmBookForm.setMinimumSize(new Dimension(400, 242));
 
 		initMenu();
 		initComponents();
