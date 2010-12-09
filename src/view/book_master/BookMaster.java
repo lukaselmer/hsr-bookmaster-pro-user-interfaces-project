@@ -127,7 +127,6 @@ public class BookMaster implements Observer {
 				library.deleteObserver(BookMaster.this);
 				frmBookmaster.dispose();
 				System.exit(0);
-
 			}
 		}
 	};
@@ -1093,7 +1092,7 @@ public class BookMaster implements Observer {
 				if (t != null) {
 					MessageFormat headerFormat = new MessageFormat("Page {0}");
 					MessageFormat footerFormat = new MessageFormat("- {0} -");
-					if (!t.print(JTable.PrintMode.FIT_WIDTH, headerFormat, footerFormat, true, null, true)) {
+					if (!t.print(JTable.PrintMode.FIT_WIDTH, headerFormat, footerFormat)) {
 						JOptionPane.showMessageDialog(frmBookmaster, "Dokument konnte nicht gedruckt werden.", "Warnung",
 								JOptionPane.WARNING_MESSAGE);
 					}
