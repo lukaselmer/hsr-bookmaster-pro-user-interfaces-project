@@ -12,7 +12,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.print.PrinterException;
 import java.text.DateFormat;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -108,12 +110,13 @@ public class BookMaster implements Observer {
 	private JMenu mnFile;
 	private JMenu mnBooks;
 	private JMenu mnLoans;
+	private JMenuItem mntPrint;
 	private JMenuItem mntClose;
 	private JMenuItem mntShowSelectedBooks;
 	private JMenuItem mntNewBook;
-	private final Action actNewBook = new SwingAction();
+	private final Action actPrint = new ActPrint();
+	private final Action actNewBook = new ActNewBook();
 	private final Action actClose = new BookMasterActions.ActClose() {
-
 		private static final long serialVersionUID = -1552611178018631110L;
 
 		@Override
@@ -169,6 +172,8 @@ public class BookMaster implements Observer {
 		mnFile = new JMenu("Datei");
 		mnFile.setMnemonic('d');
 		menuBar.add(mnFile);
+		mntPrint = new JMenuItem(actPrint);
+		mnFile.add(mntPrint);
 		mntClose = new JMenuItem(actClose);
 		mnFile.add(mntClose);
 
@@ -870,16 +875,12 @@ public class BookMaster implements Observer {
 
 	private void updateCustomersStatistics() {
 		lblCustomersAmountNum.setText("" + library.getCustomers().size());
-		// lblCurrentlyCustomeredNum.setText("" +
-		// library.getCurrentCustomers().size());
-		// lblOverdueAmountNum.setText("" +
-		// library.getCurrentCustomers(true).size());
 	}
 
-	private class SwingAction extends AbstractAction {
+	private class ActNewBook extends AbstractAction {
 		private static final long serialVersionUID = -7602741039227249620L;
 
-		public SwingAction() {
+		public ActNewBook() {
 			putValue(MNEMONIC_KEY, KeyEvent.VK_N);
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_MASK));
 			putValue(NAME, "Neuer Buchtitel Erfassen...");
@@ -1058,6 +1059,49 @@ public class BookMaster implements Observer {
 			Customer customer = getSelectedCustomer();
 			if (customer != null)
 				uimanager.openLoanWindow(customer);
+		}
+	}
+
+	private class ActPrint extends AbstractAction {
+		private static final long serialVersionUID = -4233516685011423778L;
+
+		public ActPrint() {
+			putValue(NAME, "Angezeigte Tabelle Drucken...");
+			putValue(MNEMONIC_KEY, KeyEvent.VK_D);
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK));
+			putValue(SHORT_DESCRIPTION, "Druckt die aktuell angezeigte Tabelle");
+			putValue(SMALL_ICON, new ImageIcon("data/icons/print.gif"));
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			try {
+				JTable t = null;
+				switch (tabbedPane.getSelectedIndex()) {
+				case INDEX_OF_BOOKS_TAB:
+					t = tblBooks;
+					break;
+				case INDEX_OF_LOANS_TAB:
+					t = tblLoans;
+					break;
+				case INDEX_OF_CUSTOMERS_TAB:
+					t = tblCustomers;
+					break;
+				default:
+					assert false; // Execution should never reach this point:
+									// Undefined tab!");
+				}
+				if (t != null) {
+					MessageFormat headerFormat = new MessageFormat("Page {0}");
+					MessageFormat footerFormat = new MessageFormat("- {0} -");
+					if (!t.print(JTable.PrintMode.FIT_WIDTH, headerFormat, footerFormat, true, null, true)) {
+						JOptionPane.showMessageDialog(frmBookmaster, "Dokument konnte nicht gedruckt werden.", "Warnung",
+								JOptionPane.WARNING_MESSAGE);
+					}
+				}
+			} catch (PrinterException ex) {
+				JOptionPane.showMessageDialog(frmBookmaster, "Dokument konnte nicht gedruckt werden: " + ex.getLocalizedMessage(),
+						"Warnung", JOptionPane.WARNING_MESSAGE);
+			}
 		}
 	}
 }
