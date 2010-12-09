@@ -1073,28 +1073,37 @@ public class BookMaster implements Observer {
 		}
 
 		public void actionPerformed(ActionEvent e) {
+			String title = null;
+			JTable t = null;
+			switch (tabbedPane.getSelectedIndex()) {
+			case INDEX_OF_BOOKS_TAB:
+				t = tblBooks;
+				title = "Bücher";
+				break;
+			case INDEX_OF_LOANS_TAB:
+				t = tblLoans;
+				title = "Ausleihen";
+				break;
+			case INDEX_OF_CUSTOMERS_TAB:
+				t = tblCustomers;
+				title = "Kunden";
+				break;
+			default:
+				assert false; // Execution should never reach this point:
+								// Undefined tab!");
+			}
+			print(t, title);
+
+		}
+
+		private void print(JTable t, String title) {
 			try {
-				JTable t = null;
-				switch (tabbedPane.getSelectedIndex()) {
-				case INDEX_OF_BOOKS_TAB:
-					t = tblBooks;
-					break;
-				case INDEX_OF_LOANS_TAB:
-					t = tblLoans;
-					break;
-				case INDEX_OF_CUSTOMERS_TAB:
-					t = tblCustomers;
-					break;
-				default:
-					assert false; // Execution should never reach this point:
-									// Undefined tab!");
-				}
 				if (t != null) {
-					MessageFormat headerFormat = new MessageFormat("Page {0}");
+					MessageFormat headerFormat = new MessageFormat("BookMasterPro - " + title);
 					MessageFormat footerFormat = new MessageFormat("- {0} -");
 					if (!t.print(JTable.PrintMode.FIT_WIDTH, headerFormat, footerFormat)) {
-						JOptionPane.showMessageDialog(frmBookmaster, "Dokument konnte nicht gedruckt werden.", "Warnung",
-								JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(frmBookmaster, "Druckvorgang wurde abgebrochen.", "Information",
+								JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
 			} catch (PrinterException ex) {
