@@ -318,7 +318,7 @@ public class BookMaster implements Observer {
 		});
 		txtFilterBooks.setColumns(10);
 
-		JLabel lblFilterBooks = new JLabel("Filter:", new ImageIcon("data/icons/filter.png"), JLabel.LEADING);
+		JLabel lblFilterBooks = new JLabel("Filter:");
 		lblFilterBooks.setDisplayedMnemonic('f');
 		lblFilterBooks.setLabelFor(txtFilterBooks);
 		lblFilterBooks.setToolTipText("Filtern nach Exemplar-IDs, Buchtitel, Regal, Author oder Verlag");
@@ -396,7 +396,7 @@ public class BookMaster implements Observer {
 		JLabel lblAlleAusleighen = new JLabel(
 				"Alle zurzeit ausgeliehenen Exemplare für alle Kunden sind in der untenstehenden Tabelle ersichtlich");
 
-		JLabel lblFilterLoans = new JLabel("Filter:", new ImageIcon("data/icons/filter.png"), JLabel.LEADING);
+		JLabel lblFilterLoans = new JLabel("Filter:");
 		lblFilterLoans.setDisplayedMnemonic('f');
 		lblFilterLoans.setToolTipText("Filtern nach Status, Exemplar-ID, Buchtitel, Ausgeliehen Bis oder Ausgeliehen An");
 
@@ -487,7 +487,7 @@ public class BookMaster implements Observer {
 	private Component getPnlCustomerFilter() {
 		JLabel lblAlleAusleighen = new JLabel("Alle Kunden sind in der untenstehenden Tabelle ersichtlich");
 
-		JLabel lblFilterCustomers = new JLabel("Filter:", new ImageIcon("data/icons/filter.png"), JLabel.LEADING);
+		JLabel lblFilterCustomers = new JLabel("Filter:");
 		lblFilterCustomers.setDisplayedMnemonic('f');
 		lblFilterCustomers.setToolTipText("Filtern nach Vorname, Nachname, Strasse, Stadt oder PLZ");
 
