@@ -146,9 +146,9 @@ public abstract class CustomerForm {
 		frmCustomerForm = new JFrame();
 		ViewUtil.setIconImages(frmCustomerForm);
 		frmCustomerForm.setTitle(getWindowTitle());
-		frmCustomerForm.setBounds(100, 100, 500, 270);
+		frmCustomerForm.setBounds(100, 100, 600, 270);
 		frmCustomerForm.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		frmCustomerForm.setMinimumSize(new Dimension(400, 270));
+		frmCustomerForm.setMinimumSize(new Dimension(500, 270));
 
 		initMenu();
 		initComponents();
