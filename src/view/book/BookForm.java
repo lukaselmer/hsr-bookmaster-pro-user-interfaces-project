@@ -139,6 +139,7 @@ public abstract class BookForm {
 	 */
 	private void initialize() throws ParseException {
 		frmBookForm = new JFrame();
+		ViewUtil.setIconImages(frmBookForm);
 		frmBookForm.setTitle(getWindowTitle());
 		frmBookForm.setBounds(100, 100, 500, 242);
 		frmBookForm.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

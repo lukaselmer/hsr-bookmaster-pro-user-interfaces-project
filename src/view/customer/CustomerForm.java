@@ -144,6 +144,7 @@ public abstract class CustomerForm {
 	 */
 	private void initialize() throws ParseException {
 		frmCustomerForm = new JFrame();
+		ViewUtil.setIconImages(frmCustomerForm);
 		frmCustomerForm.setTitle(getWindowTitle());
 		frmCustomerForm.setBounds(100, 100, 500, 270);
 		frmCustomerForm.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

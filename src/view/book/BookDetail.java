@@ -132,6 +132,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	 */
 	private void initialize() {
 		frmBookDetailView = new JFrame();
+		ViewUtil.setIconImages(frmBookDetailView);
 		frmBookDetailView.setTitle("Buch Detailansicht");
 		frmBookDetailView.setBounds(100, 100, 550, 400);
 		frmBookDetailView.setMinimumSize(new Dimension(500, 400));

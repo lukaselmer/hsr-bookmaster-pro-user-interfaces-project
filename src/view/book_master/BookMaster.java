@@ -6,7 +6,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -214,7 +213,7 @@ public class BookMaster implements Observer {
 	 */
 	private void initialize() {
 		frmBookmaster = new JFrame();
-		frmBookmaster.setIconImages(getIconImages());
+		ViewUtil.setIconImages(frmBookmaster);
 		frmBookmaster.setTitle("BookMasterPro");
 		frmBookmaster.setBounds(100, 100, 1000, 600);
 		frmBookmaster.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -288,15 +287,6 @@ public class BookMaster implements Observer {
 				}
 			}
 		});
-	}
-
-	private List<? extends Image> getIconImages() {
-		int[] imageSizes = {256, 128, 64, 48, 32, 26, 24, 20, 16, 10, 8};
-		List<Image> l = new ArrayList<Image>();
-		for (int imageSize : imageSizes) {
-			l.add(new ImageIcon("data/icons/icon_logo_" + imageSize + "x" + imageSize + ".png").getImage());
-		}
-		return l;
 	}
 
 	private void initBooksPanel() {

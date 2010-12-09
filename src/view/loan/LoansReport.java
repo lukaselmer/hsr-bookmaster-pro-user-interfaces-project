@@ -104,6 +104,7 @@ public class LoansReport {
 	 */
 	private void initialize() {
 		frmLoansReportForm = new JFrame();
+		ViewUtil.setIconImages(frmLoansReportForm);
 		frmLoansReportForm.setTitle("Ausleihe Rückgabe Report");
 		frmLoansReportForm.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frmLoansReportForm.setSize(new Dimension(700, 600));

@@ -2,8 +2,12 @@ package view;
 
 import java.awt.ComponentOrientation;
 import java.awt.Font;
+import java.awt.Image;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -58,4 +62,18 @@ public class ViewUtil {
 			}
 		};
 	}
+
+	public static void setIconImages(JFrame frame) {
+		frame.setIconImages(getIconImages());
+	}
+
+	public static List<? extends Image> getIconImages() {
+		int[] imageSizes = { 256, 128, 64, 48, 32, 26, 24, 20, 16, 10, 8 };
+		List<Image> l = new ArrayList<Image>();
+		for (int imageSize : imageSizes) {
+			l.add(new ImageIcon("data/icons/icon_logo_" + imageSize + "x" + imageSize + ".png").getImage());
+		}
+		return l;
+	}
+
 }

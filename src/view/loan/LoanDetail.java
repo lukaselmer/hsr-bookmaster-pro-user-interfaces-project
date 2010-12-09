@@ -143,6 +143,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 	 */
 	private void initialize() {
 		frmLoanDetail = new JFrame();
+		ViewUtil.setIconImages(frmLoanDetail);
 		frmLoanDetail.setTitle("Ausleihe Detail");
 		frmLoanDetail.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		frmLoanDetail.addWindowListener(new WindowAdapter() {

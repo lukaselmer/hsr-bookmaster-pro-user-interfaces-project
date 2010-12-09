@@ -142,6 +142,7 @@ public class LoanDetailWithCellRenderer implements SubFrame<Customer>, Observer 
 	 */
 	private void initialize() {
 		frmLoanDetail = new JFrame();
+		ViewUtil.setIconImages(frmLoanDetail);
 		frmLoanDetail.setTitle("Ausleihe Detail");
 		frmLoanDetail.setBounds(100, 100, 600, 450);
 		frmLoanDetail.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
