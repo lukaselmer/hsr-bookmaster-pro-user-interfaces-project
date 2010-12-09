@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.print.PrinterException;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.List;
 
@@ -18,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -51,6 +54,7 @@ public class LoansReport {
 	private JMenu mnEdit;
 	private JMenuItem mntUndoAndClose;
 	private final Action actUndo = new ActUndo();
+	private final Action actPrint = new ActPrint();
 	private final Action actClose = new BookMasterActions.ActClose() {
 		private static final long serialVersionUID = 5525544072589710482L;
 
@@ -59,6 +63,7 @@ public class LoansReport {
 			frmLoansReportForm.dispose();
 		}
 	};
+	private JMenuItem mntPrint;
 
 	/**
 	 * This view reports the results when a loan has been returned
@@ -81,6 +86,8 @@ public class LoansReport {
 		frmLoansReportForm.setJMenuBar(menuBar);
 		mnFile = new JMenu("Datei");
 		menuBar.add(mnFile);
+		mntPrint = new JMenuItem(actPrint);
+		mnFile.add(mntPrint);
 		mntClose = new JMenuItem(actClose);
 		mnFile.add(mntClose);
 		mnEdit = new JMenu("Bearbeiten");
@@ -159,6 +166,32 @@ public class LoansReport {
 				l.undoReturnCopy();
 			}
 			frmLoansReportForm.dispose();
+		}
+	}
+
+	private class ActPrint extends AbstractAction {
+		private static final long serialVersionUID = -4233516685011423778L;
+
+		public ActPrint() {
+			putValue(NAME, "Drucken...");
+			putValue(MNEMONIC_KEY, KeyEvent.VK_D);
+			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_MASK));
+			putValue(SHORT_DESCRIPTION, "Druckt den Ausleihe Rückgabe Report");
+			putValue(SMALL_ICON, new ImageIcon("data/icons/print.gif"));
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			try {
+				MessageFormat headerFormat = new MessageFormat("BookMasterPro - Ausleihe Rückgabe Report");
+				MessageFormat footerFormat = new MessageFormat("- {0} -");
+				if (!txtAreaReport.print(headerFormat, footerFormat)) {
+					JOptionPane.showMessageDialog(frmLoansReportForm, "Druckvorgang wurde abgebrochen.", "Information",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+			} catch (PrinterException ex) {
+				JOptionPane.showMessageDialog(frmLoansReportForm, "Dokument konnte nicht gedruckt werden: " + ex.getLocalizedMessage(),
+						"Warnung", JOptionPane.WARNING_MESSAGE);
+			}
 		}
 	}
 }
