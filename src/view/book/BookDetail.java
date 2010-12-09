@@ -308,6 +308,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 		library.createAndAddCopy(book);
 		lblNumber.setText("" + library.getCopiesOfBook(book).size());
 		bookTableModel.updateObjects(book);
+		bookTableModel.fireTableDataChanged();
 	}
 
 	protected void removeSelectedCopies() {
@@ -321,6 +322,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 	protected void updateBookInformation() {
 		lblNumber.setText("" + library.getCopiesOfBook(book).size());
 		bookTableModel.updateObjects(book);
+		bookTableModel.fireTableDataChanged();
 	}
 
 	protected List<Copy> getSelectedCopies() {
@@ -382,6 +384,7 @@ public class BookDetail implements SubFrame<Book>, Observer {
 			txtShelf.setCaretPosition(0);
 		} else {
 			bookTableModel.updateObjects(book);
+			bookTableModel.fireTableDataChanged();
 		}
 	}
 
