@@ -14,22 +14,22 @@ public class BookValidator implements Validator<Book> {
 		PropertyValidationSupport support = new PropertyValidationSupport(book, "Buch");
 
 		if (ValidationUtils.isBlank(book.getName()))
-			support.addError("Buchtitel", "Muss ausgefüllt werden");
+			support.addError("Buchtitel", "muss ausgefüllt werden");
 		else if (!ValidationUtils.hasBoundedLength(book.getName(), 3, 255))
 			support.addError("Buchtitel", "Länge muss zwischen 3 und 255 Zeichen lang sein");
 
 		if (ValidationUtils.isBlank(book.getAuthor()))
-			support.addError("Autor", "Muss ausgefüllt werden");
+			support.addError("Autor", "muss ausgefüllt werden");
 		else if (!ValidationUtils.hasBoundedLength(book.getAuthor(), 3, 255))
 			support.addError("Autor", "Länge muss zwischen 3 und 255 Zeichen lang sein");
 
 		if (ValidationUtils.isBlank(book.getPublisher()))
-			support.addError("Verlag", "Muss ausgefüllt werden");
+			support.addError("Verlag", "muss ausgefüllt werden");
 		else if (!ValidationUtils.hasBoundedLength(book.getPublisher(), 3, 100))
 			support.addError("Verlag", "Länge muss zwischen 3 und 100 Zeichen lang sein");
 
 		if (book.getShelf() == null)
-			support.addError("Regal", "Muss ausgewählt werden");
+			support.addError("Regal", "muss ausgewählt werden");
 
 		return support.getResult();
 	}

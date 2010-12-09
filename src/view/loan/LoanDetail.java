@@ -432,7 +432,7 @@ public class LoanDetail implements SubFrame<Customer>, Observer {
 		txtCopyId.setEnabled(library.getCustomerLoans(customer).size() < 3 && !(library.hasCustomerOverdueBooks(customer)));
 		if (txtCopyId.isEnabled()) {
 			txtCopyId.setText("");
-			txtCopyId.setToolTipText("Muss ausgefüllt werden");
+			txtCopyId.setToolTipText("muss ausgefüllt werden");
 			ValidationComponentUtils.setMandatoryBackground(txtCopyId);
 			formValidator.enablePopups();
 			formValidator.validateForm(null);
